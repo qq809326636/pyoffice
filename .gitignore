@@ -1,0 +1,6 @@
+# For Python
+*.py[cod]
+
+
+# For PyCharm
+.idea/

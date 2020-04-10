@@ -13,3 +13,6 @@ class TestExcel:
         app = ExcelApplication()
         wb = app.open(filepath)
         wb.display()
+        ws = wb.getActiveWorkSheet()
+        name = ws.getName()
+        print(f'name: {name}')

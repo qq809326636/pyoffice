@@ -54,3 +54,8 @@ class ExcelApplication:
                       local,
                       corruptLoad)
         return workbook
+
+    def quit(self):
+        self.__app.Quit()
+
+

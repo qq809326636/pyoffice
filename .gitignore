@@ -1,5 +1,7 @@
 # For Python
 *.py[cod]
+
+# For pytest
 .pytest_cache/
 
 # For PyCharm

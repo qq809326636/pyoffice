@@ -1,6 +1,6 @@
 # For Python
 *.py[cod]
-
+.pytest_cache/
 
 # For PyCharm
 .idea/

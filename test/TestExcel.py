@@ -10,7 +10,6 @@ class TestExcel:
     def test_open(self,
                   filepath):
         from pyoffice.excel import ExcelApplication
-        app=ExcelApplication()
+        app = ExcelApplication()
         wb = app.open(filepath)
         wb.display()
-

@@ -9,30 +9,48 @@ class ExcelApplication:
     def __init__(self):
         import win32com.client
 
-        self.__app = win32com.client.Dispatch("Excel.Application")
-        self.__visible = False
+        self.__app = win32com.client.Dispatch('Excel.Application')
 
-    # fields
-    @property
-    def app(self):
-        return self.__app
+    def getVisible(self):
+        return self.__app.Visible
 
-    @property
-    def visible(self):
-        return self.__visible
+    def setVisible(self,
+                   visible: bool):
+        self.__app.Visible = visible
 
-    @visible.setter
-    def visible(self,
-                visible: bool):
-        self.__visible = visible
-
-    # methods
     def open(self,
-             filepath: str):
+             filepath: str,
+             updateLinks: bool = False,
+             readOnly: bool = False,
+             format=None,
+             password: str = '',
+             writeResPassword=None,
+             ignoreReadOnlyRecommended=False,
+             origin=None,
+             delimiter=None,
+             editable: bool = True,
+             notify: bool = False,
+             converter=None,
+             addToMru=None,
+             local=None,
+             corruptLoad=None):
         from .Workbook import Workbook
 
         workbook = Workbook()
-        workbook.workbook = self.__app.Workbooks.Open(filepath)
+        workbook.setApplication(self)
+        workbook.open(filepath,
+                      updateLinks,
+                      readOnly,
+                      format,
+                      password,
+                      writeResPassword,
+                      ignoreReadOnlyRecommended,
+                      origin,
+                      delimiter,
+                      editable,
+                      notify,
+                      converter,
+                      addToMru,
+                      local,
+                      corruptLoad)
         return workbook
-
-

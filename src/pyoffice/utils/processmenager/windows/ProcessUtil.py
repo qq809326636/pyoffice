@@ -69,3 +69,47 @@ class ProcessUtil:
 
         else:
             raise RuntimeError(f'This "{platform.system()}" platform does not supported.')
+
+    @staticmethod
+    def terminalProcessByPID(pid: int):
+        if platform.system().lower() == 'windows':
+            import win32process
+            import win32api
+            import win32con
+            import win32com
+            import win32com.client
+            import win32trace
+
+            handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS,
+                                          False,
+                                          pid)
+            # win32api.CloseHandle(handle)
+            win32api.TerminateProcess(handle, 0)
+
+        else:
+            raise RuntimeError(f'This "{platform.system()}" platform does not supported.')
+
+    @staticmethod
+    def getProcessDependModuleFileNamesByPid(pid: int):
+        if platform.system().lower() == 'windows':
+            import win32process
+            import win32api
+            import win32con
+            import win32com
+            import win32com.client
+            import win32trace
+            handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS,
+                                          False,
+                                          pid)
+            handleModules = win32process.EnumProcessModules(handle)
+            handleModulesCount = len(handleModules)
+
+            moduleIndex = 0  # 0 - executable itself
+            for moduleIndex in range(handleModulesCount):
+                moduleHandle = handleModules[moduleIndex]
+                moduleFileName = win32process.GetModuleFileNameEx(handle,
+                                                                  moduleHandle)
+                yield moduleFileName
+
+        else:
+            raise RuntimeError(f'This "{platform.system()}" platform does not supported.')

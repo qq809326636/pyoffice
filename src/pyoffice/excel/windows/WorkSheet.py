@@ -11,4 +11,8 @@ class WorkSheet:
         self.__workSheet = None
 
     def getName(self):
+        """
+        Get worksheet name
+        :return:
+        """
         return self.__workSheet.Name

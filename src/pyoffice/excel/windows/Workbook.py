@@ -5,7 +5,14 @@ Workbook
 __all__ = ['Workbook',
            'XLFileFormatEnum',
            'XlSaveAsAccessMode',
+           'XlSaveConflictResolution',
            'WorkbookException']
+
+
+class XlSaveConflictResolution:
+    xlLocalSessionChanges = 2  # The local user's changes are always accepted.
+    xlOtherSessionChanges = 3  # The local user's changes are always rejected.
+    xlUserResolution = 1  # A dialog box asks the user to resolve the conflict.
 
 
 class XlSaveAsAccessMode:
@@ -133,9 +140,17 @@ class Workbook:
                                                                            corruptLoad)
 
     def close(self):
+        """
+        Close this workbook without save.
+        :return:
+        """
         self.__workbook.Close()
 
     def save(self):
+        """
+        Save the workbook
+        :return:
+        """
         self.__workbook.Save()
 
     def saveAs(self,
@@ -145,16 +160,46 @@ class Workbook:
                writeResPassword: str = '',
                readOnlyRecommended: bool = True,
                createBackup: bool = True,
-               accessMode: int = XlSaveAsAccessMode.xlShared):
+               accessMode: int = XlSaveAsAccessMode.xlShared,
+               conflictResolution: int = XlSaveConflictResolution.xlLocalSessionChanges,
+               addToMru: bool = False,
+               textCodepage=None,
+               textVisualLayout=None,
+               local: bool = True):
+        """
+        The workbook save as other document.
+        :param fileName:
+        :param fileFormat:
+        :param password:
+        :param writeResPassword:
+        :param readOnlyRecommended:
+        :param createBackup:
+        :param accessMode:
+        :param conflictResolution:
+        :param addToMru:
+        :param textCodepage:
+        :param textVisualLayout:
+        :param local:
+        :return:
+        """
         self.__workbook.SaveAs(fileName,
                                fileFormat,
                                password,
                                writeResPassword,
                                readOnlyRecommended,
                                createBackup,
-                               accessMode)
+                               accessMode,
+                               conflictResolution,
+                               addToMru,
+                               textCodepage,
+                               textVisualLayout,
+                               local)
 
     def getActiveWorkSheet(self):
+        """
+        Get Active WorkSheet
+        :return:
+        """
         from .WorkSheet import WorkSheet
 
         workSheet = WorkSheet()
@@ -177,3 +222,17 @@ class Workbook:
                 return workSheet
         else:
             raise WorkbookException(f'No worksheet with this name {sheetName} found.')
+
+    def getWorkSheetList(self) -> list:
+        """
+        Get WorkSheet List
+        :return:
+        """
+        from .WorkSheet import WorkSheet
+
+        retVal = list()
+        for item in self.__workbook.Worksheets:
+            ws = WorkSheet()
+            ws._WorkSheet__workSheet = item
+            retVal.append(ws)
+        return retVal

@@ -12,10 +12,19 @@ class ExcelApplication:
         self.__app = win32com.client.Dispatch('Excel.Application')
 
     def getVisible(self):
+        """
+        Get the excel application visible.
+        :return:
+        """
         return self.__app.Visible
 
     def setVisible(self,
                    visible: bool):
+        """
+        Set the excel application visible.
+        :param visible:
+        :return:
+        """
         self.__app.Visible = visible
 
     def open(self,
@@ -34,6 +43,25 @@ class ExcelApplication:
              addToMru=None,
              local=None,
              corruptLoad=None):
+        """
+        Open the workbook.
+        :param filepath:
+        :param updateLinks:
+        :param readOnly:
+        :param format:
+        :param password:
+        :param writeResPassword:
+        :param ignoreReadOnlyRecommended:
+        :param origin:
+        :param delimiter:
+        :param editable:
+        :param notify:
+        :param converter:
+        :param addToMru:
+        :param local:
+        :param corruptLoad:
+        :return:
+        """
         from .Workbook import Workbook
 
         workbook = Workbook()
@@ -56,6 +84,8 @@ class ExcelApplication:
         return workbook
 
     def quit(self):
+        """
+        Quit the application.
+        :return:
+        """
         self.__app.Quit()
-
-

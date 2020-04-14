@@ -1,6 +1,7 @@
 """
 Workbook
 """
+from ._WinObject import _WinObject
 
 __all__ = ['Workbook',
            'XLFileFormatEnum',
@@ -84,10 +85,11 @@ class WorkbookException(Exception):
     pass
 
 
-class Workbook:
+class Workbook(_WinObject):
     def __init__(self):
+        _WinObject.__init__(self)
+
         self.__app = None
-        self.__workbook = None
 
         # init
         self.__initApplication()
@@ -105,7 +107,7 @@ class Workbook:
         return self.__app
 
     def display(self):
-        self.__app._ExcelApplication__app.Visible = True
+        self.__app.impl.Visible = True
 
     def open(self,
              filepath: str,
@@ -123,35 +125,35 @@ class Workbook:
              addToMru=None,
              local=None,
              corruptLoad=None):
-        self.__workbook = self.__app._ExcelApplication__app.Workbooks.Open(filepath,
-                                                                           updateLinks,
-                                                                           readOnly,
-                                                                           format,
-                                                                           password,
-                                                                           writeResPassword,
-                                                                           ignoreReadOnlyRecommended,
-                                                                           origin,
-                                                                           delimiter,
-                                                                           editable,
-                                                                           notify,
-                                                                           converter,
-                                                                           addToMru,
-                                                                           local,
-                                                                           corruptLoad)
+        self.impl = self.__app.impl.Workbooks.Open(filepath,
+                                                   updateLinks,
+                                                   readOnly,
+                                                   format,
+                                                   password,
+                                                   writeResPassword,
+                                                   ignoreReadOnlyRecommended,
+                                                   origin,
+                                                   delimiter,
+                                                   editable,
+                                                   notify,
+                                                   converter,
+                                                   addToMru,
+                                                   local,
+                                                   corruptLoad)
 
     def close(self):
         """
         Close this workbook without save.
         :return:
         """
-        self.__workbook.Close()
+        self.impl.Close()
 
     def save(self):
         """
         Save the workbook
         :return:
         """
-        self.__workbook.Save()
+        self.impl.Save()
 
     def saveAs(self,
                fileName: str,
@@ -182,7 +184,7 @@ class Workbook:
         :param local:
         :return:
         """
-        self.__workbook.SaveAs(fileName,
+        self.impl.SaveAs(fileName,
                                fileFormat,
                                password,
                                writeResPassword,
@@ -203,7 +205,7 @@ class Workbook:
         from .WorkSheet import WorkSheet
 
         workSheet = WorkSheet()
-        workSheet._WorkSheet__workSheet = self.__workbook.ActiveSheet
+        workSheet.impl = self.impl.ActiveSheet
         return workSheet
 
     def getWorkSheetByName(self,
@@ -216,9 +218,9 @@ class Workbook:
         from .WorkSheet import WorkSheet
 
         workSheet = WorkSheet()
-        for item in self.__workbook.Worksheets:
+        for item in self.impl.Worksheets:
             if sheetName == item.Name:
-                workSheet._WorkSheet__workSheet = item
+                workSheet.impl = item
                 return workSheet
         else:
             raise WorkbookException(f'No worksheet with this name {sheetName} found.')
@@ -231,8 +233,8 @@ class Workbook:
         from .WorkSheet import WorkSheet
 
         retVal = list()
-        for item in self.__workbook.Worksheets:
+        for item in self.impl.Worksheets:
             ws = WorkSheet()
-            ws._WorkSheet__workSheet = item
+            ws.impl = item
             retVal.append(ws)
         return retVal

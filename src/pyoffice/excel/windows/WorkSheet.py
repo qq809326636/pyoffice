@@ -1,18 +1,19 @@
 """
 WorkSheet
 """
+from ._WinObject import _WinObject
 
 __all__ = ['WorkSheet']
 
 
-class WorkSheet:
+class WorkSheet(_WinObject):
 
     def __init__(self):
-        self.__workSheet = None
+        _WinObject.__init__(self)
 
     def getName(self):
         """
         Get worksheet name
         :return:
         """
-        return self.__workSheet.Name
+        return self.impl.Name

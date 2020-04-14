@@ -1,22 +1,32 @@
 """
 Excel Application
 """
+
+from ._WinObject import _WinObject
+
 __all__ = ['ExcelApplication']
 
 
-class ExcelApplication:
+class ExcelApplication(_WinObject):
 
     def __init__(self):
+        _WinObject.__init__(self)
+
         import win32com.client
 
-        self.__app = win32com.client.Dispatch('Excel.Application')
+        self._impl = win32com.client.Dispatch('Excel.Application')
+
+    def getPid(self):
+        import win32process
+        threadId, processId = win32process.GetWindowThreadProcessId(self._impl.Hwnd)
+        return processId
 
     def getVisible(self):
         """
         Get the excel application visible.
         :return:
         """
-        return self.__app.Visible
+        return self._impl.Visible
 
     def setVisible(self,
                    visible: bool):
@@ -25,7 +35,7 @@ class ExcelApplication:
         :param visible:
         :return:
         """
-        self.__app.Visible = visible
+        self._impl.Visible = visible
 
     def open(self,
              filepath: str,
@@ -88,4 +98,4 @@ class ExcelApplication:
         Quit the application.
         :return:
         """
-        self.__app.Quit()
+        self._impl.Quit()

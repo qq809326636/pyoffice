@@ -7,7 +7,14 @@ __all__ = ['Workbook',
            'XLFileFormatEnum',
            'XlSaveAsAccessMode',
            'XlSaveConflictResolution',
-           'WorkbookException']
+           'WorkbookException',
+           'AccuracyVersionEnum']
+
+
+class AccuracyVersionEnum:
+    LATEST = 0
+    FOR07 = 1
+    FOR10 = 2
 
 
 class XlSaveConflictResolution:
@@ -185,17 +192,17 @@ class Workbook(_WinObject):
         :return:
         """
         self.impl.SaveAs(fileName,
-                               fileFormat,
-                               password,
-                               writeResPassword,
-                               readOnlyRecommended,
-                               createBackup,
-                               accessMode,
-                               conflictResolution,
-                               addToMru,
-                               textCodepage,
-                               textVisualLayout,
-                               local)
+                         fileFormat,
+                         password,
+                         writeResPassword,
+                         readOnlyRecommended,
+                         createBackup,
+                         accessMode,
+                         conflictResolution,
+                         addToMru,
+                         textCodepage,
+                         textVisualLayout,
+                         local)
 
     def getActiveWorkSheet(self):
         """
@@ -238,3 +245,23 @@ class Workbook(_WinObject):
             ws.impl = item
             retVal.append(ws)
         return retVal
+
+    def getPath(self):
+        return self.impl.Path
+
+    def isReadOnly(self):
+        return self.impl.ReadOnly
+
+    def getWritePassword(self):
+        return self.impl.WritePassword
+
+    def setWritePassword(self,
+                         writePassword: str):
+        self.impl.WritePassword = writePassword
+
+    def getAccuracyVersion(self):
+        return self.impl.AccuracyVersion
+
+    def setAccuracyVersion(self,
+                           accuracyVersion: int = AccuracyVersionEnum.LATEST):
+        self.impl.AccuracyVersionEnum = accuracyVersion

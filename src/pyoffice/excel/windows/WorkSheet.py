@@ -17,3 +17,6 @@ class WorkSheet(_WinObject):
         :return:
         """
         return self.impl.Name
+
+    def active(self):
+        self.impl.Activate()

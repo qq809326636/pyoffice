@@ -23,3 +23,14 @@ class TestExcel:
         print(f'name: {name}')
         for item in wb.getWorkSheetList():
             print(f'item name: {item.getName()}')
+
+        ws = wb.getWorkSheetByName('Sheet2')
+        ws.active()
+        print(ws.getName())
+
+        path = wb.getPath()
+        print(path)
+
+        print(wb.isReadOnly())
+        print(wb.getWritePassword())
+        print(wb.getAccuracyVersion())

@@ -99,3 +99,11 @@ class ExcelApplication(_WinObject):
         :return:
         """
         self._impl.Quit()
+
+    def terminate(self):
+        """
+        Terminal the application
+        :return:
+        """
+        from pyoffice.utils import ProcessUtil
+        ProcessUtil.terminalProcessByPID(self.getPid())

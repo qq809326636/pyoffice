@@ -209,9 +209,9 @@ class Workbook(_WinObject):
         Get Active WorkSheet
         :return:
         """
-        from .WorkSheet import WorkSheet
+        from .Worksheet import Worksheet
 
-        workSheet = WorkSheet()
+        workSheet = Worksheet()
         workSheet.impl = self.impl.ActiveSheet
         return workSheet
 
@@ -222,9 +222,9 @@ class Workbook(_WinObject):
         :param sheetName:
         :return:
         """
-        from .WorkSheet import WorkSheet
+        from .Worksheet import Worksheet
 
-        workSheet = WorkSheet()
+        workSheet = Worksheet()
         for item in self.impl.Worksheets:
             if sheetName == item.Name:
                 workSheet.impl = item
@@ -237,11 +237,11 @@ class Workbook(_WinObject):
         Get WorkSheet List
         :return:
         """
-        from .WorkSheet import WorkSheet
+        from .Worksheet import Worksheet
 
         retVal = list()
         for item in self.impl.Worksheets:
-            ws = WorkSheet()
+            ws = Worksheet()
             ws.impl = item
             retVal.append(ws)
         return retVal

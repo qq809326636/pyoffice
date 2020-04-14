@@ -34,3 +34,7 @@ class TestExcel:
         print(wb.isReadOnly())
         print(wb.getWritePassword())
         print(wb.getAccuracyVersion())
+
+        # app = wb.getApplication()
+        # app.quit()
+        # app.terminate()

@@ -3,10 +3,10 @@ WorkSheet
 """
 from ._WinObject import _WinObject
 
-__all__ = ['WorkSheet']
+__all__ = ['Worksheet']
 
 
-class WorkSheet(_WinObject):
+class Worksheet(_WinObject):
 
     def __init__(self):
         _WinObject.__init__(self)

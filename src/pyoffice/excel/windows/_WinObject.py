@@ -13,7 +13,10 @@ class _WinObject:
     @impl.setter
     def impl(self,
              impl):
-        self._impl = impl
+        if not self._impl:
+            self._impl = impl
+        else:
+            raise RuntimeError('The impl is not empty and cannot be reassigned.')
 
     @impl.deleter
     def impl(self):

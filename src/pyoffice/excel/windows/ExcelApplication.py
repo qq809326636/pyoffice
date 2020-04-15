@@ -107,3 +107,11 @@ class ExcelApplication(_WinObject):
         """
         from pyoffice.utils import ProcessUtil
         ProcessUtil.terminalProcessByPID(self.getPid())
+
+    def getActiveWorkbook(self):
+        from .Workbook import Workbook
+
+        workbook = Workbook()
+        workbook.impl = self.impl.ActiveWorkbook
+
+        return workbook

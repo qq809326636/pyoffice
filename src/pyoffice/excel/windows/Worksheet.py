@@ -20,3 +20,21 @@ class Worksheet(_WinObject):
 
     def active(self):
         self.impl.Activate()
+
+    def delete(self):
+        self.impl.Delete()
+
+    def getUsedRange(self):
+        from .Range import Range
+
+        rg = Range()
+        rg.impl = self.impl.UsedRange
+
+        return rg
+
+    def getVisible(self):
+        return self.impl.Visible
+
+    def setVisible(self,
+                   visible: bool):
+        self.impl.Visible = visible

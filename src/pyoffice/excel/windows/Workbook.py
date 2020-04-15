@@ -265,3 +265,12 @@ class Workbook(_WinObject):
     def setAccuracyVersion(self,
                            accuracyVersion: int = AccuracyVersionEnum.LATEST):
         self.impl.AccuracyVersionEnum = accuracyVersion
+
+    def getActiveCell(self):
+        from .Cell import Cell
+
+        cell = Cell()
+        cell.impl = self.__app.impl.ActiveCell
+
+        return cell
+

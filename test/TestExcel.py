@@ -58,3 +58,14 @@ class TestExcel:
         print(ret.getIndex())
         ret = ws.copy(1)
         print(ret.getName())
+        ws.select()
+
+    def test_cell(self,
+                  wb):
+        cell = wb.getActiveCell()
+        print(cell)
+        print(cell.getAddress())
+        print(cell.getValue())
+        print(cell.getValue2())
+        print(cell.hasFormula())
+        print(cell.getFormula())

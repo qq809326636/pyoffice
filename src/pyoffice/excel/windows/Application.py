@@ -18,6 +18,10 @@ class Application(_WinObject):
         self.impl.Visible = True  # default: true
 
     def getPid(self):
+        """
+        Get excel application process id.
+        :return:
+        """
         import win32process
         threadId, processId = win32process.GetWindowThreadProcessId(self.impl.Hwnd)
         return processId
@@ -110,6 +114,10 @@ class Application(_WinObject):
         ProcessUtil.terminalProcessByPID(self.getPid())
 
     def getActiveWorkbook(self):
+        """
+        Get active workbook.
+        :return:
+        """
         from .Workbook import Workbook
 
         workbook = Workbook()

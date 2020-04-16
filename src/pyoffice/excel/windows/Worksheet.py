@@ -5,7 +5,8 @@ from ._WinObject import _WinObject
 
 __all__ = ['Worksheet',
            'WorksheetCopyMode',
-           'WorksheetPasteFormatEnum']
+           'WorksheetPasteFormatEnum',
+           'WorksheetType']
 
 
 class WorksheetCopyMode:
@@ -22,6 +23,13 @@ class WorksheetPasteFormatEnum:
     EM = 3  # Picture (Enhanced Metafile)
     BITMAP = 4
     MODO = 5  # Microsoft Office Drawing Object"
+
+
+class WorksheetType:
+    CHART = -4109  # Chart
+    DIALOGSHEET = -4116  # Dialog sheet
+    EXCEL4INTLMACROSHEET = 4  # Excel version 4 international macro sheet
+    EXCEL4MACROSHEET = 3  # Excel version 4 macro sheet
 
 
 class Worksheet(_WinObject):
@@ -124,3 +132,18 @@ class Worksheet(_WinObject):
             ret.append(pt)
 
         return ret
+
+    def next(self):
+        ws = Worksheet()
+
+        ws.impl = self.impl.Next
+        ws.parent = self.parent
+
+        return ws
+
+    def getType(self):
+        return self.impl.Type
+
+    def select(self,
+               replace=True):
+        self.impl.Select(replace)

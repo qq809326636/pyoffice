@@ -126,6 +126,25 @@ class Workbook(_WinObject):
              addToMru=None,
              local=None,
              corruptLoad=None):
+        """
+        Open Excel File
+        :param filepath:
+        :param updateLinks:
+        :param readOnly:
+        :param format:
+        :param password:
+        :param writeResPassword:
+        :param ignoreReadOnlyRecommended:
+        :param origin:
+        :param delimiter:
+        :param editable:
+        :param notify:
+        :param converter:
+        :param addToMru:
+        :param local:
+        :param corruptLoad:
+        :return:
+        """
         self.impl = self.parent.impl.Workbooks.Open(filepath,
                                                     updateLinks,
                                                     readOnly,
@@ -244,34 +263,82 @@ class Workbook(_WinObject):
         return retVal
 
     def getPath(self):
+        """
+        Get file path
+        :return:
+        """
         return self.impl.Path
 
     def isReadOnly(self):
+        """
+        Get workbook read only attribute.
+        :return:
+        """
         return self.impl.ReadOnly
 
     def getWritePassword(self):
+        """
+        Get workbook password.
+        :return:
+        """
         return self.impl.WritePassword
 
     def setWritePassword(self,
                          writePassword: str):
+        """
+        Set workbook password
+        :param writePassword:
+        :return:
+        """
         self.impl.WritePassword = writePassword
 
     def getAccuracyVersion(self):
+        """
+        Get accuracy version.
+        :return:
+        """
         return self.impl.AccuracyVersion
 
     def setAccuracyVersion(self,
                            accuracyVersion: int = AccuracyVersionEnum.LATEST):
+        """
+        Set accuracy version.
+        :param accuracyVersion:
+        :return:
+        """
         self.impl.AccuracyVersionEnum = accuracyVersion
 
     def getActiveCell(self):
+        """
+        Get active cell.
+        :return:
+        """
         from .Cell import Cell
+        from .Worksheet import Worksheet
+        from .Application import Application
 
         cell = Cell()
         cell.impl = self.parent.impl.ActiveCell
 
+        ws = Worksheet()
+        ws.impl = cell.impl.Parent
+        cell.parent = ws
+
+        wb = Workbook()
+        wb.impl = ws.impl.Parent
+        ws.parent = wb
+
+        app = Application()
+        app._Application_impl = wb.impl.Parent
+        wb._Workbook_parent = app
+
         return cell
 
     def getFirstSheet(self):
+        """
+        Get first sheet.
+        :return:
+        """
         from .Worksheet import Worksheet
 
         ws = Worksheet()
@@ -280,6 +347,10 @@ class Workbook(_WinObject):
         return ws
 
     def getLastSheet(self):
+        """
+        Get last sheet.
+        :return:
+        """
         from .Worksheet import Worksheet
 
         ws = Worksheet()

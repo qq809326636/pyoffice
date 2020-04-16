@@ -44,6 +44,10 @@ class Worksheet(_WinObject):
         """
         return self.impl.Name
 
+    def rename(self,
+               name: str):
+        self.impl.Name = name
+
     def active(self):
         self.impl.Activate()
 
@@ -112,26 +116,20 @@ class Worksheet(_WinObject):
     def getTableList(self):
         from .Table import Table
 
-        ret = list()
         for item in self.impl.ListObjects:
             t = Table()
             t.impl = item
             t.parent = self
-            ret.append(t)
-
-        return ret
+            yield t
 
     def getPivotTableList(self):
         from .PivotTable import PivotTable
 
-        ret = list()
         for item in self.impl.PivotTables():
             pt = PivotTable()
             pt.impl = item
             pt.parent = self
-            ret.append(pt)
-
-        return ret
+            yield pt
 
     def next(self):
         ws = Worksheet()
@@ -186,14 +184,28 @@ class Worksheet(_WinObject):
                     addressList: list):
         from .Cell import Cell
 
-        ret = list()
-
         for item in self.impl.Range(','.join(addressList)).Cells:
             cell = Cell()
 
             cell.impl = item
             cell.parent = self
 
-            ret.append(cell)
+            yield cell
 
-        return ret
+    def getRowByIndex(self,
+                      index: int):
+        from .Row import Row
+
+        row = Row()
+        row.impl = self.impl.Rows(index)
+        row.parent = self
+        return row
+
+    def getColumnByIndex(self,
+                         index: int):
+        from .Column import Column
+
+        column = Column()
+        column.impl = self.impl.Columns(index)
+        column.parent = self
+        return column

@@ -3,6 +3,7 @@ Cell
 """
 
 from ._WinObject import _WinObject
+from .Range import DirectionEnum
 
 __all__ = ['Cell']
 
@@ -29,3 +30,11 @@ class Cell(_WinObject):
 
     def getFormula(self):
         return self.impl.Formula
+
+    def end(self,
+            direction: int = DirectionEnum.DOWN):
+        from .Range import Range
+        rg = Range()
+        rg.impl = self.parent.impl.Range(self.impl, self.impl.End(direction))
+        rg.parent = self.parent
+        return rg

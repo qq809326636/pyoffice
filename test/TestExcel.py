@@ -60,6 +60,23 @@ class TestExcel:
         print(ret.getName())
         ws.select()
 
+        rg = ws.getRangeByAddress('A1:D5')
+        print(rg)
+        print(rg.getValue())
+        print(rg.getValue2())
+        print(rg.getAddress())
+
+    def test_range(self,
+                   wb):
+        ws = wb.getActiveWorkSheet()
+        rg = ws.getUsedRange()
+
+        for item in rg.getColumnList():
+            print(list(item.getValue()))
+
+        for item in rg.getRowList():
+            print(list(item.getValue()))
+
     def test_cell(self,
                   wb):
         cell = wb.getActiveCell()
@@ -69,3 +86,26 @@ class TestExcel:
         print(cell.getValue2())
         print(cell.hasFormula())
         print(cell.getFormula())
+        rg = cell.end()
+        print(f'rg address: {rg.getAddress()}')
+        print(f'rg count: {rg.getCellCount()}')
+
+    def test_row(self,
+                 wb):
+        ws = wb.getActiveWorkSheet()
+        row = ws.getRowByIndex(1)
+
+        # test hidden function
+        # print(row.isHidden())
+        # row.setHidden(True)
+        # print(row.isHidden())
+
+        print(row.getValue())
+
+    def test_column(self,
+                    wb):
+        ws = wb.getActiveWorkSheet()
+        column = ws.getColumnByIndex(1)
+        print(column.isHidden())
+        column.setHidden(True)
+        print(column.isHidden())

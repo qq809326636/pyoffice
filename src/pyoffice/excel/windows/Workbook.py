@@ -254,13 +254,11 @@ class Workbook(_WinObject):
         """
         from .Worksheet import Worksheet
 
-        retVal = list()
         for item in self.impl.Worksheets:
             ws = Worksheet()
             ws.impl = item
             ws.parent = self
-            retVal.append(ws)
-        return retVal
+            yield ws
 
     def getPath(self):
         """

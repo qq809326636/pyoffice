@@ -96,25 +96,19 @@ class Workbook(_WinObject):
     def __init__(self):
         _WinObject.__init__(self)
 
-        self.__app = None
-
         # init
         self.__initApplication()
 
     def __initApplication(self):
-        if not self.__app:
-            from .ExcelApplication import ExcelApplication
-            self.__app = ExcelApplication()
-
-    def setApplication(self,
-                       app):
-        self.__app = app
+        if not self.parent:
+            from .Application import Application
+            self.parent = Application()
 
     def getApplication(self):
-        return self.__app
+        return self.parent
 
     def display(self):
-        self.__app.impl.Visible = True
+        self.parent.impl.Visible = True
 
     def open(self,
              filepath: str,
@@ -132,21 +126,21 @@ class Workbook(_WinObject):
              addToMru=None,
              local=None,
              corruptLoad=None):
-        self.impl = self.__app.impl.Workbooks.Open(filepath,
-                                                   updateLinks,
-                                                   readOnly,
-                                                   format,
-                                                   password,
-                                                   writeResPassword,
-                                                   ignoreReadOnlyRecommended,
-                                                   origin,
-                                                   delimiter,
-                                                   editable,
-                                                   notify,
-                                                   converter,
-                                                   addToMru,
-                                                   local,
-                                                   corruptLoad)
+        self.impl = self.parent.impl.Workbooks.Open(filepath,
+                                                    updateLinks,
+                                                    readOnly,
+                                                    format,
+                                                    password,
+                                                    writeResPassword,
+                                                    ignoreReadOnlyRecommended,
+                                                    origin,
+                                                    delimiter,
+                                                    editable,
+                                                    notify,
+                                                    converter,
+                                                    addToMru,
+                                                    local,
+                                                    corruptLoad)
 
     def close(self):
         """
@@ -213,6 +207,7 @@ class Workbook(_WinObject):
 
         workSheet = Worksheet()
         workSheet.impl = self.impl.ActiveSheet
+        workSheet.parent = self
         return workSheet
 
     def getWorkSheetByName(self,
@@ -224,11 +219,12 @@ class Workbook(_WinObject):
         """
         from .Worksheet import Worksheet
 
-        workSheet = Worksheet()
+        ws = Worksheet()
         for item in self.impl.Worksheets:
             if sheetName == item.Name:
-                workSheet.impl = item
-                return workSheet
+                ws.impl = item
+                ws.parent = self
+                return ws
         else:
             raise WorkbookException(f'No worksheet with this name {sheetName} found.')
 
@@ -243,6 +239,7 @@ class Workbook(_WinObject):
         for item in self.impl.Worksheets:
             ws = Worksheet()
             ws.impl = item
+            ws.parent = self
             retVal.append(ws)
         return retVal
 
@@ -270,7 +267,22 @@ class Workbook(_WinObject):
         from .Cell import Cell
 
         cell = Cell()
-        cell.impl = self.__app.impl.ActiveCell
+        cell.impl = self.parent.impl.ActiveCell
 
         return cell
 
+    def getFirstSheet(self):
+        from .Worksheet import Worksheet
+
+        ws = Worksheet()
+        ws.impl = self.impl.Worksheets.Item(1)
+        ws.parent = self
+        return ws
+
+    def getLastSheet(self):
+        from .Worksheet import Worksheet
+
+        ws = Worksheet()
+        ws.impl = self.impl.Worksheets.Item(self.impl.Worksheets.Count)
+        ws.parent = self
+        return ws

@@ -3,7 +3,25 @@ WorkSheet
 """
 from ._WinObject import _WinObject
 
-__all__ = ['Worksheet']
+__all__ = ['Worksheet',
+           'WorksheetCopyMode',
+           'WorksheetPasteFormatEnum']
+
+
+class WorksheetCopyMode:
+    BEFORE = 1
+    AFTER = 2
+    FIRST = 3
+    LAST = 4
+
+
+class WorksheetPasteFormatEnum:
+    PNG = 0
+    JEPG = 1
+    GIF = 2
+    EM = 3  # Picture (Enhanced Metafile)
+    BITMAP = 4
+    MODO = 5  # Microsoft Office Drawing Object"
 
 
 class Worksheet(_WinObject):
@@ -21,6 +39,46 @@ class Worksheet(_WinObject):
     def active(self):
         self.impl.Activate()
 
+    def copy(self,
+             mode=WorksheetCopyMode.AFTER):
+        ws = Worksheet()
+        if WorksheetCopyMode.FIRST == mode:
+            self.impl.Copy(self.parent.getFirstSheet().impl)
+            ws.impl = self.parent.impl.Worksheets.Item(1)
+        elif WorksheetCopyMode.LAST == mode:
+            self.impl.Copy(None, self.parent.getLastSheet().impl)
+            ws.impl = self.parent.impl.Worksheets.Item(self.parent.Worksheets.Count)
+        elif WorksheetCopyMode.BEFORE == mode:
+            self.impl.Copy(self.impl)
+            ws.impl = self.parent.impl.Worksheets.Item(self.getIndex() - 1)
+        else:
+            self.impl.Copy(None, self.impl)
+            ws.impl = self.parent.impl.Worksheets.Item(self.getIndex() + 1)
+        ws.parent = self.parent
+        return ws
+
+    def paste(self,
+              destination,
+              link=True):
+        self.impl.Paste(destination,
+                        link)
+
+    def pastSpecial(self,
+                    format=WorksheetPasteFormatEnum.PNG,
+                    link=True,
+                    displayAsIcon=False,
+                    iconFileName=None,
+                    iconIndex=None,
+                    iconLabel=None,
+                    noHtmlFormatting=True):
+        self.impl.PasteSpecial(format,
+                               link,
+                               displayAsIcon,
+                               iconFileName,
+                               iconIndex,
+                               iconLabel,
+                               noHtmlFormatting)
+
     def delete(self):
         self.impl.Delete()
 
@@ -29,6 +87,7 @@ class Worksheet(_WinObject):
 
         rg = Range()
         rg.impl = self.impl.UsedRange
+        rg.parent = self
 
         return rg
 
@@ -38,3 +97,30 @@ class Worksheet(_WinObject):
     def setVisible(self,
                    visible: bool):
         self.impl.Visible = visible
+
+    def getIndex(self):
+        return self.impl.Index
+
+    def getTableList(self):
+        from .Table import Table
+
+        ret = list()
+        for item in self.impl.ListObjects:
+            t = Table()
+            t.impl = item
+            t.parent = self
+            ret.append(t)
+
+        return ret
+
+    def getPivotTableList(self):
+        from .PivotTable import PivotTable
+
+        ret = list()
+        for item in self.impl.PivotTables():
+            pt = PivotTable()
+            pt.impl = item
+            pt.parent = self
+            ret.append(pt)
+
+        return ret

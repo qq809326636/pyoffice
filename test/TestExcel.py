@@ -7,9 +7,19 @@ class TestExcel:
     def filepath(self):
         return r'F:\work\matrix_robot_components\test\excel单元格格式_数字.xlsx'
 
+    @pytest.fixture(scope='module')
+    def wb(self,
+           filepath):
+        from pyoffice.excel import Workbook
+        wb = Workbook()
+        wb.display()
+        wb.open(filepath)
+
+        return wb
+
     def test_app(self):
-        from pyoffice.excel import ExcelApplication
-        app = ExcelApplication()
+        from pyoffice.excel import Application
+        app = Application()
         print(app.getPid())
 
     def test_open(self,
@@ -38,3 +48,13 @@ class TestExcel:
         # app = wb.getApplication()
         # app.quit()
         # app.terminate()
+
+    def test_worksheet(self,
+                       wb):
+        ws = wb.getActiveWorkSheet()
+        ret = wb.getFirstSheet()
+        print(ret.getIndex())
+        ret = wb.getLastSheet()
+        print(ret.getIndex())
+        ret = ws.copy(1)
+        print(ret.getName())

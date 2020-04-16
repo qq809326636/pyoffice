@@ -4,21 +4,22 @@ Excel Application
 
 from ._WinObject import _WinObject
 
-__all__ = ['ExcelApplication']
+__all__ = ['Application']
 
 
-class ExcelApplication(_WinObject):
+class Application(_WinObject):
 
     def __init__(self):
         _WinObject.__init__(self)
 
         import win32com.client
 
-        self._impl = win32com.client.Dispatch('Excel.Application')
+        self.impl = win32com.client.Dispatch('Excel.Application')
+        self.impl.Visible = True  # default: true
 
     def getPid(self):
         import win32process
-        threadId, processId = win32process.GetWindowThreadProcessId(self._impl.Hwnd)
+        threadId, processId = win32process.GetWindowThreadProcessId(self.impl.Hwnd)
         return processId
 
     def getVisible(self):
@@ -26,7 +27,7 @@ class ExcelApplication(_WinObject):
         Get the excel application visible.
         :return:
         """
-        return self._impl.Visible
+        return self.impl.Visible
 
     def setVisible(self,
                    visible: bool):
@@ -35,7 +36,7 @@ class ExcelApplication(_WinObject):
         :param visible:
         :return:
         """
-        self._impl.Visible = visible
+        self.impl.Visible = visible
 
     def open(self,
              filepath: str,
@@ -75,7 +76,7 @@ class ExcelApplication(_WinObject):
         from .Workbook import Workbook
 
         workbook = Workbook()
-        workbook.setApplication(self)
+        workbook.parent = self
         workbook.open(filepath,
                       updateLinks,
                       readOnly,
@@ -98,7 +99,7 @@ class ExcelApplication(_WinObject):
         Quit the application.
         :return:
         """
-        self._impl.Quit()
+        self.impl.Quit()
 
     def terminate(self):
         """

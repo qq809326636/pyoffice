@@ -22,6 +22,10 @@ class Cell(_WinObject):
     def getValue2(self):
         return self.impl.Value2
 
+    def setValue(self,
+                 value):
+        self.impl.Value = value
+
     def getText(self):
         return self.impl.Text
 

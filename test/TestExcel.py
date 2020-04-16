@@ -66,16 +66,34 @@ class TestExcel:
         print(rg.getValue2())
         print(rg.getAddress())
 
+        ws.scrollArea('H5:J7')
+
+        ws = wb.getWorkSheetByName('Sheet1')
+        ws.active()
+        ws.getUsedRange().autoFit()
+
     def test_range(self,
                    wb):
         ws = wb.getActiveWorkSheet()
         rg = ws.getUsedRange()
 
-        for item in rg.getColumnList():
-            print(list(item.getValue()))
+        print(rg.getValue())
 
-        for item in rg.getRowList():
-            print(list(item.getValue()))
+        # for item in rg.getColumnList():
+        #     print(list(item.getValue()))
+        #
+        # for item in rg.getRowList():
+        #     print(list(item.getValue()))
+
+        ws = wb.getWorkSheetByName('Sheet6')
+        ws.active()
+        ws.getCellByAddress('A1').setValue('1')
+        ws.getCellByAddress('A2').setValue('2')
+        rg = ws.getRangeByAddress('A1:A2')
+        print(rg.getAddress())
+        dstRg = ws.getRangeByAddress('A1:A20')
+        print(dstRg.getAddress())
+        print(rg.auoFill(dstRg))
 
     def test_cell(self,
                   wb):

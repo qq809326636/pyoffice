@@ -23,3 +23,6 @@ class Row(_WinObject):
     def getValue(self):
         for item in self.impl.Value[0]:
             yield item
+
+    def autoFit(self):
+        self.impl.AutoFit()

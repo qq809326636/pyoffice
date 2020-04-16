@@ -25,3 +25,7 @@ class Column(_WinObject):
     def getValue(self):
         for row in self.impl.Value:
             yield row[0]
+
+    def autoFit(self):
+        self.impl.AutoFit()
+

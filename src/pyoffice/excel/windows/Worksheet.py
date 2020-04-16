@@ -180,6 +180,16 @@ class Worksheet(_WinObject):
 
         return rg
 
+    def getCellByAddress(self,
+                         address: str):
+        from .Cell import Cell
+
+        cell = Cell()
+        cell.impl = self.impl.Range(address)
+        cell.parent = self
+
+        return cell
+
     def getCellList(self,
                     addressList: list):
         from .Cell import Cell
@@ -209,3 +219,7 @@ class Worksheet(_WinObject):
         column.impl = self.impl.Columns(index)
         column.parent = self
         return column
+
+    def scrollArea(self,
+                   area: str):
+        self.impl.ScrollArea = area

@@ -147,3 +147,53 @@ class Worksheet(_WinObject):
     def select(self,
                replace=True):
         self.impl.Select(replace)
+
+    def getRangeByAddress(self,
+                          address: str):
+        from .Range import Range
+
+        rg = Range()
+        rg.impl = self.impl.Range(address)
+        rg.parent = self
+
+        return rg
+
+    def getRangeByCell(self,
+                       cell1,
+                       cell2):
+        from .Range import Range
+
+        rg = Range()
+        rg.impl = self.impl.Range(cell1.impl,
+                                  cell2.impl)
+        rg.parent = self
+
+        return rg
+
+    def getRangeByColRow(self,
+                         col: int,
+                         row: int):
+        from .Range import Range
+
+        rg = Range()
+        rg.impl = self.impl.Range(row,
+                                  col)
+        rg.parent = self
+
+        return rg
+
+    def getCellList(self,
+                    addressList: list):
+        from .Cell import Cell
+
+        ret = list()
+
+        for item in self.impl.Range(','.join(addressList)).Cells:
+            cell = Cell()
+
+            cell.impl = item
+            cell.parent = self
+
+            ret.append(cell)
+
+        return ret

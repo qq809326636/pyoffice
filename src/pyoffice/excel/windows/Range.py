@@ -16,6 +16,11 @@ class DirectionEnum:
     UP = -4162
 
 
+class DeleteDirectionEnum:
+    SHIFTTOLEFT = -4159  # Cells are shifted to the left.
+    SHIFTUP = -4162  # Cells are shifted up.
+
+
 class FillTypeEnum:
     FILLCOPY = 1  # Copy the values and formats from the source range to the target range, repeating if necessary.
     FILLDAYS = 5  # Extend the names of the days of the week in the source range into the target range. Formats are copied from the source range to the target range, repeating if necessary.
@@ -107,7 +112,50 @@ class Range(_WinObject):
             src.impl.AutoFill(self.impl,
                               fillType)
         elif dst:
-            return dst.impl.AutoFill(self.impl,
-                                     fillType)
+            return self.impl.AutoFill(dst.impl,
+                                      fillType)
         else:
             raise RuntimeError('Pass at least one of the src and dst parameters.')
+
+    def clear(self):
+        self.impl.Clear()
+
+    def clearComments(self):
+        self.impl.ClearComments()
+
+    def clearContents(self):
+        self.impl.ClearContents()
+
+    def clearFormats(self):
+        self.impl.ClearFormats()
+
+    def clearHyperlinks(self):
+        self.impl.ClearHyperlinks()
+
+    def clearNotes(self):
+        self.impl.ClearNotes()
+
+    def copy(self,
+             dst):
+        if dst:
+            self.impl.Copy(dst)
+        else:
+            self.impl.Copy()
+
+    def cut(self,
+            dst):
+        if dst:
+            self.impl.Cut(dst)
+        else:
+            self.impl.Cut()
+
+    def delete(self,
+               direction: int = DeleteDirectionEnum.SHIFTUP):
+        self.impl.Delete(direction)
+
+    def merge(self,
+              across: bool = False):
+        self.impl.Merge(across)
+
+    def show(self):
+        self.impl.Show()

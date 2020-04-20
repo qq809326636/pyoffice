@@ -1,4 +1,5 @@
 import pytest
+import time
 
 
 class TestExcel:
@@ -93,7 +94,8 @@ class TestExcel:
         print(rg.getAddress())
         dstRg = ws.getRangeByAddress('A1:A20')
         print(dstRg.getAddress())
-        print(rg.auoFill(dstRg))
+        print(rg.auoFill(dst=dstRg))
+        rg.show()
 
     def test_cell(self,
                   wb):
@@ -107,6 +109,11 @@ class TestExcel:
         rg = cell.end()
         print(f'rg address: {rg.getAddress()}')
         print(f'rg count: {rg.getCellCount()}')
+
+        ws = wb.getActiveWorkSheet()
+        cell = ws.getCellByAddress('J20')
+        cell.active()
+        cell.show()
 
     def test_row(self,
                  wb):

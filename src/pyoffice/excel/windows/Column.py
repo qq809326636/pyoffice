@@ -12,6 +12,9 @@ class Column(_WinObject):
     def __init__(self):
         _WinObject.__init__(self)
 
+    def active(self):
+        self.impl.Activate()
+
     def getAddress(self):
         return self.impl.Address.replace('$', '')
 
@@ -29,3 +32,6 @@ class Column(_WinObject):
     def autoFit(self):
         self.impl.AutoFit()
 
+
+    def show(self):
+        self.impl.Show()

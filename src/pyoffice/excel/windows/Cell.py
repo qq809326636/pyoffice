@@ -13,6 +13,9 @@ class Cell(_WinObject):
     def __init__(self):
         _WinObject.__init__(self)
 
+    def active(self):
+        self.impl.Activate()
+
     def getAddress(self):
         return self.impl.Address
 
@@ -42,3 +45,9 @@ class Cell(_WinObject):
         rg.impl = self.parent.impl.Range(self.impl, self.impl.End(direction))
         rg.parent = self.parent
         return rg
+
+    def show(self):
+        self.impl.Show()
+
+    def unmerge(self):
+        self.impl.UnMerge()

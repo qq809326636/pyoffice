@@ -14,7 +14,7 @@ class Application(_WinObject):
 
         import win32com.client
 
-        self.impl = win32com.client.Dispatch('Excel.Application')
+        self.impl = win32com.client.DispatchEx('Excel.Application')
         self.impl.Visible = True  # default: true
 
     def getPid(self):

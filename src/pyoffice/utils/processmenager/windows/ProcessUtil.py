@@ -1,4 +1,6 @@
 import platform
+import sys
+import locale
 
 __all__ = ['ProcessUtil']
 
@@ -6,7 +8,7 @@ __all__ = ['ProcessUtil']
 class ProcessUtil:
 
     @staticmethod
-    def getProcessesInfo():
+    def getProcessInfoList():
         if platform.system().lower() == 'windows':
             import ctypes
 
@@ -71,6 +73,23 @@ class ProcessUtil:
             raise RuntimeError(f'This "{platform.system()}" platform does not supported.')
 
     @staticmethod
+    def getHandleByPID(pid: int):
+        if platform.system().lower() == 'windows':
+            import win32process
+            import win32api
+            import win32con
+            import win32com
+            import win32com.client
+            import win32trace
+
+            return win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS,
+                                        False,
+                                        pid)
+
+        else:
+            raise RuntimeError(f'This "{platform.system()}" platform does not supported.')
+
+    @staticmethod
     def terminalProcessByPID(pid: int):
         if platform.system().lower() == 'windows':
             import win32process
@@ -113,3 +132,9 @@ class ProcessUtil:
 
         else:
             raise RuntimeError(f'This "{platform.system()}" platform does not supported.')
+
+    @staticmethod
+    def getProcessByExeName(exeName: str):
+        for proc in ProcessUtil.getProcessInfoList():
+            if proc.szExeFile.decode(locale.getpreferredencoding()).lower() == exeName.lower():
+                yield proc

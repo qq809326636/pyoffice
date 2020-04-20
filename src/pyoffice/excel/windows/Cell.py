@@ -51,3 +51,21 @@ class Cell(_WinObject):
 
     def unmerge(self):
         self.impl.UnMerge()
+
+    def paste(self,
+              format: bool = False,
+              link: bool = True,
+              displayAsIcon: bool = True,
+              iconFileName=None,
+              iconIndex=None,
+              iconLabel=None,
+              noHtmlFormatting: bool = True):
+        self.impl.PasteSpecial(format,
+                               link,
+                               displayAsIcon,
+                               iconFileName,
+                               iconIndex,
+                               iconLabel,
+                               noHtmlFormatting)
+
+

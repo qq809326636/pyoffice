@@ -223,3 +223,41 @@ class Worksheet(_WinObject):
     def scrollArea(self,
                    area: str):
         self.impl.ScrollArea = area
+
+    def protect(self,
+                password: str = '',
+                drawingObjects: bool = True,
+                contents: bool = True,
+                scenarios: bool = True,
+                useInterfaceOnly: bool = True,
+                allowFormattingCells: bool = False,
+                allowFormattingColumns: bool = False,
+                allowFormattingRows: bool = False,
+                allowInsertingColumns: bool = False,
+                allowInsertingRows: bool = False,
+                allowInsertingHyperlinks: bool = False,
+                allowDeletingColumns: bool = False,
+                allowDeletingRows: bool = False,
+                allowSorting: bool = False,
+                allowFiltering: bool = False,
+                allowUsingPivotTables: bool = False):
+        self.impl.Protect(password,
+                          drawingObjects,
+                          contents,
+                          scenarios,
+                          useInterfaceOnly,
+                          allowFormattingCells,
+                          allowFormattingColumns,
+                          allowFormattingRows,
+                          allowInsertingColumns,
+                          allowInsertingRows,
+                          allowInsertingHyperlinks,
+                          allowDeletingColumns,
+                          allowDeletingRows,
+                          allowSorting,
+                          allowFiltering,
+                          allowUsingPivotTables)
+
+    def upProtect(self,
+                  password: str):
+        self.impl.Unprotect(password)

@@ -52,26 +52,28 @@ class TestExcel:
 
     def test_worksheet(self,
                        wb):
-        ws = wb.getActiveWorkSheet()
-        ret = wb.getFirstSheet()
-        print(ret.getIndex())
-        ret = wb.getLastSheet()
-        print(ret.getIndex())
-        ret = ws.copy(1)
-        print(ret.getName())
-        ws.select()
-
-        rg = ws.getRangeByAddress('A1:D5')
-        print(rg)
-        print(rg.getValue())
-        print(rg.getValue2())
-        print(rg.getAddress())
-
-        ws.scrollArea('H5:J7')
+        # ws = wb.getActiveWorkSheet()
+        # ret = wb.getFirstSheet()
+        # print(ret.getIndex())
+        # ret = wb.getLastSheet()
+        # print(ret.getIndex())
+        # ret = ws.copy(1)
+        # print(ret.getName())
+        # ws.select()
+        #
+        # rg = ws.getRangeByAddress('A1:D5')
+        # print(rg)
+        # print(rg.getValue())
+        # print(rg.getValue2())
+        # print(rg.getAddress())
+        #
+        # ws.scrollArea('H5:J7')
 
         ws = wb.getWorkSheetByName('Sheet1')
         ws.active()
-        ws.getUsedRange().autoFit()
+        # ws.getUsedRange().autoFit()
+
+        ws.protect('123456')
 
     def test_range(self,
                    wb):
@@ -113,7 +115,9 @@ class TestExcel:
         ws = wb.getActiveWorkSheet()
         cell = ws.getCellByAddress('J20')
         cell.active()
+        cell.setValue(123456)
         cell.show()
+
 
     def test_row(self,
                  wb):

@@ -138,3 +138,25 @@ class ProcessUtil:
         for proc in ProcessUtil.getProcessInfoList():
             if proc.szExeFile.decode(locale.getpreferredencoding()).lower() == exeName.lower():
                 yield proc
+
+    @staticmethod
+    def getClassForProgID(pid: (int, str)):
+        import win32com.client.gencache
+
+        return win32com.client.gencache.GetClassForProgID(pid)
+
+    @staticmethod
+    def getModuleForProgID(pid: (int, str)):
+        import win32com.client.gencache
+
+        return win32com.client.gencache.GetClassForProgID(pid)
+
+    @staticmethod
+    def getActiveObject(name: str):
+        import win32com.client
+        return win32com.client.GetActiveObject(Class=name)
+
+    @staticmethod
+    def getObject(name:str):
+        pass
+

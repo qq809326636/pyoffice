@@ -132,12 +132,13 @@ class Worksheet(_WinObject):
             yield pt
 
     def next(self):
-        ws = Worksheet()
+        if self.impl.Next:
+            ws = Worksheet()
 
-        ws.impl = self.impl.Next
-        ws.parent = self.parent
+            ws.impl = self.impl.Next
+            ws.parent = self.parent
 
-        return ws
+            return ws
 
     def getType(self):
         return self.impl.Type

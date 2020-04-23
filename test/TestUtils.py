@@ -14,8 +14,23 @@ class TestUtil:
 
         for item in utils.ProcessUtil.getProcessByExeName('excel.exe'):
             print(item.th32ProcessID)
+            # utils.ProcessUtil.terminalProcessByPID(item.th32ProcessID)
 
     def test_attach(self):
-        pid = 5560
-        handle = utils.ProcessUtil.getHandleByPID(pid)
-        print(type(handle))
+        # pid = 10992
+        # handle = utils.ProcessUtil.getHandleByPID(pid)
+        # print(handle)
+        # print(type(handle))
+        #
+        # obj = utils.ProcessUtil.getModuleForProgID('Word.Application')
+        # print(obj)
+
+        import win32com.client
+        obj = win32com.client.GetActiveObject(Class='Excel.Application')
+
+        print(obj)
+        for wb in obj.Workbooks:
+            print(wb.FullName)
+            print(wb.Name)
+            print(wb.Path)
+        # obj.Quit()

@@ -2,6 +2,7 @@
 Excel Application
 """
 
+import logging
 from ._WinObject import _WinObject
 
 __all__ = ['Application']
@@ -13,8 +14,11 @@ class Application(_WinObject):
         _WinObject.__init__(self)
 
         import win32com.client
-
-        self.impl = win32com.client.DispatchEx('Excel.Application')
+        try:
+            self.impl = win32com.client.GetActiveObject(Class='Excel.Application')
+        except Exception as err:
+            logging.warning(err)
+            self.impl = win32com.client.DispatchEx('Excel.Application')
         self.impl.Visible = True  # default: true
 
     def getPid(self):

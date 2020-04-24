@@ -26,11 +26,23 @@ class TestUtil:
         # print(obj)
 
         import win32com.client
-        obj = win32com.client.GetActiveObject(Class='Excel.Application')
+        import win32process
 
-        print(obj)
+        obj = win32com.client.GetActiveObject(Class='Excel.Application')
+        # obj = win32com.client.GetObject(Pathname=r'F:\rpaws\excel单元格格式_数字.xlsx',
+        #                                 Class='Excel.Application')
+        # print(obj)
+        # print(obj.FullName)
+        # print(obj.Name)
+
         for wb in obj.Workbooks:
             print(wb.FullName)
             print(wb.Name)
             print(wb.Path)
+            obj.Application.Visible = True
+            threadId, processId = win32process.GetWindowThreadProcessId(obj.Hwnd)
+            print(processId)
+            print(threadId)
+            print()
+
         # obj.Quit()

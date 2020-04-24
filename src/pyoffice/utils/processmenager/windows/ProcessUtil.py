@@ -156,7 +156,4 @@ class ProcessUtil:
         import win32com.client
         return win32com.client.GetActiveObject(Class=name)
 
-    @staticmethod
-    def getObject(name:str):
-        pass
 

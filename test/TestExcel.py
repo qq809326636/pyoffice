@@ -118,7 +118,6 @@ class TestExcel:
         cell.setValue(123456)
         cell.show()
 
-
     def test_row(self,
                  wb):
         ws = wb.getActiveWorkSheet()
@@ -138,3 +137,11 @@ class TestExcel:
         print(column.isHidden())
         column.setHidden(True)
         print(column.isHidden())
+
+    def test_xlwings(self):
+        import xlwings as xw
+
+        print(len(xw.apps))
+        for item in xw.apps:
+            print('=' * 80)
+            print(item)

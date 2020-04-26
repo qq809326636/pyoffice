@@ -140,13 +140,13 @@ class ProcessUtil:
                 yield proc
 
     @staticmethod
-    def getClassForProgID(pid: (int, str)):
+    def getClassForProgID(pid: int):
         import win32com.client.gencache
 
         return win32com.client.gencache.GetClassForProgID(pid)
 
     @staticmethod
-    def getModuleForProgID(pid: (int, str)):
+    def getModuleForProgID(pid: int):
         import win32com.client.gencache
 
         return win32com.client.gencache.GetClassForProgID(pid)
@@ -155,5 +155,3 @@ class ProcessUtil:
     def getActiveObject(name: str):
         import win32com.client
         return win32com.client.GetActiveObject(Class=name)
-
-

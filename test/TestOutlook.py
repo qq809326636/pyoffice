@@ -22,8 +22,21 @@ class TestOutlook:
 
         print(app.getAccountCount())
 
-        for item in app.getAccountList():
-            print(item.getClass())
-            print(item.getDisplayName())
-            print(item.getCurrentUser())
+        for acc in app.getAccountList():
+            print(acc.getClass())
+            print(acc.getDisplayName())
+            print(acc.getCurrentUser())
+            print(acc.getFolderCount())
+
+            for fo in acc.getFolderList():
+                print(fo.getFolderPath())
+                print(fo.getName())
+                print(fo.getFolderCount())
+
+                for msg in fo.getMessageList():
+                    print(f'{msg.getEntryID()} --> {msg.getSubject()}')
+
+            print('=' * 120)
+
+
 

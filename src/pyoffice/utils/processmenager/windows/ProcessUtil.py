@@ -1,6 +1,5 @@
-import platform
-import sys
 import locale
+import platform
 
 __all__ = ['ProcessUtil']
 
@@ -80,7 +79,6 @@ class ProcessUtil:
             import win32con
             import win32com
             import win32com.client
-            import win32trace
 
             return win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS,
                                         False,
@@ -97,7 +95,6 @@ class ProcessUtil:
             import win32con
             import win32com
             import win32com.client
-            import win32trace
 
             handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS,
                                           False,
@@ -116,7 +113,6 @@ class ProcessUtil:
             import win32con
             import win32com
             import win32com.client
-            import win32trace
             handle = win32api.OpenProcess(win32con.PROCESS_ALL_ACCESS,
                                           False,
                                           pid)

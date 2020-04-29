@@ -32,4 +32,3 @@ class Row(_WinObject):
 
     def show(self):
         self.impl.Show()
-

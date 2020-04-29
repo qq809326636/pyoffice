@@ -1,5 +1,5 @@
 from ._WinObject import *
-from .constant import MessageCloseType
+from .constant import *
 
 __all__ = ['Message']
 
@@ -9,11 +9,33 @@ class Message(_WinObject):
         _WinObject.__init__(self)
 
     # For fields
+    def getAttachmentCount(self):
+        return self.impl.Attachments.Count
+
+    def getAttachmentList(self):
+        from .Attachment import Attachment
+
+        for attachment in self.impl.Attachments:
+            atta = Attachment()
+            atta.impl = attachment
+            yield atta
+
     def getBCC(self):
         return self.impl.BCC
 
+    def setBCC(self,
+               bcc):
+        self.impl.BCC = bcc
+
     def getCC(self):
         return self.impl.CC
+
+    def setCC(self,
+              cc):
+        self.impl.CC = cc
+
+    def getCreationTime(self):
+        return self.impl.CreationTime
 
     def getEntryID(self):
         return self.impl.EntryID
@@ -26,7 +48,12 @@ class Message(_WinObject):
 
     def setSender(self,
                   sender):
-        self.impl._oleobj_.Invoke(*(64209, 0, 8, 0, sender))
+        from .Account import Account
+
+        if isinstance(sender, Account):
+            self.impl._oleobj_.Invoke(*(64209, 0, 8, 0, sender.impl))
+        else:
+            raise RuntimeError('sender must be an instance of type Account.')
 
     # For methods
     def close(self,
@@ -63,6 +90,17 @@ class Message(_WinObject):
         message = Message()
         message.impl = self.impl.ReplyAll()
         return message
+
+    def save(self):
+        self.impl.Save()
+
+    def saveAs(self,
+               path: str,
+               saveType: int = MessageSaveType.MSGUNICODE):
+        self.impl.SaveAs(path, saveType)
+
+    def send(self):
+        self.impl.Send()
 
     # For dependencies
     def getFolder(self):

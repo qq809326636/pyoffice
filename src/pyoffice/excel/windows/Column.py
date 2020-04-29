@@ -32,6 +32,5 @@ class Column(_WinObject):
     def autoFit(self):
         self.impl.AutoFit()
 
-
     def show(self):
         self.impl.Show()

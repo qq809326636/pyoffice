@@ -4,7 +4,8 @@ constant
 
 __all__ = ['MessageType',
            'FolderType',
-           'MessageCloseType']
+           'MessageCloseType',
+           'MessageSaveType']
 
 
 class MessageType:
@@ -45,3 +46,17 @@ class MessageCloseType:
     DISCARD = 1  # Changes to the document are discarded.
     PROMPTFORSAVE = 2  # User is prompted to save documents.
     SAVE = 0  # Documents are saved.
+
+
+class MessageSaveType:
+    DOC = 4  # Microsoft Office Word format (.doc)
+    HTML = 5  # HTML format (.html)
+    ICAL = 8  # iCal format (.ics)
+    MHTML = 10  # MIME HTML format (.mht)
+    MSG = 3  # Outlook message format (.msg)
+    MSGUNICODE = 9  # Outlook Unicode message format (.msg)
+    RTF = 1  # Rich Text format (.rtf)
+    TEMPLATE = 2  # Microsoft Outlook template (.oft)
+    TXT = 0  # Text format (.txt)
+    VCAL = 7  # VCal format (.vcs)
+    VCARD = 6  # VCard format (.vcf)

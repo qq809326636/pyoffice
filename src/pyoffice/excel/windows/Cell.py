@@ -2,8 +2,8 @@
 Cell
 """
 
-from ._WinObject import _WinObject
 from .Range import DirectionEnum
+from ._WinObject import _WinObject
 
 __all__ = ['Cell']
 
@@ -67,5 +67,3 @@ class Cell(_WinObject):
                                iconIndex,
                                iconLabel,
                                noHtmlFormatting)
-
-

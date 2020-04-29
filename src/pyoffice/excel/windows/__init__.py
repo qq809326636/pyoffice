@@ -1,6 +1,6 @@
+from .Application import *
 from .Cell import *
 from .Column import *
-from .Application import *
 from .PivotTable import *
 from .Range import *
 from .Row import *

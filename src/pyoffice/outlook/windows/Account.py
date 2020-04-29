@@ -1,4 +1,5 @@
 from ._WinObject import *
+from .constant import FolderType
 
 __all__ = ['Account']
 
@@ -58,3 +59,36 @@ class Account(_WinObject):
         folder = Folder()
         folder.impl = self._folder.Folders(name)
         return folder
+
+    def createMessage(self):
+        from .Message import Message
+        from .constant import MessageType
+
+        msg = Message()
+        msg.impl = self._session.Application.CreateItem(MessageType.MAILITEM)
+
+        return msg
+
+    def getDefaultFolder(self):
+        from .Folder import Folder
+
+        folder = Folder()
+        folder.impl = self._folder
+        return folder
+
+    def createFolder(self,
+                     folderName: str,
+                     folderType: int = FolderType.FOLDER_INBOX):
+        from .Folder import Folder
+        from .FolderUtil import FolderUtil
+
+        rootFolder = Folder()
+        rootFolder.impl = self._folder
+        if not FolderUtil.hasFolderExists(rootFolder,
+                                          folderName):
+            folder = Folder()
+            folder.impl = self._folder.Folders.Add(folderName,
+                                                   folderType)
+            return folder
+        else:
+            raise RuntimeError(f'The "{folderName}" folder already exists.')

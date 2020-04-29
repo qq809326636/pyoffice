@@ -26,6 +26,9 @@ class Application(_WinObject):
     def getClass(self):
         return self.impl.Class
 
+    def getDefaultProfileName(self):
+        return self.impl.DefaultProfileName
+
     def getExplorerCount(self):
         return self.impl.Explorers.Count
 
@@ -71,3 +74,9 @@ class Application(_WinObject):
             account = Account()
             account.impl = acc
             yield account
+
+    def getDefaultAccount(self):
+        from .Account import Account
+        acc = Account()
+        acc.impl = self._session.Accounts.Item(1)
+        return acc

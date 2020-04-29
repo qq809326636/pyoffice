@@ -21,22 +21,45 @@ class TestOutlook:
         # app.activeWindow()
 
         print(app.getAccountCount())
+        print(app.getDefaultProfileName())
 
-        for acc in app.getAccountList():
-            print(acc.getClass())
-            print(acc.getDisplayName())
-            print(acc.getCurrentUser())
-            print(acc.getFolderCount())
+        app.getDefaultAccount().getDefaultFolder().display()
 
-            for fo in acc.getFolderList():
-                print(fo.getFolderPath())
-                print(fo.getName())
-                print(fo.getFolderCount())
+        # for acc in app.getAccountList():
+        #     print(acc.getClass())
+        #     print(acc.getDisplayName())
+        #     print(acc.getCurrentUser())
+        #     print(acc.getFolderCount())
+        #
+        #     for fo in acc.getFolderList():
+        #         print(fo.getFolderPath())
+        #         print(fo.getName())
+        #         print(fo.getFolderCount())
+        #         # fo.display()
+        #
+        #         for msg in fo.getMessageList():
+        #             print(f'{msg.getEntryID()} --> {msg.getSubject()}')
 
-                for msg in fo.getMessageList():
-                    print(f'{msg.getEntryID()} --> {msg.getSubject()}')
+        # print('=' * 120)
 
-            print('=' * 120)
+    def test_createMessage(self,
+                           app):
+        acc = app.getDefaultAccount()
+        msg = acc.createMessage()
+        print(msg.getSender())
+        print(msg.getFolder().getFolderPath())
 
+    def test_createFolder(self,
+                          app):
+        acc = app.getDefaultAccount()
+        # folder = acc.createFolder('Test2')
+        # print(folder.getFolderPath())
+        # folder = acc.getFolderByName('Test2')
+        # folder.display()
 
+    def test_folder(self,
+                    app):
+        acc = app.getDefaultAccount()
+        for folder in acc.getDefaultFolder().getFolderList():
+            print(folder.getName())
 

@@ -30,6 +30,10 @@ class Folder(_WinObject):
             folder.impl = item
             yield folder
 
+    def getFolderNameList(self):
+        for folder in self.getFolderList():
+            yield folder.getName()
+
     def getFolderByName(self, name: str):
         folder = Folder()
         folder.impl = self.impl.Folders(name)

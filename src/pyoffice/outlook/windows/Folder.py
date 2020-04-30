@@ -72,5 +72,9 @@ class Folder(_WinObject):
     def moveTo(self, folder):
         self.impl.MoveTo(folder.impl)
 
+    def restrict(self,
+                 filter):
+        pass
+
     def setCustomIcon(self, picture):
         self.impl.SetCustomIcon(picture)

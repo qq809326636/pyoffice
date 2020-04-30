@@ -8,6 +8,11 @@ class TestOutlook:
     def app(self):
         return Application()
 
+    @pytest.fixture(scope='module')
+    def filter(self):
+        filter = 'urn:schemas:mailheader:subject = \'it@1data.info\''
+        return filter
+
     def test_app(self,
                  app):
         print(app.getClass())
@@ -63,3 +68,33 @@ class TestOutlook:
         acc = app.getDefaultAccount()
         for folder in acc.getDefaultFolder().getFolderList():
             print(folder.getName())
+
+    def test_search(self,
+                    app):
+        folder = app.getDefaultAccount().getDefaultFolder()
+
+        # scope = '\'\\\\herb.li@1data.info\\收件箱\''
+        scope = '\'收件箱\''
+        filter = 'urn:schemas:mailheader:subject:body = \'it@1data.info\''
+        tag = ''
+        search = app.impl.AdvancedSearch(Scope=scope,
+                                         Filter=filter)
+
+        print(f'scope is {search.Scope}')
+        print(f'filter is {search.Filter}')
+        print(f'tag is {search.Tag}')
+
+        results = search.Results
+        print(results.Count)
+
+    def test_folder_find(self,
+                         app,
+                         filter):
+        app.getDefaultAccount()
+        acc = app.getDefaultAccount()
+        folder = acc.getFolderByName('收件箱')
+        print(folder.getFolderPath())
+        print(f'filter is {filter}')
+
+        for item in folder.impl.Restrict(filter):
+            print(f'item subject: {item.Subject}')

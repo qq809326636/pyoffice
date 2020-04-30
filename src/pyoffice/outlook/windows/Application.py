@@ -60,6 +60,13 @@ class Application(_WinObject):
     def activeWindow(self):
         self.impl.ActiveWindow()
 
+    def advancedSearch(self,
+                       scope: str,
+                       filter=None,
+                       searchSubFolders: bool = None,
+                       tag: bool = None):
+        raise RuntimeError('Must implement this method.')
+
     def quit(self):
         self.impl.Quit()
 

@@ -2,10 +2,13 @@
 constant
 """
 
-__all__ = ['MessageType',
-           'FolderType',
+__all__ = ['FolderType',
+           'MessageType',
            'MessageCloseType',
-           'MessageSaveType']
+           'MessageSaveType',
+           'MessageDownloadState',
+           'MessageImportance',
+           'MessageRemoteStatus']
 
 
 class MessageType:
@@ -60,3 +63,22 @@ class MessageSaveType:
     TXT = 0  # Text format (.txt)
     VCAL = 7  # VCal format (.vcs)
     VCARD = 6  # VCard format (.vcf)
+
+
+class MessageDownloadState:
+    FULL = 1  # Full item has been downloaded.
+    HEADER_ONLY = 0  # Only the header has been downloaded.
+
+
+class MessageImportance:
+    HIGH = 2  # Item is marked as high importance.
+    LOW = 0  # Item is marked as low importance.
+    NORMAL = 1  # Item is marked as medium importance.
+
+
+class MessageRemoteStatus:
+    MARKEDFORCOPY = 3  # Item is marked to be copied.
+    MARKEDFORDELETE = 4  # Item is marked for deletion.
+    MARKEDFORDOWNLOAD = 2  # Item is marked for download.
+    REMOTESTATUSNONE = 0  # No remote status has been set.
+    UNMARKED = 1  # Item is not marked.

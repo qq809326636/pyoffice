@@ -34,17 +34,96 @@ class Message(_WinObject):
               cc):
         self.impl.CC = cc
 
+    def getContent(self):
+        return self.impl.Body
+
+    def setContent(self,
+                   content: str):
+        self.impl.Body = content
+
+    def getContentFormat(self):
+        return self.impl.BodyFormat
+
+    def setContentFormat(self,
+                         contentFormat):
+        self.impl.BodyFormat = contentFormat
+
     def getCreationTime(self):
         return self.impl.CreationTime
 
+    def getCategories(self):
+        return self.impl.Categories
+
+    def setCategories(self,
+                      categories: str):
+        self.impl.Categories = categories
+
+    def getDownloadState(self):
+        return self.impl.MessageDownloadState
+
     def getEntryID(self):
         return self.impl.EntryID
+
+    def getExpiryTime(self):
+        return self.impl.ExpiryTime
+
+    def getHTMLContent(self):
+        return self.impl.HTMLBody
+
+    def setHTMLContent(self,
+                       html: str):
+        self.impl.HTMLBody = html
+
+    def getImportance(self):
+        return self.impl.Importance
+
+    def setImportance(self,
+                      importance: int = MessageImportance.NORMAL):
+        self.impl.Importance = importance
+
+    def getLastModificationTime(self):
+        return self.impl.LastModificationTime
+
+    def getMarkForDownload(self):
+        return self.impl.MarkForDownload
+
+    def setMarkForDownloads(self,
+                            status: int = MessageRemoteStatus.UNMARKED):
+        self.impl.MarkForDownload = status
+
+    def getReceivedTime(self):
+        return self.impl.ReceivedTime
+
+    def getReminderTime(self):
+        return self.impl.ReminderTime
+
+    def getRemoteStatus(self):
+        return self.impl.RemoteStatus
+
+    def setRemoteStatus(self,
+                        status: int = MessageRemoteStatus.UNMARKED):
+        self.impl.RemoteStatus = status
+
+    def getRTFContent(self):
+        return self.impl.RTFBody
+
+    def setRTFContent(self,
+                      content: str):
+        self.impl.RTFBody = content
+
+    def hasSaved(self):
+        return self.impl.Saved
 
     def getSubject(self):
         return self.impl.Subject
 
     def getSender(self):
-        return self.impl.Sender
+        sender = self.impl.Sender
+        address = sender.Address
+        if address:
+            return address
+        else:
+            return str(sender)
 
     def setSender(self,
                   sender):
@@ -54,6 +133,34 @@ class Message(_WinObject):
             self.impl._oleobj_.Invoke(*(64209, 0, 8, 0, sender.impl))
         else:
             raise RuntimeError('sender must be an instance of type Account.')
+
+    def getSendUsingAccount(self):
+        from .Account import Account
+
+        acc = Account()
+        acc.impl = self.impl.SendUsingAccount
+        return acc
+
+    def setSendUsingAccount(self,
+                            account):
+        self.impl.SendUsingAccount = account.impl
+
+    def getSize(self):
+        return self.impl.Size
+
+    def getTo(self):
+        return self.impl.To
+
+    def setTo(self,
+              to):
+        self.impl.To = to
+
+    def getReadStatus(self):
+        return not self.impl.UnRead
+
+    def setReadStatus(self,
+                      status):
+        self.impl.UnRead = not status
 
     # For methods
     def close(self,

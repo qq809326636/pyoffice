@@ -75,6 +75,16 @@ class MessageImportance:
     LOW = 0  # Item is marked as low importance.
     NORMAL = 1  # Item is marked as medium importance.
 
+    @staticmethod
+    def getDesc(status: int):
+        for filed in dir(MessageImportance):
+            if not filed.startswith('_'):
+                val = getattr(MessageImportance, filed, None)
+                if val and val == status:
+                    return filed
+        else:
+            raise RuntimeError(f'The "{status}" is wrong.Please check it.')
+
 
 class MessageRemoteStatus:
     MARKEDFORCOPY = 3  # Item is marked to be copied.

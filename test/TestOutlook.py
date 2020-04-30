@@ -25,20 +25,21 @@ class TestOutlook:
 
         app.getDefaultAccount().getDefaultFolder().display()
 
-        # for acc in app.getAccountList():
-        #     print(acc.getClass())
-        #     print(acc.getDisplayName())
-        #     print(acc.getCurrentUser())
-        #     print(acc.getFolderCount())
-        #
-        #     for fo in acc.getFolderList():
-        #         print(fo.getFolderPath())
-        #         print(fo.getName())
-        #         print(fo.getFolderCount())
-        #         # fo.display()
-        #
-        #         for msg in fo.getMessageList():
-        #             print(f'{msg.getEntryID()} --> {msg.getSubject()}')
+        for acc in app.getAccountList():
+            print(acc.getClass())
+            print(acc.getDisplayName())
+            print(acc.getCurrentUser())
+            print(acc.getFolderCount())
+
+            for fo in acc.getFolderList():
+                print(fo.getFolderPath())
+                print(fo.getName())
+                print(fo.getFolderCount())
+                # fo.display()
+
+                for msg in fo.getMessageList():
+                    print(f'{msg.getEntryID()} --> {msg.getSubject()}')
+                    print(f'{msg.getEntryID()} --> {MessageImportance.getDesc(msg.getImportance())}')
 
         # print('=' * 120)
 
@@ -62,4 +63,3 @@ class TestOutlook:
         acc = app.getDefaultAccount()
         for folder in acc.getDefaultFolder().getFolderList():
             print(folder.getName())
-

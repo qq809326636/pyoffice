@@ -9,8 +9,17 @@ class TestOutlook:
         return Application()
 
     @pytest.fixture(scope='module')
-    def filter(self):
-        filter = 'urn:schemas:mailheader:subject = \'it@1data.info\''
+    def bodyFilter(self):
+        # filter = 'urn:schemas:mailheader:subject = \'*it@1data.info*\''
+        filter = r'[Body] = "1data"'
+        return filter
+
+    @pytest.fixture(scope='module')
+    def subjectFilter(self):
+        # filter = 'urn:schemas:httpmail:subject="测试"'
+        # filter = f'@SQL="{OutlookNamespaces.MAPI_PROPTAG}/0x0037001E=测试"'
+        filter = '@SQL="http://schemas.microsoft.com/mapi/proptag/0x0037001f" like \'%测试%\''
+        # filter='"urn:schemas:httpmail:subject" = "测试"'
         return filter
 
     def test_app(self,
@@ -89,12 +98,15 @@ class TestOutlook:
 
     def test_folder_find(self,
                          app,
-                         filter):
+                         bodyFilter,
+                         subjectFilter):
         app.getDefaultAccount()
         acc = app.getDefaultAccount()
         folder = acc.getFolderByName('收件箱')
         print(folder.getFolderPath())
-        print(f'filter is {filter}')
+        print(f'filter is {subjectFilter}')
 
-        for item in folder.impl.Restrict(filter):
-            print(f'item subject: {item.Subject}')
+        searchResult = folder.impl.Items.Restrict(subjectFilter)
+        print(f'searchResult count: {searchResult.Count}')
+        for item in searchResult:
+            print(f'item subject is "{item.Subject}"')

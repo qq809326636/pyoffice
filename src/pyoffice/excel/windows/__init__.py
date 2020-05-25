@@ -6,4 +6,6 @@ from .Range import *
 from .Row import *
 from .Table import *
 from .Workbook import *
+from .WorkbookException import *
 from .Worksheet import *
+from .constant import *

@@ -8,7 +8,8 @@ __all__ = ['FolderType',
            'MessageSaveType',
            'MessageDownloadState',
            'MessageImportance',
-           'MessageRemoteStatus']
+           'MessageRemoteStatus',
+           'OutlookNamespaces']
 
 
 class MessageType:
@@ -92,3 +93,17 @@ class MessageRemoteStatus:
     MARKEDFORDOWNLOAD = 2  # Item is marked for download.
     REMOTESTATUSNONE = 0  # No remote status has been set.
     UNMARKED = 1  # Item is not marked.
+
+
+class OutlookNamespaces:
+    MAPI_PROPTAG='https://schemas.microsoft.com/mapi/proptag'  # Outlook item objects, AddressEntry, AddressList, Attachment, ExchangeDistributionList, ExchangeUser, Folder, Recipient, and Store objects.
+    MAPI_ID='https://schemas.microsoft.com/mapi/id'  # (Same as above)
+    MAPI_STRING='https://schemas.microsoft.com/mapi/string'  # (Same as above)
+    EXCHANGE='https://schemas.microsoft.com/exchange'  # (Same as above)
+    URN_OFFICE='urn:schemas-microsoft-com:office:office'  # Outlook item objects
+    URN_OUTLOOK='urn:schemas-microsoft-com:office:outlook'  # Outlook item objects
+    DAV='DAV:'  # Outlook item objects
+    URN_CALENDAR='urn:schemas:calendar'  # Outlook item objects
+    URN_CONTACTS='urn:schemas:contacts'  # Outlook item objects
+    URN_HTTP_MAIL='urn:schemas:httpmail'  # Outlook item objects
+    URN_MAIL_HEADER='urn:schemas:mailheader'  # Outlook item objects

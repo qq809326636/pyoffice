@@ -3,33 +3,7 @@ WorkSheet
 """
 from ._WinObject import _WinObject
 
-__all__ = ['Worksheet',
-           'WorksheetCopyMode',
-           'WorksheetPasteFormatEnum',
-           'WorksheetType']
-
-
-class WorksheetCopyMode:
-    BEFORE = 1
-    AFTER = 2
-    FIRST = 3
-    LAST = 4
-
-
-class WorksheetPasteFormatEnum:
-    PNG = 0
-    JEPG = 1
-    GIF = 2
-    EM = 3  # Picture (Enhanced Metafile)
-    BITMAP = 4
-    MODO = 5  # Microsoft Office Drawing Object"
-
-
-class WorksheetType:
-    CHART = -4109  # Chart
-    DIALOGSHEET = -4116  # Dialog sheet
-    EXCEL4INTLMACROSHEET = 4  # Excel version 4 international macro sheet
-    EXCEL4MACROSHEET = 3  # Excel version 4 macro sheet
+__all__ = ['Worksheet']
 
 
 class Worksheet(_WinObject):

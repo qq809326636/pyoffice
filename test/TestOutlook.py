@@ -193,6 +193,9 @@ class TestOutlook:
         filter = f'[CreationTime] > \'20/05/2020\' and [CreationTime] < \'25/05/2020\''
         filter = f'[UnRead] = False'
         filter = f'[UnRead] = True'
+        filter = f'{DASLPrefix}("urn:schemas:httpmail:date" > \'20/05/2020\') and ("urn:schemas:httpmail:date" < \'25/05/2020\')'
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:from" like \'%data%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:textdescription" like \'%异常信息%\''
         print(f'filter: {filter}')
 
         ret = folder.impl.Items.Restrict(filter)

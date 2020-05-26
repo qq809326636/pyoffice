@@ -2,6 +2,7 @@
 WorkSheet
 """
 from ._WinObject import _WinObject
+from .constant import *
 
 __all__ = ['Worksheet']
 

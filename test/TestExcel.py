@@ -1,5 +1,6 @@
 import pytest
 import time
+import chardet
 
 
 class TestExcel:
@@ -17,6 +18,12 @@ class TestExcel:
         wb.open(filepath)
 
         return wb
+
+    def test_wbencodig(self,
+                       filepath):
+        with open(filepath, 'rb') as fp:
+            ret = chardet.detect(fp.read())
+            print(f'ret: {ret}')
 
     def test_app(self):
         from pyoffice.excel import Application

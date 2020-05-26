@@ -87,3 +87,11 @@ class Application(_WinObject):
         acc = Account()
         acc.impl = self._session.Accounts.Item(1)
         return acc
+
+    def getFolderList(self):
+        from .Folder import Folder
+
+        for item in self._session.Folders:
+            folder = Folder()
+            folder.impl = item
+            yield folder

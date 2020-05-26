@@ -15,6 +15,10 @@ class TestOutlook:
         return filter
 
     @pytest.fixture(scope='module')
+    def DASLPrefix(self):
+        return r'@SQL='
+
+    @pytest.fixture(scope='module')
     def subjectFilter(self):
         # filter = 'urn:schemas:httpmail:subject="测试"'
         # filter = f'@SQL="{OutlookNamespaces.MAPI_PROPTAG}/0x0037001E=测试"'
@@ -82,13 +86,15 @@ class TestOutlook:
                     app):
         folder = app.getDefaultAccount().getDefaultFolder()
 
-        # scope = '\'\\\\herb.li@1data.info\\收件箱\''
-        scope = '\'收件箱\''
-        filter = 'urn:schemas:mailheader:subject:body = \'it@1data.info\''
+        filterPrefix = r"@SQL="
+        scope = r"'\\herb.li@1data.info\收件箱'"
+        # scope = r"'Inbox'"
+        filter = r"urn:schemas:mailheader:subject LIKE 'Component package result.'"
         tag = ''
         search = app.impl.AdvancedSearch(Scope=scope,
-                                         Filter=filter)
-
+                                         Filter=filterPrefix + filter,
+                                         SearchSubFolders=True)
+        print()
         print(f'scope is {search.Scope}')
         print(f'filter is {search.Filter}')
         print(f'tag is {search.Tag}')
@@ -110,3 +116,103 @@ class TestOutlook:
         print(f'searchResult count: {searchResult.Count}')
         for item in searchResult:
             print(f'item subject is "{item.Subject}"')
+
+    def test_AdvancedSearch(self,
+                            app,
+                            DASLPrefix):
+        print()
+        # AdvancedSearch( _Scope_ , _Filter_ , _SearchSubFolders_ , _Tag_ )
+
+        # scope = r"'\\herb.li@1data.info'"
+        scope = r"'\\herb.li@1data.info\收件箱'"
+        # scope = r"'收件箱'"
+        # scope = app.getDefaultAccount().getDefaultFolder().getFolderPath()
+        print(f'scope: {scope}')
+
+        # filter = r"urn:schemas:mailheader:subject LIKE '%1data%'"
+        filter = r'"urn:schemas:httpmail:read" = 1'
+        # filter = f'urn:schemas:httpmail:subject LIKE \'%1data%\''
+        print(f'filter: {filter}')
+
+        ret = app.impl.AdvancedSearch(Scope=scope,
+                                      Filter=filter,
+                                      SearchSubFolders=True)
+        print(f'ret: {ret}')
+        print(f'results: {ret.Results}')
+        print(f'results count: {ret.Results.Count}')
+        print(f'filter: {ret.Filter}')
+        print(f'class: {ret.Class}')
+        print(f'SearchSubFolders: {ret.SearchSubFolders}')
+
+
+    def test_Folder_GetTable(self,
+                             app,
+                             DASLPrefix):
+        print()
+        folder = app.getDefaultAccount().getDefaultFolder().getFolderByName('收件箱')
+        print(f'Folder path: {folder.getFolderPath()}')
+
+    def test_Items_Find(self,
+                        app,
+                        DASLPrefix):
+        print()
+        folder = app.getDefaultAccount().getDefaultFolder().getFolderByName('收件箱')
+        print(f'Folder path: {folder.getFolderPath()}')
+
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:subject" LIKE \'%Component%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:read" = 0'
+        ret = folder.impl.Items.Find(filter)
+        # print(f'ret: {ret}')
+
+        ret = folder.impl.Items.FindNext()
+        while ret:
+            print(f'ret: {ret}')
+            ret = folder.impl.Items.FindNext()
+
+    def test_Items_Restrict(self,
+                            app,
+                            DASLPrefix):
+        print()
+        folder = app.getDefaultAccount().getDefaultFolder().getFolderByName('收件箱')
+        print(f'Folder path: {folder.getFolderPath()}')
+
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:subject" LIKE \'%Component%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:read" = 0'
+        # filter = f'{DASLPrefix}"urn:schemas-microsoft-com:office:outlook:read" = 0'
+        filter = f'[To] = "Herb.li@1data.info"'
+        filter = f'[Subject] = "aaa"'
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:sender" LIKE \'%herb%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:cc" LIKE \'%herb%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:bcc" LIKE \'%herb%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:importance" = 1'
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:recipients" like \'%herb%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:body" like \'%异常信息%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:to" like \'%异常信息%\''
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:unread" = 0'
+        filter = f'{DASLPrefix}"urn:schemas:httpmail:saved" = 0'
+        filter = f'[CreationTime] > \'20/05/2020\' and [CreationTime] < \'25/05/2020\''
+        filter = f'[UnRead] = False'
+        filter = f'[UnRead] = True'
+        print(f'filter: {filter}')
+
+        ret = folder.impl.Items.Restrict(filter)
+        print(f'ret: {ret}')
+        print(f'ret Count: {ret.Count}')
+        for item in ret:
+            print(f'item: {item.Subject}')
+
+    def test_Search_GetTable(self,
+                             app):
+        pass
+
+    def test_Table_FindRow(self,
+                           app):
+        pass
+
+    def test_Table_Restrict(self,
+                            app):
+        pass
+
+    def test_View_Filter(self,
+                         app):
+        pass

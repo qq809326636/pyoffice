@@ -1,5 +1,6 @@
-from pyoffice.outlook import *
+from pyoffice.outlook.windows import *
 import pytest
+import datetime
 
 
 class TestOutlook:
@@ -7,6 +8,12 @@ class TestOutlook:
     @pytest.fixture(scope='module')
     def app(self):
         return Application()
+
+    @pytest.fixture(scope='module')
+    def folder(self,
+               app):
+        folder = app.getDefaultAccount().getDefaultFolder().getFolderByName('收件箱')
+        return folder
 
     @pytest.fixture(scope='module')
     def bodyFilter(self):
@@ -17,6 +24,98 @@ class TestOutlook:
     @pytest.fixture(scope='module')
     def DASLPrefix(self):
         return r'@SQL='
+
+    @pytest.fixture(scope='module')
+    def builder(self):
+        return DASLBuilder()
+
+    @pytest.fixture(scope='module')
+    def senderCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'sender'
+        cond.op = 40
+        cond.val = '1data'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def recipientCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'recipient'
+        cond.op = 40
+        cond.val = '1data'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def ccCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'cc'
+        cond.op = 40
+        cond.val = '1data'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def bccCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'bcc'
+        cond.op = 40
+        cond.val = '1data'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def sentDateCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'sentDate'
+        cond.op = 31
+        cond.val = datetime.datetime.now()
+        return cond
+
+    @pytest.fixture(scope='module')
+    def sentDate2Condition(self):
+        cond = DASLCondition()
+        cond.prop = 'sentDate'
+        cond.op = 22
+        cond.val = datetime.datetime.now()
+        return cond
+
+    @pytest.fixture(scope='module')
+    def subjectCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'subject'
+        cond.op = 40
+        cond.val = 'test'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def messageCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'message'
+        cond.op = 40
+        cond.val = '1data'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def importanceCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'importance'
+        cond.op = 10
+        cond.val = '1'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def attachmentCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'attachment'
+        cond.op = 10
+        cond.val = '1'
+        return cond
+
+    @pytest.fixture(scope='module')
+    def readCondition(self):
+        cond = DASLCondition()
+        cond.prop = 'read'
+        cond.op = 10
+        cond.val = '1'
+        return cond
 
     @pytest.fixture(scope='module')
     def subjectFilter(self):
@@ -144,7 +243,6 @@ class TestOutlook:
         print(f'class: {ret.Class}')
         print(f'SearchSubFolders: {ret.SearchSubFolders}')
 
-
     def test_Folder_GetTable(self,
                              app,
                              DASLPrefix):
@@ -198,6 +296,53 @@ class TestOutlook:
         filter = f'{DASLPrefix}"urn:schemas:httpmail:textdescription" like \'%异常信息%\''
         print(f'filter: {filter}')
 
+        ret = folder.impl.Items.Restrict(filter)
+        print(f'ret: {ret}')
+        print(f'ret Count: {ret.Count}')
+        for item in ret:
+            print(f'item: {item.Subject}')
+
+    def test_Items_Restrict2(self,
+                             folder,
+                             builder,
+                             senderCondition,
+                             recipientCondition,
+                             ccCondition,
+                             bccCondition,
+                             sentDateCondition,
+                             sentDate2Condition,
+                             subjectCondition,
+                             messageCondition,
+                             importanceCondition,
+                             attachmentCondition,
+                             readCondition):
+        print()
+        print(f'[INFO]: Folder path is "{folder.getFolderPath()}"')
+        #
+        subjectCondition.val = 'package'
+        # subjectCondition.op = 10
+        builder.add(subjectCondition)
+
+        # sentDateCondition.link = 10
+        # builder.add(sentDateCondition)
+        #
+        # importanceCondition.link = 10
+        # # importanceCondition.val = 0
+        # builder.add(importanceCondition)
+
+        sentDateCondition.link = 10
+        sentDateCondition.val = datetime.datetime.strptime('2020-05-25',
+                                                           '%Y-%m-%d')
+        builder.add(sentDateCondition)
+
+        importanceCondition.link = 11
+        # importanceCondition.val = 1
+        builder.add(importanceCondition)
+
+        filter = builder.build()
+        print(f'[INFO]: filter is "{filter}"')
+
+        #
         ret = folder.impl.Items.Restrict(filter)
         print(f'ret: {ret}')
         print(f'ret Count: {ret.Count}')

@@ -1,12 +1,14 @@
 from typing import List, Optional
 from .DASLCondition import DASLCondition
 
+__all__ = ['DASLGroup']
+
 
 class DASLGroup:
 
     def __init__(self):
         self._conditions: List[DASLGroup, DASLCondition] = []
-        self._link:int = None
+        self._link: int = None
 
     def addCondition(self,
                      condition: DASLCondition):

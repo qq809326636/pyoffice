@@ -78,3 +78,16 @@ class Folder(_WinObject):
 
     def setCustomIcon(self, picture):
         self.impl.SetCustomIcon(picture)
+
+    def query(self,
+              ql: dict):
+        from .dasl import Builder, DASLPrefix
+        from .Message import Message
+
+        query = Builder.build(ql)
+        query = f'{DASLPrefix.PREFIX}{query}'
+        ret = self.impl.Items.Restrict(query)
+        for item in ret:
+            msg = Message()
+            msg.impl = item
+            yield msg

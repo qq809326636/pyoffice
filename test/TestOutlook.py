@@ -323,10 +323,10 @@ class TestOutlook:
         # subjectCondition.op = 10
         builder.add(subjectCondition)
 
-        # sentDateCondition.link = 10
+        # sentDateCondition.linker = 10
         # builder.add(sentDateCondition)
         #
-        # importanceCondition.link = 10
+        # importanceCondition.linker = 10
         # # importanceCondition.val = 0
         # builder.add(importanceCondition)
 
@@ -364,3 +364,102 @@ class TestOutlook:
     def test_View_Filter(self,
                          app):
         pass
+
+    def test_expression(self):
+        print()
+
+        expr = Expression()
+        expr.prop = 'sentDate'
+        expr.op = '>'
+        expr.value = datetime.datetime.now()
+        print('=' * 80)
+        print(expr.toString())
+
+        expr1 = Expression()
+        expr1.prop = 'subject'
+        expr1.op = 'like'
+        expr1.value = '222'
+
+        expr2 = Expression()
+        expr2.prop = 'cc'
+        expr2.op = 'like'
+        expr2.value = '333'
+
+        group = Group()
+        group.linker = 'and'
+        group.setLeft(expr)
+        group.setRight(expr1)
+        print('=' * 80)
+        print(group.link())
+
+        group2 = Group()
+        group2.linker = 'or'
+        group2.setLeft(expr2)
+        group2.setRight(group)
+        print('=' * 80)
+        print(group2.link())
+
+    def test_new_builder(self):
+        print()
+        a = {
+            "prop": "subject",
+            "op": "like",
+            "value": "test"
+        }
+        b = {
+            "group": {
+                "left": {
+                    "prop": "subject",
+                    "op": "like",
+                    "value": "value"
+                },
+                "linker": "or",
+                "right": {
+                    "prop": "cc",
+                    "op": "like",
+                    "value": "123"
+                }
+            }
+        }
+        c = {
+            "group": {
+                "left": {
+                    "prop": "subject",
+                    "op": "like",
+                    "value": "value"
+                },
+                "linker": "or",
+                "right": {
+                    "group": {
+                        "left": {
+                            "prop": "subject",
+                            "op": "like",
+                            "value": "value"
+                        },
+                        "linker": "or",
+                        "right": {
+                            "prop": "cc",
+                            "op": "like",
+                            "value": "123"
+                        }
+                    }
+                }
+            }
+        }
+
+        ret1 = Builder.build(c)
+        print(ret1)
+
+    def test_folder_query(self,
+                          app):
+        print()
+        folder = app.getDefaultAccount().getDefaultFolder().getFolderByName('收件箱')
+
+        a = {
+            "prop": "subject",
+            "op": "like",
+            "value": "%test%"
+        }
+
+        for msg in folder.query(a):
+            print(f'[INFO]: Subject is {msg.getSubject()}')

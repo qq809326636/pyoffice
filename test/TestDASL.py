@@ -107,23 +107,23 @@ class TestDASL:
         builder.add(senderCondition)
 
         #
-        # recipientCondition.link = 10
+        # recipientCondition.linker = 10
         # builder.add(recipientCondition)
         #
         # #
-        # ccCondition.link = 10
+        # ccCondition.linker = 10
         # builder.add(ccCondition)
         #
         # #
-        # bccCondition.link = 10
+        # bccCondition.linker = 10
         # builder.add(bccCondition)
 
         #
-        # sentDateCondition.link = 10
+        # sentDateCondition.linker = 10
         # builder.add(sentDateCondition)
 
         #
-        # importanceCondition.link = 10
+        # importanceCondition.linker = 10
         # builder.add(importanceCondition)
 
         #

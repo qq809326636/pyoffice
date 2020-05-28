@@ -1,6 +1,10 @@
 # For Python
 *.py[cod]
+*.c
+target/
 
+# For pytest
+.pytest_cache/
 
 # For PyCharm
 .idea/

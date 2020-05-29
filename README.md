@@ -25,7 +25,11 @@
 @endmindmap
 ```
 
+> 注1: 如果看不到图示，查看[附录][项目结构]
+
 ## 库功能
+
+**功能图**图示如下：
 
 ```plantuml
 @startmindmap
@@ -36,6 +40,8 @@
 ** PowerPoint
 @endmindmap
 ```
+
+> 注1: 如果看不到图示，查看[附录][功能图]
 
 ## 致谢
 
@@ -48,7 +54,7 @@
 
 ## 附录
 
-### 项目结构图示
+### 项目结构
 
 ![项目结构](http://plantuml.excapp.com/plantuml/svg/LOv13eGW34Ntd88r2y_W9BgSZHSm1gff1YWfDOot5yMDg_Rr__xyFil24Z2wi2HbT3feNT62CaPdjdMyRfNWRy7Vgz6b_b79JQ1TFD6lGQ82d0YZDDu5_UChnEwA5yYNEEjkGy4j4iEDq_WPlcCNdEgXrchLJW00)
 

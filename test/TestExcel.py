@@ -7,7 +7,7 @@ class TestExcel:
 
     @pytest.fixture(scope='module')
     def filepath(self):
-        return r'F:\work\matrix_robot_components\test\excel单元格格式_数字.xlsx'
+        return r'F:\rpaws\test.xlsx'
 
     @pytest.fixture(scope='module')
     def wb(self,
@@ -152,3 +152,17 @@ class TestExcel:
         for item in xw.apps:
             print('=' * 80)
             print(item)
+
+    def test_filter(self,
+                    wb):
+        print()
+
+        ws = wb.getActiveWorkSheet()
+        wr = ws.getUsedRange()
+
+    def test_tables(self,
+                    wb):
+        print()
+
+        for item in wb.getActiveWorkSheet().getTableList():
+            print(f'item name: {item.getName()}')

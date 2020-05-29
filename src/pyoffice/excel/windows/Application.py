@@ -5,22 +5,39 @@ Excel Application
 import logging
 
 from ._WinObject import _WinObject
+from pyoffice.decorator import singleton
 
 __all__ = ['Application']
 
 
 class Application(_WinObject):
+    __instance = None
+
+    # Field
+    impl = None
+
+    @singleton(moduleName='Application')
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = _WinObject.__new__(cls)
+
+            if cls.impl is None:
+                import win32com.client
+                try:
+                    cls.impl = win32com.client.GetActiveObject(Class='Excel.Application')
+                except Exception as err:
+                    logging.warning(err)
+                    cls.impl = win32com.client.DispatchEx('Excel.Application')
+                cls.impl.Visible = True  # default: true
+
+        return cls.__instance
 
     def __init__(self):
         _WinObject.__init__(self)
 
-        import win32com.client
-        try:
-            self.impl = win32com.client.GetActiveObject(Class='Excel.Application')
-        except Exception as err:
-            logging.warning(err)
-            self.impl = win32com.client.DispatchEx('Excel.Application')
-        self.impl.Visible = True  # default: true
+    @staticmethod
+    def getInstance():
+        return Application()
 
     def getPid(self):
         """
@@ -85,7 +102,6 @@ class Application(_WinObject):
         from .Workbook import Workbook
 
         workbook = Workbook()
-        workbook.parent = self
         workbook.open(filepath,
                       updateLinks,
                       readOnly,
@@ -127,5 +143,13 @@ class Application(_WinObject):
 
         workbook = Workbook()
         workbook.impl = self.impl.ActiveWorkbook
+
+        return workbook
+
+    def createWorkbook(self):
+        from .Workbook import Workbook
+
+        workbook = Workbook()
+        workbook.impl = self.impl.Workbooks.Add()
 
         return workbook

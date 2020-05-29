@@ -42,8 +42,7 @@ class Cell(_WinObject):
             direction: int = DirectionEnum.DOWN):
         from .Range import Range
         rg = Range()
-        rg.impl = self.parent.impl.Range(self.impl, self.impl.End(direction))
-        rg.parent = self.parent
+        rg.impl = self.impl.Parent.Range(self.impl, self.impl.End(direction))
         return rg
 
     def show(self):

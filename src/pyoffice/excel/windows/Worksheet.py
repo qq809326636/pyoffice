@@ -237,3 +237,11 @@ class Worksheet(_WinObject):
     def upProtect(self,
                   password: str):
         self.impl.Unprotect(password)
+
+    def getTableList(self):
+        from .Table import Table
+
+        for item in self.impl.ListObjects:
+            table = Table()
+            table.impl = item
+            yield table

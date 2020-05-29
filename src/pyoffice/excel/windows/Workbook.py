@@ -13,18 +13,14 @@ class Workbook(_WinObject):
         _WinObject.__init__(self)
 
         # init
-        self.__initApplication()
-
-    def __initApplication(self):
-        if not self.parent:
-            from .Application import Application
-            self.parent = Application()
+        from .Application import Application
+        self._app = Application.getInstance()
 
     def getApplication(self):
-        return self.parent
+        return self._app
 
     def display(self):
-        self.parent.impl.Visible = True
+        self._app.setVisible(True)
 
     def open(self,
              filepath: str,
@@ -61,21 +57,22 @@ class Workbook(_WinObject):
         :param corruptLoad:
         :return:
         """
-        self.impl = self.parent.impl.Workbooks.Open(filepath,
-                                                    updateLinks,
-                                                    readOnly,
-                                                    format,
-                                                    password,
-                                                    writeResPassword,
-                                                    ignoreReadOnlyRecommended,
-                                                    origin,
-                                                    delimiter,
-                                                    editable,
-                                                    notify,
-                                                    converter,
-                                                    addToMru,
-                                                    local,
-                                                    corruptLoad)
+        wb = self._app.impl.Workbooks.Open(filepath,
+                                           updateLinks,
+                                           readOnly,
+                                           format,
+                                           password,
+                                           writeResPassword,
+                                           ignoreReadOnlyRecommended,
+                                           origin,
+                                           delimiter,
+                                           editable,
+                                           notify,
+                                           converter,
+                                           addToMru,
+                                           local,
+                                           corruptLoad)
+        self.impl = wb
 
     def close(self):
         """
@@ -142,7 +139,6 @@ class Workbook(_WinObject):
 
         workSheet = Worksheet()
         workSheet.impl = self.impl.ActiveSheet
-        workSheet.parent = self
         return workSheet
 
     def getWorkSheetByName(self,
@@ -158,7 +154,6 @@ class Workbook(_WinObject):
         for item in self.impl.Worksheets:
             if sheetName == item.Name:
                 ws.impl = item
-                ws.parent = self
                 return ws
         else:
             raise WorkbookException(f'No worksheet with this name {sheetName} found.')
@@ -173,7 +168,6 @@ class Workbook(_WinObject):
         for item in self.impl.Worksheets:
             ws = Worksheet()
             ws.impl = item
-            ws.parent = self
             yield ws
 
     def getPath(self):
@@ -228,18 +222,9 @@ class Workbook(_WinObject):
         :return:
         """
         from .Cell import Cell
-        from .Worksheet import Worksheet
 
         cell = Cell()
-        cell.impl = self.parent.impl.ActiveCell
-
-        ws = Worksheet()
-        ws.impl = cell.impl.Parent
-        cell.parent = ws
-
-        wb = Workbook()
-        wb.impl = ws.impl.Parent
-        ws.parent = wb
+        cell.impl = self._app.impl.ActiveCell
 
         return cell
 
@@ -252,7 +237,6 @@ class Workbook(_WinObject):
 
         ws = Worksheet()
         ws.impl = self.impl.Worksheets.Item(1)
-        ws.parent = self
         return ws
 
     def getLastSheet(self):
@@ -264,5 +248,6 @@ class Workbook(_WinObject):
 
         ws = Worksheet()
         ws.impl = self.impl.Worksheets.Item(self.impl.Worksheets.Count)
-        ws.parent = self
         return ws
+
+

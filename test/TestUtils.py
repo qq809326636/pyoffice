@@ -79,3 +79,23 @@ class TestUtil:
 
         app = win32com.client.DispatchEx('Excel.Application')
         app.Visible = False
+
+    def test_services(self):
+        print()
+        for item in utils.ProcessUtil.getWindowsServiceInfoList():
+            print('=' * 80)
+            print(f'DisplayName is {item.DisplayName}')
+            print(f'PathName is {item.PathName}')
+            print(f'ProcessId is {item.ProcessId}')
+
+    def test_process(self):
+        print()
+        for item in utils.ProcessUtil.getWindowsProcessInfoList():
+            print('=' * 80)
+            print(f'Name is {item.Name}')
+            print(f'Handle is {item.Handle}')
+            print(f'ProcessId is {item.ProcessId}')
+
+
+
+

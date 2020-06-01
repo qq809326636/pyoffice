@@ -170,3 +170,19 @@ class ProcessUtil:
             if obj.CommandLine and 'excel.exe' in obj.CommandLine.lower():
                 print(obj)
                 print(obj.Workbooks.Count)
+
+    @staticmethod
+    def getWMI():
+        from win32com.client import GetObject
+
+        return GetObject('winmgmts:')
+
+    @staticmethod
+    def getWindowsServiceInfoList():
+        for service in ProcessUtil.getWMI().InstancesOf("Win32_Service"):
+            yield service
+
+    @staticmethod
+    def getWindowsProcessInfoList():
+        for proc in ProcessUtil.getWMI().InstancesOf("Win32_Process"):
+            yield proc

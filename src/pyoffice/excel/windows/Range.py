@@ -38,7 +38,6 @@ class Range(_WinObject):
         for r in self.impl.Rows:
             row = Row()
             row.impl = r
-            row.parent = self
             yield row
 
     def getColumnCount(self):
@@ -50,14 +49,12 @@ class Range(_WinObject):
         for c in self.impl.Columns:
             column = Column()
             column.impl = c
-            column.parent = self
             yield column
 
     def end(self,
             direction: int = DirectionEnum.DOWN):
         rg = Range()
         rg.impl = self.impl.End(direction)
-        rg.parent = self.parent
         return rg
 
     def getCellCount(self):

@@ -19,103 +19,6 @@ class TestOutlook:
     def bodyFilter(self):
         # filter = 'urn:schemas:mailheader:subject = \'*it@1data.info*\''
         filter = r'[Body] = "1data"'
-        return filter
-
-    @pytest.fixture(scope='module')
-    def DASLPrefix(self):
-        return r'@SQL='
-
-    @pytest.fixture(scope='module')
-    def builder(self):
-        return DASLBuilder()
-
-    @pytest.fixture(scope='module')
-    def senderCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'sender'
-        cond.op = 40
-        cond.val = '1data'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def recipientCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'recipient'
-        cond.op = 40
-        cond.val = '1data'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def ccCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'cc'
-        cond.op = 40
-        cond.val = '1data'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def bccCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'bcc'
-        cond.op = 40
-        cond.val = '1data'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def sentDateCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'sentDate'
-        cond.op = 31
-        cond.val = datetime.datetime.now()
-        return cond
-
-    @pytest.fixture(scope='module')
-    def sentDate2Condition(self):
-        cond = DASLCondition()
-        cond.prop = 'sentDate'
-        cond.op = 22
-        cond.val = datetime.datetime.now()
-        return cond
-
-    @pytest.fixture(scope='module')
-    def subjectCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'subject'
-        cond.op = 40
-        cond.val = 'test'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def messageCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'message'
-        cond.op = 40
-        cond.val = '1data'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def importanceCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'importance'
-        cond.op = 10
-        cond.val = '1'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def attachmentCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'attachment'
-        cond.op = 10
-        cond.val = '1'
-        return cond
-
-    @pytest.fixture(scope='module')
-    def readCondition(self):
-        cond = DASLCondition()
-        cond.prop = 'read'
-        cond.op = 10
-        cond.val = '1'
-        return cond
 
     @pytest.fixture(scope='module')
     def subjectFilter(self):
@@ -449,6 +352,16 @@ class TestOutlook:
 
         ret1 = Builder.build(c)
         print(ret1)
+
+    def test_folder_notquery(self,
+                             app):
+        print()
+        query = '@SQL="urn:schemas:httpmail:subject" like \'%test%\''
+
+        folder = app.getDefaultAccount().getDefaultFolder().getFolderByName('收件箱')
+
+        ret = folder.impl.Items.Restrict(query)
+        print(f'Ret count is {ret.Count}')
 
     def test_folder_query(self,
                           app):

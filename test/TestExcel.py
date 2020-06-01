@@ -28,12 +28,15 @@ class TestExcel:
     def test_app(self):
         from pyoffice.excel import Application
         app = Application()
+        app.setVisible(False)
         print(app.getPid())
 
     def test_open(self,
                   filepath):
+        print()
         from pyoffice.excel import Workbook
         wb = Workbook()
+        print(wb.getApplication().getPid())
         wb.open(filepath)
         wb.display()
         ws = wb.getActiveWorkSheet()
@@ -148,10 +151,13 @@ class TestExcel:
     def test_xlwings(self):
         import xlwings as xw
 
-        print(len(xw.apps))
-        for item in xw.apps:
-            print('=' * 80)
-            print(item)
+        app = xw.App(False, False)
+        app.visible = False
+
+        # print(len(xw.apps))
+        # for item in xw.apps:
+        #     print('=' * 80)
+        #     print(item)
 
     def test_filter(self,
                     wb):

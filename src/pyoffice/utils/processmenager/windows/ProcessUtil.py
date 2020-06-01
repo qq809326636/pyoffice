@@ -1,5 +1,6 @@
 import locale
 import platform
+import logging
 
 __all__ = ['ProcessUtil']
 
@@ -151,3 +152,21 @@ class ProcessUtil:
     def getActiveObject(name: str):
         import win32com.client
         return win32com.client.GetActiveObject(Class=name)
+
+    @staticmethod
+    def checkExistByProcessName(proc: str):
+        from win32com.client import GetObject
+
+        wmi = GetObject('winmgmts:')
+        # procCodeCov = wmi.ExecQuery(f'select * from Win32_Process where Name="{proc}"')
+        #
+        # logging.debug(f'Process code conv is {procCodeCov}')
+        #
+        # return len(procCodeCov) > 0
+        objs = wmi.InstancesOf('Win32_Process')
+        for obj in objs:
+            # print(obj.PathName)
+            # print(obj.CommandLine)
+            if obj.CommandLine and 'excel.exe' in obj.CommandLine.lower():
+                print(obj)
+                print(obj.Workbooks.Count)

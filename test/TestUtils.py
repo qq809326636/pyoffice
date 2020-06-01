@@ -46,3 +46,36 @@ class TestUtil:
             print()
 
         # obj.Quit()
+
+    def test_checkexistbyprocessname(self):
+        print()
+        ret = utils.ProcessUtil.checkExistByProcessName('%excel%')
+        print(f'ret: {ret}')
+
+    def test_getactiveobject(self):
+        print()
+        from win32com.client import GetActiveObject, GetObject
+
+        # excelApp = GetActiveObject('Excel.Application')
+        excelApp = GetObject(Class='Excel.Application')
+        print(excelApp)
+        import win32process
+        threadId, processId = win32process.GetWindowThreadProcessId(excelApp.Hwnd)
+
+        print('threadId', threadId)
+        print('processId', processId)
+
+        # for wb in excelApp.Workbooks:
+        #     print('Name', wb.Name)
+        #     print('FullName', wb.FullName)
+        #     print('Path', wb.Path)
+        #     wb.Close()
+
+        excelApp.Visible = False
+        # excelApp.Quit()
+
+    def test_excel(self):
+        import win32com.client
+
+        app = win32com.client.DispatchEx('Excel.Application')
+        app.Visible = False

@@ -24,7 +24,7 @@ class Application(_WinObject):
             if cls.impl is None:
                 import win32com.client
                 try:
-                    cls.impl = win32com.client.GetActiveObject(Class='Excel.Application')
+                    cls.impl = win32com.client.GetObject(Class='Excel.Application')
                 except Exception as err:
                     logging.warning(err)
                     cls.impl = win32com.client.DispatchEx('Excel.Application')

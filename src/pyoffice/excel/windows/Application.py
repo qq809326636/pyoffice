@@ -36,7 +36,7 @@ class Application(_WinObject):
         _WinObject.__init__(self)
 
     @staticmethod
-    def getInstance():
+    def getApplication():
         return Application()
 
     def getPid(self):

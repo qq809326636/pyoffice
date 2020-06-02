@@ -12,6 +12,14 @@ class Worksheet(_WinObject):
     def __init__(self):
         _WinObject.__init__(self)
 
+    def getWorkbook(self):
+        from .Workbook import Workbook
+
+        wb = Workbook()
+        wb.impl = self.impl.Parent
+
+        return wb
+
     def getName(self):
         """
         Get worksheet name
@@ -29,19 +37,20 @@ class Worksheet(_WinObject):
     def copy(self,
              mode=WorksheetCopyMode.AFTER):
         ws = Worksheet()
+        wb = self.getWorkbook()
         if WorksheetCopyMode.FIRST == mode:
-            self.impl.Copy(self.parent.getFirstSheet().impl)
-            ws.impl = self.parent.impl.Worksheets.Item(1)
+            self.impl.Copy(wb.getFirstSheet().impl)
+            ws.impl = wb.impl.Worksheets.Item(1)
         elif WorksheetCopyMode.LAST == mode:
-            self.impl.Copy(None, self.parent.getLastSheet().impl)
-            ws.impl = self.parent.impl.Worksheets.Item(self.parent.Worksheets.Count)
+            self.impl.Copy(None, wb.getLastSheet().impl)
+            ws.impl = wb.impl.Worksheets.Item(wb.getWorkSheetCount())
         elif WorksheetCopyMode.BEFORE == mode:
             self.impl.Copy(self.impl)
-            ws.impl = self.parent.impl.Worksheets.Item(self.getIndex() - 1)
+            ws.impl = wb.impl.Worksheets.Item(self.getIndex() - 1)
         else:
             self.impl.Copy(None, self.impl)
-            ws.impl = self.parent.impl.Worksheets.Item(self.getIndex() + 1)
-        ws.parent = self.parent
+            ws.impl = wb.impl.Worksheets.Item(self.getIndex() + 1)
+
         return ws
 
     def paste(self,
@@ -74,7 +83,6 @@ class Worksheet(_WinObject):
 
         rg = Range()
         rg.impl = self.impl.UsedRange
-        rg.parent = self
 
         return rg
 
@@ -94,7 +102,6 @@ class Worksheet(_WinObject):
         for item in self.impl.ListObjects:
             t = Table()
             t.impl = item
-            t.parent = self
             yield t
 
     def getPivotTableList(self):
@@ -103,7 +110,6 @@ class Worksheet(_WinObject):
         for item in self.impl.PivotTables():
             pt = PivotTable()
             pt.impl = item
-            pt.parent = self
             yield pt
 
     def next(self):
@@ -111,7 +117,6 @@ class Worksheet(_WinObject):
             ws = Worksheet()
 
             ws.impl = self.impl.Next
-            ws.parent = self.parent
 
             return ws
 
@@ -128,7 +133,6 @@ class Worksheet(_WinObject):
 
         rg = Range()
         rg.impl = self.impl.Range(address)
-        rg.parent = self
 
         return rg
 
@@ -140,7 +144,6 @@ class Worksheet(_WinObject):
         rg = Range()
         rg.impl = self.impl.Range(cell1.impl,
                                   cell2.impl)
-        rg.parent = self
 
         return rg
 
@@ -152,7 +155,6 @@ class Worksheet(_WinObject):
         rg = Range()
         rg.impl = self.impl.Range(row,
                                   col)
-        rg.parent = self
 
         return rg
 
@@ -162,7 +164,6 @@ class Worksheet(_WinObject):
 
         cell = Cell()
         cell.impl = self.impl.Range(address)
-        cell.parent = self
 
         return cell
 
@@ -174,7 +175,6 @@ class Worksheet(_WinObject):
             cell = Cell()
 
             cell.impl = item
-            cell.parent = self
 
             yield cell
 
@@ -184,7 +184,6 @@ class Worksheet(_WinObject):
 
         row = Row()
         row.impl = self.impl.Rows(index)
-        row.parent = self
         return row
 
     def getColumnByIndex(self,
@@ -193,7 +192,6 @@ class Worksheet(_WinObject):
 
         column = Column()
         column.impl = self.impl.Columns(index)
-        column.parent = self
         return column
 
     def scrollArea(self,

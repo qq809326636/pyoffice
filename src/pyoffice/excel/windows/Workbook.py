@@ -14,7 +14,7 @@ class Workbook(_WinObject):
 
         # init
         from .Application import Application
-        self._app = Application.getInstance()
+        self._app = Application.getApplication()
 
     def getApplication(self):
         return self._app
@@ -247,7 +247,8 @@ class Workbook(_WinObject):
         from .Worksheet import Worksheet
 
         ws = Worksheet()
-        ws.impl = self.impl.Worksheets.Item(self.impl.Worksheets.Count)
+        ws.impl = self.impl.Worksheets.Item(self.getWorkSheetCount())
         return ws
 
-
+    def getWorkSheetCount(self):
+        return self.impl.Worksheets.Count

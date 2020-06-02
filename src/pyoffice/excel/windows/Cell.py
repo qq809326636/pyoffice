@@ -17,7 +17,7 @@ class Cell(_WinObject):
         self.impl.Activate()
 
     def getAddress(self):
-        return self.impl.Address
+        return str(self.impl.Address).replace('$', '')
 
     def getValue(self):
         return self.impl.Value

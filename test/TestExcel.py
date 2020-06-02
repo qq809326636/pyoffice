@@ -172,3 +172,21 @@ class TestExcel:
 
         for item in wb.getActiveWorkSheet().getTableList():
             print(f'item name: {item.getName()}')
+
+    def test_cell_end(self,
+                      wb):
+        print()
+        ws = wb.getWorkSheetByName('Sheet2')
+        cell = ws.getCellByAddress('B1')
+        rg = cell.end()
+        print(f'rg address: {rg.getAddress()}')
+
+    def test_usedrange(self,
+                       wb):
+        print()
+        ws = wb.getWorkSheetByName('Sheet2')
+        ret = ws.getUsedRange()
+        print(ret.getAddress())
+        cell = ws.getCellByAddress('B9')
+        print(cell.getAddress())
+        print(cell.getValue2())

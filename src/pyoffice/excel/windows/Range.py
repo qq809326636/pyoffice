@@ -70,6 +70,7 @@ class Range(_WinObject):
                 fillType: int = FillTypeEnum.FILLVALUES):
         """
         Auto fill
+        :param src: The area to be ref
         :param dst: The area to be filled
         :param fillType:
         :return:

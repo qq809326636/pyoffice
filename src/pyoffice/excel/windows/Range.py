@@ -129,3 +129,6 @@ class Range(_WinObject):
 
     def show(self):
         self.impl.Show()
+
+    def select(self):
+        return self.impl.Select()

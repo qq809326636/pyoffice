@@ -31,6 +31,8 @@ class TestExcel:
         app.setVisible(False)
         print(app.getPid())
 
+        print(app.impl.Hwnd)
+
     def test_open(self,
                   filepath):
         print()
@@ -184,9 +186,72 @@ class TestExcel:
     def test_usedrange(self,
                        wb):
         print()
-        ws = wb.getWorkSheetByName('Sheet2')
+        ws = wb.getWorkSheetByName('Sheet3')
         ret = ws.getUsedRange()
         print(ret.getAddress())
         cell = ws.getCellByAddress('B9')
         print(cell.getAddress())
+        print(cell.getValue())
         print(cell.getValue2())
+        print(cell.getText())
+
+        print('=' * 80)
+        j9 = ws.getCellByAddress('j9')
+        k9 = ws.getCellByAddress('k9')
+        print(j9.impl.Style.Borders.Color)
+        print(k9.impl.Style.Borders.Color)
+        print('=' * 80)
+        print(j9.getValue())
+        print(k9.getValue())
+
+    def test_getrow(self,
+                    wb):
+        print()
+        ws = wb.getWorkSheetByName('Sheet6')
+        rg = ws.getUsedRange()
+        print(rg.select())
+
+        # print(f'rg addr {rg.getAddress()}')
+        # col = ws.impl.Range('D:D')
+        # print(f'col count is {col.Count}')
+
+        # cell = ws.impl.Range('D1')
+        # cell = ws.getCellByAddress('D1048576')
+        # ret = cell.end(-4162)
+        # print(ret.getAddress())
+        # a = 1048576
+        # b = 65536
+        # a = 'ZZZZ1048576'
+
+        # row = ws.impl.Range('5:5')
+        # print(f'row count is {row.Count}')
+
+    def test_rows(self,
+                  wb):
+        ws = wb.getWorkSheetByName('Sheet6')
+
+        rows = ws.impl.Range('5:10')
+        print(f'rows addr {rows.Address}')
+        rows.Select()
+        # for item in rows:
+        #     print(f'item addr: {item.Address}')
+
+    def test_wbtables(self,
+                      wb):
+        print()
+        for ws in wb.impl.Worksheets:
+            for obj in ws.ListObjects:
+                print('=' * 80)
+                print(obj.Name)
+                print(obj.Range.Address)
+                print(obj.DataBodyRange)
+                print(obj.ShowHeaders)
+                print(obj.TableStyle)
+                print(obj.Unlist())  # Convert Table to Range
+
+    def test_wbnames(self,
+                     wb):
+        print()
+
+        for name in wb.impl.Names:
+            print(f'Name {name.Name}')

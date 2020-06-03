@@ -252,3 +252,5 @@ class Workbook(_WinObject):
 
     def getWorkSheetCount(self):
         return self.impl.Worksheets.Count
+
+

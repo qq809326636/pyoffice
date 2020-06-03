@@ -39,6 +39,18 @@ class Application(_WinObject):
     def getApplication():
         return Application()
 
+    # def __getattribute__(self, item):
+    #     try:
+    #         return getattr(self.impl, item)
+    #     except Exception:
+    #         return getattr(self, item)
+
+    # def __getattr__(self, item):
+    #     try:
+    #         return getattr(self, item)
+    #     except Exception:
+    #         return getattr(self.impl, item)
+
     def getPid(self):
         """
         Get excel application process id.

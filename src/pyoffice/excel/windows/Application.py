@@ -12,7 +12,7 @@ __all__ = ['Application']
 
 class Application(_WinObject):
     """
-    The Excel Application
+    Excel 应用
     """
 
     __instance = None
@@ -42,27 +42,15 @@ class Application(_WinObject):
     @staticmethod
     def getApplication():
         """
-        Get the excel application.
+        获取唯一的 Excel 应用
 
         :return:
         """
         return Application()
 
-    # def __getattribute__(self, item):
-    #     try:
-    #         return getattr(self.impl, item)
-    #     except Exception:
-    #         return getattr(self, item)
-
-    # def __getattr__(self, item):
-    #     try:
-    #         return getattr(self, item)
-    #     except Exception:
-    #         return getattr(self.impl, item)
-
     def getPid(self):
         """
-        Get excel application process id.
+        获取 Excel 应用的 PID
 
         :return:
         :rtype: int
@@ -73,7 +61,7 @@ class Application(_WinObject):
 
     def getVisible(self):
         """
-        Get the excel application visible.
+        获取 Excel 显示状态
 
         :return:
         :rtype: bool
@@ -83,7 +71,7 @@ class Application(_WinObject):
     def setVisible(self,
                    visible: bool):
         """
-        Set the excel application visible.
+        设置 Excel 显示状态
 
         :param bool visible:
         """
@@ -106,13 +94,13 @@ class Application(_WinObject):
              local=None,
              corruptLoad=None):
         """
-        Open the workbook.
+        打开一个 Excel 的工作簿
 
-        :param str filepath:
+        :param str filepath: 工作簿路径
         :param bool updateLinks:
-        :param bool readOnly:
+        :param bool readOnly: 是否以只读逻辑打开
         :param str format:
-        :param str password:
+        :param str password: 工作簿的密码
         :param str writeResPassword:
         :param bool ignoreReadOnlyRecommended:
         :param origin:
@@ -123,7 +111,7 @@ class Application(_WinObject):
         :param addToMru:
         :param local:
         :param corruptLoad:
-        :return:
+        :return: 返回一个工作簿
         :rtype: Workbook
         """
         from .Workbook import Workbook
@@ -148,7 +136,7 @@ class Application(_WinObject):
 
     def quit(self):
         """
-        Quit the application.
+        退出运行的 Excel 应用
 
         :return:
         """
@@ -156,7 +144,7 @@ class Application(_WinObject):
 
     def terminate(self):
         """
-        Terminal the application.
+        终止运行的 Excel 应用
 
         :return:
         """
@@ -165,9 +153,9 @@ class Application(_WinObject):
 
     def getActiveWorkbook(self):
         """
-        Get active workbook.
+        获取当前激活的工作簿
 
-        :return:
+        :return: 返回一个工作簿
         :rtype: Workbook
         """
         from .Workbook import Workbook
@@ -179,9 +167,9 @@ class Application(_WinObject):
 
     def createWorkbook(self):
         """
-        Create a workbook
+        创建一个工作簿
 
-        :return:
+        :return: 返回一个工作簿
         :rtype: Workbook
         """
         from .Workbook import Workbook

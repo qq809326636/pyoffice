@@ -10,7 +10,7 @@ __all__ = ['Workbook']
 
 class Workbook(_WinObject):
     """
-    Workbook
+    工作簿
     """
 
     def __init__(self):
@@ -22,7 +22,7 @@ class Workbook(_WinObject):
 
     def getApplication(self):
         """
-        Get application.
+        获取当前工作簿所属的 Excel 应用
 
         :return:
         :rtype: Application
@@ -31,7 +31,7 @@ class Workbook(_WinObject):
 
     def display(self):
         """
-        Show workbook
+        显示当前工作簿
 
         :return:
         """
@@ -54,13 +54,13 @@ class Workbook(_WinObject):
              local=None,
              corruptLoad=None):
         """
-        Open the workbook.
+        打开一个 Excel 的工作簿
 
-        :param str filepath:
+        :param str filepath: 工作簿路径
         :param bool updateLinks:
-        :param bool readOnly:
+        :param bool readOnly: 是否以只读逻辑打开
         :param str format:
-        :param str password:
+        :param str password: 工作簿的密码
         :param str writeResPassword:
         :param bool ignoreReadOnlyRecommended:
         :param origin:
@@ -71,7 +71,7 @@ class Workbook(_WinObject):
         :param addToMru:
         :param local:
         :param corruptLoad:
-        :return:
+        :return: 返回一个工作簿
         :rtype: Workbook
         """
         wb = self._app.impl.Workbooks.Open(filepath,
@@ -93,7 +93,8 @@ class Workbook(_WinObject):
 
     def close(self):
         """
-        Close this workbook without save.
+        关闭当前工作簿。
+        该操作不会保存关闭前所有未保存的结果。
 
         :return:
         """
@@ -101,7 +102,7 @@ class Workbook(_WinObject):
 
     def save(self):
         """
-        Save the workbook
+        保存工作簿
 
         :return:
         """
@@ -121,9 +122,9 @@ class Workbook(_WinObject):
                textVisualLayout=None,
                local: bool = True):
         """
-        The workbook save as other document.
+        工作簿另存为
 
-        :param str fileName:
+        :param str fileName: 另存为工作簿的路径
         :param int fileFormat:
         :param str password:
         :param str writeResPassword:
@@ -152,7 +153,7 @@ class Workbook(_WinObject):
 
     def getActiveWorkSheet(self):
         """
-        Get Active WorkSheet
+        获取当前工作簿激活的工作表
 
         :return:
         :rtype: Worksheet
@@ -166,9 +167,9 @@ class Workbook(_WinObject):
     def getWorkSheetByName(self,
                            sheetName: str):
         """
-        Get WorkSheet By Name
+        根据工作表名获取工作表
 
-        :param sheetName:
+        :param str sheetName: 工作表名
         :return:
         """
         from .Worksheet import Worksheet
@@ -183,9 +184,10 @@ class Workbook(_WinObject):
 
     def getWorkSheetList(self) -> list:
         """
-        Get WorkSheet List
+        获取工作表数组
 
         :return:
+        :rtype: list
         """
         from .Worksheet import Worksheet
 
@@ -196,61 +198,66 @@ class Workbook(_WinObject):
 
     def getPath(self):
         """
-        Get file path
+        获取当前工作簿的路径
 
-        :return:
+        :return: 路径
+        :rtype: str
         """
         return self.impl.Path
 
     def isReadOnly(self):
         """
-        Get workbook read only attribute.
+        获取当前工作表只读状态
 
-        :return:
+        :return: 只读状态
+        :rtype: bool
         """
         return self.impl.ReadOnly
 
     def getWritePassword(self):
         """
-        Get workbook password.
+        获取当前工作簿的写入密码
 
-        :return:
+        :return: 密码
+        :rtype: str
         """
         return self.impl.WritePassword
 
     def setWritePassword(self,
                          writePassword: str):
         """
-        Set workbook password
+        设置写入密码
 
-        :param writePassword:
+        :param str writePassword: 写入密码
         :return:
         """
         self.impl.WritePassword = writePassword
 
     def getAccuracyVersion(self):
         """
-        Get accuracy version.
+        获取当前精度版本
 
         :return:
+        :rtype: int
         """
         return self.impl.AccuracyVersion
 
     def setAccuracyVersion(self,
                            accuracyVersion: int = AccuracyVersionEnum.LATEST):
         """
-        Set accuracy version.
+        设置当前工作簿精确版本
 
-        :param accuracyVersion:
+        :param int accuracyVersion: 版本
         :return:
         """
         self.impl.AccuracyVersionEnum = accuracyVersion
 
     def getActiveCell(self):
         """
-        Get active cell.
+        获取当前工作簿激活的单元格
 
-        :return:
+        :return: 单元格
+        :rtype: Cell
         """
         from .Cell import Cell
 
@@ -261,9 +268,10 @@ class Workbook(_WinObject):
 
     def getFirstSheet(self):
         """
-        Get first sheet.
+        获取第一个工作表
 
-        :return:
+        :return: 工作表
+        :rtype: Worksheet
         """
         from .Worksheet import Worksheet
 
@@ -273,9 +281,10 @@ class Workbook(_WinObject):
 
     def getLastSheet(self):
         """
-        Get last sheet.
+        获取最后一个工作表
 
-        :return:
+        :return: 工作表
+        :rtype: Worksheet
         """
         from .Worksheet import Worksheet
 
@@ -285,9 +294,10 @@ class Workbook(_WinObject):
 
     def getWorkSheetCount(self):
         """
-        Get worksheet count
+        获取当前工作簿中工作表的数量
 
-        :return:
+        :return: 工作表数量
+        :rtype: int
         """
         return self.impl.Worksheets.Count
 

@@ -4,44 +4,64 @@
 
 基于 PyWin32 实现对 Excel、Word 等操作。
 
-## 项目结构
+## 简单使用
 
-**Plantuml** 图示如下：
+### Excel
 
-```plantuml
-@startmindmap
-* pyoffice
-** src
-*** pyoffice
-**** excel
-***** windows
-**** outlook
-**** powerpoint
-**** utils
-**** word
-** test
-**_ .gitignore
-**_ README.md
-@endmindmap
+#### 打开工作簿
+
+```python
+from pyoffice.excel import Workbook
+
+wb = Workbook()
+wb.open('test.xlsx')
 ```
 
-> 注1: 如果看不到图示，查看[附录][项目结构]
+#### 获取激活的工作表
 
-## 库功能
-
-**功能图**图示如下：
-
-```plantuml
-@startmindmap
-* Funcitons
-** Excel
-** Word
-** Outlook
-** PowerPoint
-@endmindmap
+```python
+ws = wb.getActiveWorkSheet()
+print(ws.getName())
 ```
 
-> 注1: 如果看不到图示，查看[附录][功能图]
+#### 根据工作表名称获取工作表
+
+```python
+ws = wb.getWorkSheetByName('Sheet1')
+print(ws.getName())
+```
+
+#### 获取工作表中已使用的区域
+
+```python
+rg = ws.getUsedRange()
+print(rg.getAddress())
+```
+
+#### 获取区域中的值
+
+```python
+val = rg.getValue()
+print(val)
+```
+
+#### 获取单元格
+
+```python
+cell = ws.getCellByAddress('A2')
+print(cell.getAddress())
+print(cell.getValue())
+```
+
+#### 将值写入单元格
+
+```python
+cell.setValue(1)
+cell.setValue('2')
+cell.setValue([1, 2, 3])
+cell.setValue([[1, 2, 3],
+               [4, 5, 6]])
+```
 
 ## 致谢
 
@@ -51,13 +71,3 @@
 ## 引用
 
 1. [Application object (Excel)](https://docs.microsoft.com/en-us/office/vba/api/excel.application(object))
-
-## 附录
-
-### 项目结构
-
-![项目结构](http://plantuml.excapp.com/plantuml/svg/LOv13eGW34Ntd88r2y_W9BgSZHSm1gff1YWfDOot5yMDg_Rr__xyFil24Z2wi2HbT3feNT62CaPdjdMyRfNWRy7Vgz6b_b79JQ1TFD6lGQ82d0YZDDu5_UChnEwA5yYNEEjkGy4j4iEDq_WPlcCNdEgXrchLJW00)
-
-### 功能图
-
-![功能图](http://plantuml.excapp.com/plantuml/svg/SoWkIImgoStCIybDBE3IKd0hpKlEBCdFA-RIqb9mhKXEpG4nmlEBKa2qVsb9Jdv-DeWPa5-UMXIGdvbNmkMG2jGDCG40)

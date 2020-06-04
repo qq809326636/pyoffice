@@ -25,7 +25,7 @@ class Workbook(_WinObject):
         获取当前工作簿所属的 Excel 应用
 
         :return:
-        :rtype: Application
+        :rtype: pyoffice.excel.windows.Workbook
         """
         return self._app
 

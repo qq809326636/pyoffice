@@ -31,6 +31,24 @@ class Cell(_WinObject):
         """
         return str(self.impl.Address).replace('$', '')
 
+    def getRowIndex(self):
+        """
+        获取当前单元格行号
+
+        :return: 行号
+        :rtype: int
+        """
+        return self.impl.Row
+
+    def getColumnIndex(self):
+        """
+        获取当前单元格列号
+
+        :return: 列号
+        :rtype: int
+        """
+        return self.impl.Column
+
     def getValue(self):
         """
         获取单元格的值
@@ -57,7 +75,24 @@ class Cell(_WinObject):
         :param value: 要写入的值
         :return:
         """
-        self.impl.Value = value
+        from .Util import Util
+        if isinstance(value, (str,
+                              int,
+                              float)):
+            self.impl.Value = value
+        elif isinstance(value, list):
+            firstVal = value[0]
+            if isinstance(firstVal, list):
+                rowCount = len(value)
+                colCount = len(value[0])
+                rg = self.impl.Range(f'A1:{Util.columnLableFromIndex(colCount)}{rowCount}')
+                rg.Value = value
+            else:
+                rg = self.impl.Range(f'A1:{Util.columnLableFromIndex(len(value))}1')
+                print(rg.Address)
+                rg.Value = value
+        else:
+            self.impl.Value = str(value)
 
     def getText(self):
         """
@@ -143,3 +178,11 @@ class Cell(_WinObject):
                                iconIndex,
                                iconLabel,
                                noHtmlFormatting)
+
+    def select(self):
+        """
+        选中当前单元格
+
+        :return:
+        """
+        self.impl.Select()

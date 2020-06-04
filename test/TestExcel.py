@@ -274,3 +274,44 @@ class TestExcel:
         # tmp = cell.End(-4162)
         # tmp.Select()
         # print(tmp.Address)
+
+    def test_open(self):
+        from pyoffice.excel import Workbook
+
+        wb = Workbook()
+        wb.open('test.xlsx')
+        ws = wb.getActiveWorkSheet()
+        print(ws.getName())
+
+        ws = wb.getWorkSheetByName('Sheet1')
+        print(ws.getName())
+
+        # rg = ws.getUsedRange()
+        # print(rg.getAddress())
+        #
+        # val = rg.getValue()
+        # print(val)
+
+        cell = ws.getCellByAddress('N7')
+        ws.active()
+        cell.select()
+        print(cell.getAddress())
+        print(cell.getValue())
+
+        cell.setValue(1)
+        cell.setValue('2')
+        cell.setValue([1, 2, 3])
+        cell.setValue([[1, 2, 3],
+                       [4, 5, 6]])
+
+        print('aaaa')
+
+    def test_util(self):
+        from pyoffice.excel import Util
+        print()
+
+        ret = Util.columnLableFromIndex(26)
+        print(f'ret {ret}')
+
+        ret = Util.columnLableToIndex('aa')
+        print(f'ret {ret}')

@@ -7,7 +7,18 @@ __all__ = ['DirectionEnum',
            'DeleteDirectionEnum',
            'WorksheetCopyMode',
            'WorksheetPasteFormatEnum',
-           'WorksheetType']
+           'WorksheetType',
+           'SheetMax']
+
+
+class OldSheetMax:
+    MAX_ROW = 2 ** 16
+    MAX_COL = 2 * 12
+
+
+class SheetMax:
+    MAX_ROW = 2 ** 20
+    MAX_COL = 2 ** 14
 
 
 class DirectionEnum:

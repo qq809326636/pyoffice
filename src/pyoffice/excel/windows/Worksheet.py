@@ -186,12 +186,28 @@ class Worksheet(_WinObject):
         row.impl = self.impl.Rows(index)
         return row
 
+    def getRowByAddr(self,
+                     addr):
+        from .Row import Row
+
+        row = Row()
+        row.impl = self.impl.Range(addr)
+        return row
+
     def getColumnByIndex(self,
                          index: int):
         from .Column import Column
 
         column = Column()
         column.impl = self.impl.Columns(index)
+        return column
+
+    def getColumnByAddr(self,
+                        addr: str):
+        from .Column import Column
+
+        column = Column()
+        column.impl = self.impl.Range(addr)
         return column
 
     def scrollArea(self,

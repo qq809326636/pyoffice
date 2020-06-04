@@ -255,3 +255,22 @@ class TestExcel:
 
         for name in wb.impl.Names:
             print(f'Name {name.Name}')
+
+    def test_wsgetcolrow(self,
+                         wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+
+        ws.getUsedRange().select()
+
+        # row = ws.getRowByAddr('1:1')
+        # row.impl.Select()
+        # print(row.impl.Count)
+
+        # col = ws.getColumnByAddr('d:G')
+        # col.impl.Select()
+        # cell = col.impl.Cells(col.impl.Count)
+        # # print(col.impl.Count)
+        # print(cell.Address)
+        # tmp = cell.End(-4162)
+        # tmp.Select()
+        # print(tmp.Address)

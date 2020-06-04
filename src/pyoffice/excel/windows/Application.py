@@ -11,6 +11,10 @@ __all__ = ['Application']
 
 
 class Application(_WinObject):
+    """
+    The Excel Application
+    """
+
     __instance = None
 
     # Field
@@ -37,6 +41,11 @@ class Application(_WinObject):
 
     @staticmethod
     def getApplication():
+        """
+        Get the excel application.
+
+        :return:
+        """
         return Application()
 
     # def __getattribute__(self, item):
@@ -54,7 +63,9 @@ class Application(_WinObject):
     def getPid(self):
         """
         Get excel application process id.
+
         :return:
+        :rtype: int
         """
         import win32process
         threadId, processId = win32process.GetWindowThreadProcessId(self.impl.Hwnd)
@@ -63,7 +74,9 @@ class Application(_WinObject):
     def getVisible(self):
         """
         Get the excel application visible.
+
         :return:
+        :rtype: bool
         """
         return self.impl.Visible
 
@@ -71,8 +84,8 @@ class Application(_WinObject):
                    visible: bool):
         """
         Set the excel application visible.
-        :param visible:
-        :return:
+
+        :param bool visible:
         """
         self.impl.Visible = visible
 
@@ -94,22 +107,24 @@ class Application(_WinObject):
              corruptLoad=None):
         """
         Open the workbook.
-        :param filepath:
-        :param updateLinks:
-        :param readOnly:
-        :param format:
-        :param password:
-        :param writeResPassword:
-        :param ignoreReadOnlyRecommended:
+
+        :param str filepath:
+        :param bool updateLinks:
+        :param bool readOnly:
+        :param str format:
+        :param str password:
+        :param str writeResPassword:
+        :param bool ignoreReadOnlyRecommended:
         :param origin:
         :param delimiter:
-        :param editable:
-        :param notify:
+        :param bool editable:
+        :param bool notify:
         :param converter:
         :param addToMru:
         :param local:
         :param corruptLoad:
         :return:
+        :rtype: Workbook
         """
         from .Workbook import Workbook
 
@@ -134,13 +149,15 @@ class Application(_WinObject):
     def quit(self):
         """
         Quit the application.
+
         :return:
         """
         self.impl.Quit()
 
     def terminate(self):
         """
-        Terminal the application
+        Terminal the application.
+
         :return:
         """
         from pyoffice.utils import ProcessUtil
@@ -149,7 +166,9 @@ class Application(_WinObject):
     def getActiveWorkbook(self):
         """
         Get active workbook.
+
         :return:
+        :rtype: Workbook
         """
         from .Workbook import Workbook
 
@@ -159,6 +178,12 @@ class Application(_WinObject):
         return workbook
 
     def createWorkbook(self):
+        """
+        Create a workbook
+
+        :return:
+        :rtype: Workbook
+        """
         from .Workbook import Workbook
 
         workbook = Workbook()

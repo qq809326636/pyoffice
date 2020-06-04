@@ -6,9 +6,13 @@ target/
 # For pytest
 .pytest_cache/
 
+# For folder
+!.gitkeep
+
 # For PyCharm
 .idea/
 
 # For Doc
 doc/build/
 doc/source/pyoffice*.rst
+doc/source/modules.rst

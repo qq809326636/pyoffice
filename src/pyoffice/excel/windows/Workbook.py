@@ -9,6 +9,10 @@ __all__ = ['Workbook']
 
 
 class Workbook(_WinObject):
+    """
+    Workbook
+    """
+
     def __init__(self):
         _WinObject.__init__(self)
 
@@ -17,9 +21,20 @@ class Workbook(_WinObject):
         self._app = Application.getApplication()
 
     def getApplication(self):
+        """
+        Get application.
+
+        :return:
+        :rtype: Application
+        """
         return self._app
 
     def display(self):
+        """
+        Show workbook
+
+        :return:
+        """
         self._app.setVisible(True)
 
     def open(self,
@@ -39,23 +54,25 @@ class Workbook(_WinObject):
              local=None,
              corruptLoad=None):
         """
-        Open Excel File
-        :param filepath:
-        :param updateLinks:
-        :param readOnly:
-        :param format:
-        :param password:
-        :param writeResPassword:
-        :param ignoreReadOnlyRecommended:
+        Open the workbook.
+
+        :param str filepath:
+        :param bool updateLinks:
+        :param bool readOnly:
+        :param str format:
+        :param str password:
+        :param str writeResPassword:
+        :param bool ignoreReadOnlyRecommended:
         :param origin:
         :param delimiter:
-        :param editable:
-        :param notify:
+        :param bool editable:
+        :param bool notify:
         :param converter:
         :param addToMru:
         :param local:
         :param corruptLoad:
         :return:
+        :rtype: Workbook
         """
         wb = self._app.impl.Workbooks.Open(filepath,
                                            updateLinks,
@@ -77,6 +94,7 @@ class Workbook(_WinObject):
     def close(self):
         """
         Close this workbook without save.
+
         :return:
         """
         self.impl.Close()
@@ -84,6 +102,7 @@ class Workbook(_WinObject):
     def save(self):
         """
         Save the workbook
+
         :return:
         """
         self.impl.Save()
@@ -103,18 +122,19 @@ class Workbook(_WinObject):
                local: bool = True):
         """
         The workbook save as other document.
-        :param fileName:
-        :param fileFormat:
-        :param password:
-        :param writeResPassword:
-        :param readOnlyRecommended:
-        :param createBackup:
-        :param accessMode:
-        :param conflictResolution:
-        :param addToMru:
+
+        :param str fileName:
+        :param int fileFormat:
+        :param str password:
+        :param str writeResPassword:
+        :param bool readOnlyRecommended:
+        :param bool createBackup:
+        :param int accessMode:
+        :param int conflictResolution:
+        :param bool addToMru:
         :param textCodepage:
         :param textVisualLayout:
-        :param local:
+        :param bool local:
         :return:
         """
         self.impl.SaveAs(fileName,
@@ -133,7 +153,9 @@ class Workbook(_WinObject):
     def getActiveWorkSheet(self):
         """
         Get Active WorkSheet
+
         :return:
+        :rtype: Worksheet
         """
         from .Worksheet import Worksheet
 
@@ -145,6 +167,7 @@ class Workbook(_WinObject):
                            sheetName: str):
         """
         Get WorkSheet By Name
+
         :param sheetName:
         :return:
         """
@@ -161,6 +184,7 @@ class Workbook(_WinObject):
     def getWorkSheetList(self) -> list:
         """
         Get WorkSheet List
+
         :return:
         """
         from .Worksheet import Worksheet
@@ -173,6 +197,7 @@ class Workbook(_WinObject):
     def getPath(self):
         """
         Get file path
+
         :return:
         """
         return self.impl.Path
@@ -180,6 +205,7 @@ class Workbook(_WinObject):
     def isReadOnly(self):
         """
         Get workbook read only attribute.
+
         :return:
         """
         return self.impl.ReadOnly
@@ -187,6 +213,7 @@ class Workbook(_WinObject):
     def getWritePassword(self):
         """
         Get workbook password.
+
         :return:
         """
         return self.impl.WritePassword
@@ -195,6 +222,7 @@ class Workbook(_WinObject):
                          writePassword: str):
         """
         Set workbook password
+
         :param writePassword:
         :return:
         """
@@ -203,6 +231,7 @@ class Workbook(_WinObject):
     def getAccuracyVersion(self):
         """
         Get accuracy version.
+
         :return:
         """
         return self.impl.AccuracyVersion
@@ -211,6 +240,7 @@ class Workbook(_WinObject):
                            accuracyVersion: int = AccuracyVersionEnum.LATEST):
         """
         Set accuracy version.
+
         :param accuracyVersion:
         :return:
         """
@@ -219,6 +249,7 @@ class Workbook(_WinObject):
     def getActiveCell(self):
         """
         Get active cell.
+
         :return:
         """
         from .Cell import Cell
@@ -231,6 +262,7 @@ class Workbook(_WinObject):
     def getFirstSheet(self):
         """
         Get first sheet.
+
         :return:
         """
         from .Worksheet import Worksheet
@@ -242,6 +274,7 @@ class Workbook(_WinObject):
     def getLastSheet(self):
         """
         Get last sheet.
+
         :return:
         """
         from .Worksheet import Worksheet
@@ -251,6 +284,11 @@ class Workbook(_WinObject):
         return ws
 
     def getWorkSheetCount(self):
+        """
+        Get worksheet count
+
+        :return:
+        """
         return self.impl.Worksheets.Count
 
 

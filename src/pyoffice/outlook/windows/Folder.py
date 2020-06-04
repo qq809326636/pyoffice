@@ -1,4 +1,5 @@
 from ._WinObject import *
+import logging
 
 __all__ = ['Folder']
 
@@ -86,6 +87,8 @@ class Folder(_WinObject):
 
         query = Builder.build(ql)
         query = f'{DASLPrefix.PREFIX}{query}'
+
+        logging.debug(f'Query is "{query}"')
         ret = self.impl.Items.Restrict(query)
         for item in ret:
             msg = Message()

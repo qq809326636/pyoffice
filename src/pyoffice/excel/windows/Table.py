@@ -7,6 +7,9 @@ __all__ = ['Table']
 
 
 class Table(_WinObject):
+    """
+    数据表
+    """
 
     def __init__(self):
         _WinObject.__init__(self)

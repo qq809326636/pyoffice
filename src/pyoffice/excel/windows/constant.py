@@ -7,10 +7,30 @@ __all__ = ['DirectionEnum',
            'DeleteDirectionEnum',
            'WorksheetCopyMode',
            'WorksheetPasteFormatEnum',
-           'WorksheetType']
+           'WorksheetType',
+           'SheetMax']
+
+
+class OldSheetMax:
+    """
+    低版本工作簿最大行列的限制
+    """
+    MAX_ROW = 2 ** 16  # 最大行数
+    MAX_COL = 2 * 12  # 最大列数
+
+
+class SheetMax:
+    """
+    Office 2010 及以上版本的行列的限制
+    """
+    MAX_ROW = 2 ** 20  # 最大行
+    MAX_COL = 2 ** 14  # 最大列
 
 
 class DirectionEnum:
+    """
+    扩充的方向
+    """
     DOWN = -4121
     LEFT = -4159
     RIGHT = -4161
@@ -18,11 +38,17 @@ class DirectionEnum:
 
 
 class DeleteDirectionEnum:
-    SHIFTTOLEFT = -4159  # Cells are shifted to the left.
-    SHIFTUP = -4162  # Cells are shifted up.
+    """
+    删除方式
+    """
+    SHIFTTOLEFT = -4159  # 右侧单元格左移
+    SHIFTUP = -4162  # 下侧单元格上移
 
 
 class FillTypeEnum:
+    """
+    填充方式
+    """
     FILLCOPY = 1  # Copy the values and formats from the source range to the target range, repeating if necessary.
     FILLDAYS = 5  # Extend the names of the days of the week in the source range into the target range. Formats are copied from the source range to the target range, repeating if necessary.
     FILLDEFAULT = 0  # Excel determines the values and formats used to fill the target range.
@@ -38,6 +64,9 @@ class FillTypeEnum:
 
 
 class AccuracyVersionEnum:
+    """
+    精度版本
+    """
     LATEST = 0
     FOR07 = 1
     FOR10 = 2
@@ -56,6 +85,9 @@ class XlSaveAsAccessMode:
 
 
 class XLFileFormatEnum:
+    """
+    文件格式
+    """
     xlAddIn = 18  # Microsoft Excel 97-2003 Add-In.Ext:*.xla
     xlAddIn8 = 18  # Microsoft Excel 97-2003 Add-In.Ext:*.xla
     xlCSV = 6  # CSV.Ext:*.csv
@@ -115,6 +147,9 @@ class XLFileFormatEnum:
 
 
 class WorksheetCopyMode:
+    """
+    工作簿复制方式
+    """
     BEFORE = 1
     AFTER = 2
     FIRST = 3

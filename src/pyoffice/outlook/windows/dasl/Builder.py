@@ -1,61 +1,7 @@
 """
-Template:
-
-1. Simple
-
-{
-    "prop": "subject",
-    "op": "like",
-    "value": "test"
-}
-
-2. Simple Group
-
-{
-    "group": {
-        "left": {
-            "prop": "subject",
-            "op": "like",
-            "value": "value"
-        },
-        "linker": "or",
-        "right": {
-            "prop": "cc",
-            "op": "like",
-            "value": "123"
-        }
-    }
-}
-
-3. Mixed Group
-
-{
-    "group": {
-        "left": {
-            "prop": "subject",
-            "op": "like",
-            "value": "value"
-        },
-        "linker": "or",
-        "right": {
-            "group": {
-                "left": {
-                    "prop": "subject",
-                    "op": "like",
-                    "value": "value"
-                },
-                "linker": "or",
-                "right": {
-                    "prop": "cc",
-                    "op": "like",
-                    "value": "123"
-                }
-            }
-        }
-    }
-}
-
+Builder
 """
+
 from .Expression import Expression
 from .Group import Group
 

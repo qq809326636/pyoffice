@@ -46,3 +46,56 @@ class TestUtil:
             print()
 
         # obj.Quit()
+
+    def test_checkexistbyprocessname(self):
+        print()
+        ret = utils.ProcessUtil.checkExistByProcessName('%excel%')
+        print(f'ret: {ret}')
+
+    def test_getactiveobject(self):
+        print()
+        from win32com.client import GetActiveObject, GetObject
+
+        # excelApp = GetActiveObject('Excel.Application')
+        excelApp = GetObject(Class='Excel.Application')
+        print(excelApp)
+        import win32process
+        threadId, processId = win32process.GetWindowThreadProcessId(excelApp.Hwnd)
+
+        print('threadId', threadId)
+        print('processId', processId)
+
+        # for wb in excelApp.Workbooks:
+        #     print('Name', wb.Name)
+        #     print('FullName', wb.FullName)
+        #     print('Path', wb.Path)
+        #     wb.Close()
+
+        excelApp.Visible = False
+        # excelApp.Quit()
+
+    def test_excel(self):
+        import win32com.client
+
+        app = win32com.client.DispatchEx('Excel.Application')
+        app.Visible = False
+
+    def test_services(self):
+        print()
+        for item in utils.ProcessUtil.getWindowsServiceInfoList():
+            print('=' * 80)
+            print(f'DisplayName is {item.DisplayName}')
+            print(f'PathName is {item.PathName}')
+            print(f'ProcessId is {item.ProcessId}')
+
+    def test_process(self):
+        print()
+        for item in utils.ProcessUtil.getWindowsProcessInfoList():
+            print('=' * 80)
+            print(f'Name is {item.Name}')
+            print(f'Handle is {item.Handle}')
+            print(f'ProcessId is {item.ProcessId}')
+
+
+
+

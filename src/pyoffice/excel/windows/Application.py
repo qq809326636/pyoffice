@@ -11,6 +11,10 @@ __all__ = ['Application']
 
 
 class Application(_WinObject):
+    """
+    Excel 应用
+    """
+
     __instance = None
 
     # Field
@@ -24,7 +28,7 @@ class Application(_WinObject):
             if cls.impl is None:
                 import win32com.client
                 try:
-                    cls.impl = win32com.client.GetActiveObject(Class='Excel.Application')
+                    cls.impl = win32com.client.GetObject(Class='Excel.Application')
                 except Exception as err:
                     logging.warning(err)
                     cls.impl = win32com.client.DispatchEx('Excel.Application')
@@ -36,13 +40,20 @@ class Application(_WinObject):
         _WinObject.__init__(self)
 
     @staticmethod
-    def getInstance():
+    def getApplication():
+        """
+        获取唯一的 Excel 应用
+
+        :return:
+        """
         return Application()
 
     def getPid(self):
         """
-        Get excel application process id.
+        获取 Excel 应用的 PID
+
         :return:
+        :rtype: int
         """
         import win32process
         threadId, processId = win32process.GetWindowThreadProcessId(self.impl.Hwnd)
@@ -50,17 +61,19 @@ class Application(_WinObject):
 
     def getVisible(self):
         """
-        Get the excel application visible.
+        获取 Excel 显示状态
+
         :return:
+        :rtype: bool
         """
         return self.impl.Visible
 
     def setVisible(self,
                    visible: bool):
         """
-        Set the excel application visible.
-        :param visible:
-        :return:
+        设置 Excel 显示状态
+
+        :param bool visible:
         """
         self.impl.Visible = visible
 
@@ -81,23 +94,25 @@ class Application(_WinObject):
              local=None,
              corruptLoad=None):
         """
-        Open the workbook.
-        :param filepath:
-        :param updateLinks:
-        :param readOnly:
-        :param format:
-        :param password:
-        :param writeResPassword:
-        :param ignoreReadOnlyRecommended:
+        打开一个 Excel 的工作簿
+
+        :param str filepath: 工作簿路径
+        :param bool updateLinks:
+        :param bool readOnly: 是否以只读逻辑打开
+        :param str format:
+        :param str password: 工作簿的密码
+        :param str writeResPassword:
+        :param bool ignoreReadOnlyRecommended:
         :param origin:
         :param delimiter:
-        :param editable:
-        :param notify:
+        :param bool editable:
+        :param bool notify:
         :param converter:
         :param addToMru:
         :param local:
         :param corruptLoad:
-        :return:
+        :return: 返回一个工作簿
+        :rtype: Workbook
         """
         from .Workbook import Workbook
 
@@ -121,14 +136,16 @@ class Application(_WinObject):
 
     def quit(self):
         """
-        Quit the application.
+        退出运行的 Excel 应用
+
         :return:
         """
         self.impl.Quit()
 
     def terminate(self):
         """
-        Terminal the application
+        终止运行的 Excel 应用
+
         :return:
         """
         from pyoffice.utils import ProcessUtil
@@ -136,8 +153,10 @@ class Application(_WinObject):
 
     def getActiveWorkbook(self):
         """
-        Get active workbook.
-        :return:
+        获取当前激活的工作簿
+
+        :return: 返回一个工作簿
+        :rtype: Workbook
         """
         from .Workbook import Workbook
 
@@ -147,6 +166,12 @@ class Application(_WinObject):
         return workbook
 
     def createWorkbook(self):
+        """
+        创建一个工作簿
+
+        :return: 返回一个工作簿
+        :rtype: Workbook
+        """
         from .Workbook import Workbook
 
         workbook = Workbook()

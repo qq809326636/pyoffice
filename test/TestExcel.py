@@ -28,12 +28,17 @@ class TestExcel:
     def test_app(self):
         from pyoffice.excel import Application
         app = Application()
+        app.setVisible(False)
         print(app.getPid())
+
+        print(app.impl.Hwnd)
 
     def test_open(self,
                   filepath):
+        print()
         from pyoffice.excel import Workbook
         wb = Workbook()
+        print(wb.getApplication().getPid())
         wb.open(filepath)
         wb.display()
         ws = wb.getActiveWorkSheet()
@@ -148,10 +153,13 @@ class TestExcel:
     def test_xlwings(self):
         import xlwings as xw
 
-        print(len(xw.apps))
-        for item in xw.apps:
-            print('=' * 80)
-            print(item)
+        app = xw.App(False, False)
+        app.visible = False
+
+        # print(len(xw.apps))
+        # for item in xw.apps:
+        #     print('=' * 80)
+        #     print(item)
 
     def test_filter(self,
                     wb):
@@ -166,3 +174,144 @@ class TestExcel:
 
         for item in wb.getActiveWorkSheet().getTableList():
             print(f'item name: {item.getName()}')
+
+    def test_cell_end(self,
+                      wb):
+        print()
+        ws = wb.getWorkSheetByName('Sheet2')
+        cell = ws.getCellByAddress('B1')
+        rg = cell.end()
+        print(f'rg address: {rg.getAddress()}')
+
+    def test_usedrange(self,
+                       wb):
+        print()
+        ws = wb.getWorkSheetByName('Sheet3')
+        ret = ws.getUsedRange()
+        print(ret.getAddress())
+        cell = ws.getCellByAddress('B9')
+        print(cell.getAddress())
+        print(cell.getValue())
+        print(cell.getValue2())
+        print(cell.getText())
+
+        print('=' * 80)
+        j9 = ws.getCellByAddress('j9')
+        k9 = ws.getCellByAddress('k9')
+        print(j9.impl.Style.Borders.Color)
+        print(k9.impl.Style.Borders.Color)
+        print('=' * 80)
+        print(j9.getValue())
+        print(k9.getValue())
+
+    def test_getrow(self,
+                    wb):
+        print()
+        ws = wb.getWorkSheetByName('Sheet6')
+        rg = ws.getUsedRange()
+        print(rg.select())
+
+        # print(f'rg addr {rg.getAddress()}')
+        # col = ws.impl.Range('D:D')
+        # print(f'col count is {col.Count}')
+
+        # cell = ws.impl.Range('D1')
+        # cell = ws.getCellByAddress('D1048576')
+        # ret = cell.end(-4162)
+        # print(ret.getAddress())
+        # a = 1048576
+        # b = 65536
+        # a = 'ZZZZ1048576'
+
+        # row = ws.impl.Range('5:5')
+        # print(f'row count is {row.Count}')
+
+    def test_rows(self,
+                  wb):
+        ws = wb.getWorkSheetByName('Sheet6')
+
+        rows = ws.impl.Range('5:10')
+        print(f'rows addr {rows.Address}')
+        rows.Select()
+        # for item in rows:
+        #     print(f'item addr: {item.Address}')
+
+    def test_wbtables(self,
+                      wb):
+        print()
+        for ws in wb.impl.Worksheets:
+            for obj in ws.ListObjects:
+                print('=' * 80)
+                print(obj.Name)
+                print(obj.Range.Address)
+                print(obj.DataBodyRange)
+                print(obj.ShowHeaders)
+                print(obj.TableStyle)
+                print(obj.Unlist())  # Convert Table to Range
+
+    def test_wbnames(self,
+                     wb):
+        print()
+
+        for name in wb.impl.Names:
+            print(f'Name {name.Name}')
+
+    def test_wsgetcolrow(self,
+                         wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+
+        ws.getUsedRange().select()
+
+        # row = ws.getRowByAddr('1:1')
+        # row.impl.Select()
+        # print(row.impl.Count)
+
+        # col = ws.getColumnByAddr('d:G')
+        # col.impl.Select()
+        # cell = col.impl.Cells(col.impl.Count)
+        # # print(col.impl.Count)
+        # print(cell.Address)
+        # tmp = cell.End(-4162)
+        # tmp.Select()
+        # print(tmp.Address)
+
+    def test_open(self):
+        from pyoffice.excel import Workbook
+
+        wb = Workbook()
+        wb.open('test.xlsx')
+        ws = wb.getActiveWorkSheet()
+        print(ws.getName())
+
+        ws = wb.getWorkSheetByName('Sheet1')
+        print(ws.getName())
+
+        # rg = ws.getUsedRange()
+        # print(rg.getAddress())
+        #
+        # val = rg.getValue()
+        # print(val)
+
+        cell = ws.getCellByAddress('N7')
+        ws.active()
+        cell.select()
+        print(cell.getAddress())
+        print(cell.getValue())
+
+        cell.setValue(1)
+        cell.setValue('2')
+        cell.setValue([1, 2, 3])
+        cell.setValue([[1, 2, 3],
+                       [4, 5, 6]])
+
+        print('aaaa')
+
+    def test_util(self):
+        from pyoffice.excel import Util
+        print()
+
+        ret = Util.columnLableFromIndex(26)
+        print(f'ret {ret}')
+
+        ret = Util.columnLableToIndex('aa')
+        print(f'ret {ret}')

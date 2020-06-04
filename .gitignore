@@ -2,6 +2,7 @@
 *.py[cod]
 *.c
 target/
+venv/
 
 # For pytest
 .pytest_cache/

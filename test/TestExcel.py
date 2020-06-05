@@ -28,10 +28,15 @@ class TestExcel:
     def test_app(self):
         from pyoffice.excel import Application
         app = Application()
-        app.setVisible(False)
+        # app.setVisible(False)
         print(app.getPid())
 
         print(app.impl.Hwnd)
+        ver = app.getVersion()
+        print(type(ver))
+        limits = app.getExcelLimits()
+        print(limits)
+
 
     def test_open(self,
                   filepath):

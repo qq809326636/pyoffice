@@ -7,6 +7,13 @@ class Util:
 
     @staticmethod
     def columnLableToIndex(lable: str):
+        """
+        将列标签转为列号
+
+        :param lable: 列标签
+        :return:
+        :rtype: int
+        """
         index = 0
         for item in lable.upper():
             if 'A' <= item <= 'Z':
@@ -18,6 +25,13 @@ class Util:
 
     @staticmethod
     def columnLableFromIndex(index: int):
+        """
+        将列号转为列标签
+
+        :param index: 列号
+        :return:
+        :rtype: str
+        """
         if index > SheetMax.MAX_COL:
             raise IndexError(f'The column index has exceeded the maximum number of columns.')
         if index < 1:

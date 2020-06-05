@@ -73,3 +73,6 @@ class Row(_WinObject):
         :return:
         """
         self.impl.Show()
+
+    def count(self):
+        return self.impl.Count

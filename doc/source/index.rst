@@ -7,7 +7,7 @@ Welcome to pyoffice's documentation!
 ====================================
 
 .. toctree::
-   :maxdepth: 8
+   :maxdepth: 2
    :caption: Contents:
 
 

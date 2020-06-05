@@ -99,6 +99,8 @@ class Workbook(_WinObject):
         :return:
         """
         self.impl.Close()
+        if self._app.getWorkbookCount() == 0:
+            self._app.quit()
 
     def save(self):
         """
@@ -162,6 +164,8 @@ class Workbook(_WinObject):
 
         workSheet = Worksheet()
         workSheet.impl = self.impl.ActiveSheet
+        if workSheet.impl is None:
+            raise ValueError('The active sheet is None.')
         return workSheet
 
     def getWorkSheetByName(self,
@@ -300,5 +304,4 @@ class Workbook(_WinObject):
         :rtype: int
         """
         return self.impl.Worksheets.Count
-
 

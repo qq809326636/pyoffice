@@ -76,3 +76,26 @@ class Row(_WinObject):
 
     def count(self):
         return self.impl.Count
+
+    def getBelongWorksheet(self):
+        from .Worksheet import Worksheet
+
+        ws = Worksheet()
+        ws.impl = self.impl.Parent
+        return ws
+
+    def getRowIndex(self):
+        return self.impl.Row
+
+    def getLastCell(self):
+        from .Application import Application
+        from .constant import DirectionEnum
+        from .Util import Util
+
+        app = Application.getApplication()
+        limits = app.getExcelLimits()
+
+        columnLable = Util.columnLableFromIndex(limits.maxColumnCount)
+        cell = self.getBelongWorksheet().getCellByAddress(f'{columnLable}{self.getRowIndex()}')
+        lastCell = cell.end(DirectionEnum.LEFT)
+        return lastCell

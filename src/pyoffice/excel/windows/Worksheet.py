@@ -365,21 +365,6 @@ class Worksheet(_WinObject):
         column.impl = self.impl.Columns(index)
         return column
 
-    def getColumnByAddr(self,
-                        addr: str):
-        """
-        获取列
-
-        :param addr: 列地址。例如: "A:A"
-        :return: 列
-        :rtype: Column
-        """
-        from .Column import Column
-
-        column = Column()
-        column.impl = self.impl.Range(addr)
-        return column
-
     def scrollArea(self,
                    area: str):
         """
@@ -477,10 +462,36 @@ class Worksheet(_WinObject):
         row.impl = self.impl.Range(f'{addr}:{addr}')
         return row
 
+    def getColumnByAddr(self,
+                        addr: str):
+        """
+        获取列
+
+        :param addr: 列地址。例如: "A:A"
+        :return: 列
+        :rtype: Column
+        """
+        from .Column import Column
+
+        column = Column()
+        column.impl = self.impl.Range(addr)
+        return column
+
     def getColumnByAddress(self,
                            addr: str):
         from .Column import Column
 
+        col = Column()
+        col.impl = self.impl.Range(f'{addr}:{addr}')
+
+        return col
+
+    def getColumnByIndex(self,
+                         index: int):
+        from .Column import Column
+        from .Util import Util
+
+        addr = Util.columnLableFromIndex(index)
         col = Column()
         col.impl = self.impl.Range(f'{addr}:{addr}')
 

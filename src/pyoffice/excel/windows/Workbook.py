@@ -19,6 +19,7 @@ class Workbook(_WinObject):
         # init
         from .Application import Application
         self._app = Application.getApplication()
+        self._attached = False
 
     def getApplication(self):
         """
@@ -74,22 +75,28 @@ class Workbook(_WinObject):
         :return: 返回一个工作簿
         :rtype: Workbook
         """
-        wb = self._app.impl.Workbooks.Open(filepath,
-                                           updateLinks,
-                                           readOnly,
-                                           format,
-                                           password,
-                                           writeResPassword,
-                                           ignoreReadOnlyRecommended,
-                                           origin,
-                                           delimiter,
-                                           editable,
-                                           notify,
-                                           converter,
-                                           addToMru,
-                                           local,
-                                           corruptLoad)
-        self.impl = wb
+        for item in self._app.impl.Workbooks:
+            if item.FullName == filepath:
+                self.impl = item
+                self._attached = True
+                break
+        else:
+            wb = self._app.impl.Workbooks.Open(filepath,
+                                               updateLinks,
+                                               readOnly,
+                                               format,
+                                               password,
+                                               writeResPassword,
+                                               ignoreReadOnlyRecommended,
+                                               origin,
+                                               delimiter,
+                                               editable,
+                                               notify,
+                                               converter,
+                                               addToMru,
+                                               local,
+                                               corruptLoad)
+            self.impl = wb
 
     def close(self):
         """
@@ -98,7 +105,8 @@ class Workbook(_WinObject):
 
         :return:
         """
-        self.impl.Close()
+        if self._attached:
+            self.impl.Close()
         if self._app.getWorkbookCount() == 0:
             self._app.quit()
 
@@ -304,4 +312,3 @@ class Workbook(_WinObject):
         :rtype: int
         """
         return self.impl.Worksheets.Count
-

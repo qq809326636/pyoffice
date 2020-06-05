@@ -49,6 +49,11 @@ class Cell(_WinObject):
         """
         return self.impl.Column
 
+    def getColumnLabel(self):
+        from .Util import Util
+
+        return Util.columnLableFromIndex(self.getColumnIndex())
+
     def getValue(self):
         """
         获取单元格的值
@@ -128,12 +133,12 @@ class Cell(_WinObject):
 
         :param int direction: 方向。只能是上、下、左、右
         :return: 区域
-        :rtype: Range
+        :rtype: Cell
         """
-        from .Range import Range
-        rg = Range()
-        rg.impl = self.impl.Parent.Range(self.impl, self.impl.End(direction))
-        return rg
+
+        cell = Cell()
+        cell.impl = self.impl.Parent.Range(self.impl, self.impl.End(direction)).Item(1)
+        return cell
 
     def show(self):
         """
@@ -186,3 +191,49 @@ class Cell(_WinObject):
         :return:
         """
         self.impl.Select()
+
+    def getBelongWorksheet(self):
+        from .Worksheet import Worksheet
+
+        ws = Worksheet()
+        ws.impl = self.impl.Parent
+        return ws
+
+    def up(self):
+        ws = self.getBelongWorksheet()
+        row = max(1, self.getRowIndex() - 1)
+        col = self.getColumnLabel()
+
+        return ws.getCellByAddress(f'{col}{row}')
+
+    def left(self):
+        from .Util import Util
+
+        ws = self.getBelongWorksheet()
+        row = self.getRowIndex()
+        col = Util.columnLableFromIndex(max(1, self.getColumnIndex() - 1))
+
+        return ws.getCellByAddress(f'{col}{row}')
+
+    def right(self):
+        from .Util import Util
+        from .Application import Application
+
+        limits = Application.getApplication().getExcelLimits()
+
+        ws = self.getBelongWorksheet()
+        row = self.getRowIndex()
+        col = Util.columnLableFromIndex(min(limits.maxColumnCount, self.getColumnIndex() + 1))
+
+        return ws.getCellByAddress(f'{col}{row}')
+
+    def down(self):
+        from .Application import Application
+
+        limits = Application.getApplication().getExcelLimits()
+
+        ws = self.getBelongWorksheet()
+        row = min(limits.maxRowCount, self.getRowIndex() + 1)
+        col = self.getColumnLabel()
+
+        return ws.getCellByAddress(f'{col}{row}')

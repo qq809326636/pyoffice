@@ -5,6 +5,10 @@ import chardet
 
 class TestExcel:
 
+    @pytest.fixture(scope='module', autouse=True)
+    def newline(self):
+        print()
+
     @pytest.fixture(scope='module')
     def filepath(self):
         return r'F:\rpaws\test.xlsx'
@@ -36,7 +40,6 @@ class TestExcel:
         print(type(ver))
         limits = app.getExcelLimits()
         print(limits)
-
 
     def test_open(self,
                   filepath):
@@ -320,3 +323,36 @@ class TestExcel:
 
         ret = Util.columnLableToIndex('aa')
         print(f'ret {ret}')
+
+    def test_column_lastcell(self,
+                             wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+        ws.active()
+        col = ws.getColumnByAddress('F')
+        print(col.getAddress())
+        print(col.impl.Column)
+        print(col.getColumnLable())
+        cell = col.getLastCell()
+        print(cell.getAddress())
+        cell.select()
+
+    def test_row_lastcell(self,
+                          wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+        ws.active()
+        row = ws.getRowByAddress('2')
+        print(row.getAddress())
+        cell = row.getLastCell()
+        print(cell.getAddress())
+        cell.select()
+
+    def test_cell_around(self,
+                         wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+        ws.active()
+
+        cell = ws.getCellByAddress('C5')
+        print(cell.left().getAddress())
+        print(cell.right().getAddress())
+        print(cell.down().getAddress())
+        print(cell.up().getAddress())

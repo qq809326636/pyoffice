@@ -468,3 +468,20 @@ class Worksheet(_WinObject):
             table = Table()
             table.impl = item
             yield table
+
+    def getRowByAddress(self,
+                        addr: (int, str)):
+        from .Row import Row
+
+        row = Row()
+        row.impl = self.impl.Range(f'{addr}:{addr}')
+        return row
+
+    def getColumnByAddress(self,
+                           addr: str):
+        from .Column import Column
+
+        col = Column()
+        col.impl = self.impl.Range(f'{addr}:{addr}')
+
+        return col

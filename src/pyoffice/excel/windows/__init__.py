@@ -10,3 +10,4 @@ from .WorkbookException import *
 from .Worksheet import *
 from .constant import *
 from .Util import *
+from .ExcelLimits import *

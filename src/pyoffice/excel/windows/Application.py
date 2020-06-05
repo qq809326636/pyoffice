@@ -32,7 +32,7 @@ class Application(_WinObject):
                 except Exception as err:
                     logging.warning(err)
                     cls.impl = win32com.client.DispatchEx('Excel.Application')
-                cls.impl.Visible = True  # default: true
+                # cls.impl.Visible = True  # default: true
 
         return cls.__instance
 
@@ -163,6 +163,9 @@ class Application(_WinObject):
         workbook = Workbook()
         workbook.impl = self.impl.ActiveWorkbook
 
+        if workbook.impl is None:
+            raise ValueError('The active workbook is None.')
+
         return workbook
 
     def createWorkbook(self):
@@ -178,3 +181,77 @@ class Application(_WinObject):
         workbook.impl = self.impl.Workbooks.Add()
 
         return workbook
+
+    def getVersion(self):
+        """
+        获取 Excel 版本号
+
+        :return:
+        """
+        return self.impl.Version
+
+    def getExcelLimits(self):
+        # if self.getVersion() == '9.0':
+        #     logging.debug(f'The Excel version is 2000.')
+        # elif self.getVersion() == '10.0':
+        #     logging.debug(f'The Excel version is 2002/XP.')
+        # elif self.getVersion() == '11.0':
+        #     logging.debug(f'The Excel version is 2003.')
+        # elif self.getVersion() == '12.0':
+        #     logging.debug(f'The Excel version is 2007.')
+        # elif self.getVersion() == '13.0':
+        #     logging.debug(f'The Excel version is 2010.')
+        # else:
+        #     logging.debug(f'The Excel version is latest.')
+
+        from .ExcelLimits import ExcelLimits
+
+        limits = ExcelLimits()
+
+        try:
+            self.setVisible(True)
+            wb = self.getActiveWorkbook()
+        except Exception as err:
+            logging.warning(err)
+            wb = self.createWorkbook()
+
+        try:
+            ws = wb.getActiveWorkSheet()
+        except Exception as err:
+            logging.warning(err)
+            ws = wb.getActiveWorkSheet()
+
+        if self.getVersion() in ['9.0',
+                                 '10.0',
+                                 '11.0']:
+            maxRowCount = ws.getRowByAddress(1).count()
+            maxColumnCount = ws.getColumnByAddress('A').count()
+
+            limits.maxColumnCount = maxRowCount
+            limits.maxRowCount = maxColumnCount
+        else:
+            maxRowCount = ws.getRowByAddress(1).count()
+            maxColumnCount = ws.getColumnByAddress('A').count()
+
+            limits.maxColumnCount = maxRowCount
+            limits.maxRowCount = maxColumnCount
+
+        wb.close()
+
+        return limits
+
+    def getWorkbookList(self):
+        from .Workbook import Workbook
+
+        ret = list()
+
+        for item in self.impl.Workbooks:
+            wb = Workbook()
+            wb.impl = item
+
+            ret.append(wb)
+
+        return ret
+
+    def getWorkbookCount(self):
+        return self.impl.Workbooks.Count

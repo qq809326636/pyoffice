@@ -2,14 +2,17 @@
 Range
 """
 
+from typing import Optional
+
 from ._WinObject import _WinObject
 from .constant import *
-from typing import Optional
+from ..metaclass import *
 
 __all__ = ['Range']
 
 
-class Range(_WinObject):
+class Range(_WinObject,
+            metaclass=MultipleMeta):
     """
     区域
     """
@@ -272,3 +275,45 @@ class Range(_WinObject):
         :return:
         """
         return self.impl.Select()
+
+    def autoFilter(self,
+                   visibleDropDown: bool = True):
+        ret = self.impl.AutoFilter(VisibleDropDown=visibleDropDown)
+        return ret
+
+    def autoFilter(self,
+                   field: int,
+                   criteria1: str,
+                   visibleDropDown: bool = True):
+        ret = self.impl.AutoFilter(field,
+                                   criteria1,
+                                   VisibleDropDown=visibleDropDown)
+        return ret
+
+    def autoFilter(self,
+                   field: int,
+                   criteria1: str,
+                   operator: int,
+                   criterial2: str,
+                   visibleDropDown: bool = True):
+        ret = self.impl.AutoFilter(field,
+                                   criteria1,
+                                   operator,
+                                   criterial2,
+                                   VisibleDropDown=visibleDropDown)
+        return ret
+
+    def autoFilter(self,
+                   field: int,
+                   criteria1: str,
+                   operator: int,
+                   criterial2: str,
+                   subField: str,
+                   visibleDropDown: bool = True):
+        ret = self.impl.AutoFilter(field,
+                                   criteria1,
+                                   operator,
+                                   criterial2,
+                                   subField,
+                                   VisibleDropDown=visibleDropDown)
+        return ret

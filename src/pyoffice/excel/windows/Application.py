@@ -4,8 +4,8 @@ Excel Application
 
 import logging
 
-from ._WinObject import _WinObject
 from pyoffice.decorator import singleton
+from ._WinObject import _WinObject
 
 __all__ = ['Application']
 

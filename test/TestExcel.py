@@ -14,12 +14,16 @@ class TestExcel:
         return r'F:\rpaws\test.xlsx'
 
     @pytest.fixture(scope='module')
+    def testFilepath(self):
+        return r'F:\work\pyoffice\test\test.xlsx'
+
+    @pytest.fixture(scope='module')
     def wb(self,
-           filepath):
+           testFilepath):
         from pyoffice.excel import Workbook
         wb = Workbook()
         wb.display()
-        wb.open(filepath)
+        wb.open(testFilepath)
 
         return wb
 
@@ -356,3 +360,21 @@ class TestExcel:
         print(cell.right().getAddress())
         print(cell.down().getAddress())
         print(cell.up().getAddress())
+        cell.impl.Previous.Select()
+
+    def test_cell_formula(self,
+                          wb):
+        from pyoffice.excel import FilterCriteriaEnum
+
+        ws = wb.getWorkSheetByName('Sheet7')
+        ws.active()
+
+        # rg = ws.getRangeByAddress('A1:A11')
+        # rg.select()
+        #
+        # ret = rg.impl.AutoFilter(1)
+        # print(ret)
+
+        rg = ws.getUsedRange()
+        rg.autoFilter(1,
+                      FilterCriteriaEnum.NO_DATA)

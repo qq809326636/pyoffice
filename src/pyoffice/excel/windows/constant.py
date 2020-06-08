@@ -8,7 +8,9 @@ __all__ = ['DirectionEnum',
            'WorksheetCopyMode',
            'WorksheetPasteFormatEnum',
            'WorksheetType',
-           'SheetMax']
+           'SheetMax',
+           'AutoFilterOperator',
+           'FilterCriteriaEnum']
 
 
 class OldSheetMax:
@@ -170,3 +172,23 @@ class WorksheetType:
     DIALOGSHEET = -4116  # Dialog sheet
     EXCEL4INTLMACROSHEET = 4  # Excel version 4 international macro sheet
     EXCEL4MACROSHEET = 3  # Excel version 4 macro sheet
+
+
+class AutoFilterOperator:
+    And = 1  # Logical AND of Criteria1 and Criteria2
+    Bottom10Items = 4  # Lowest-valued items displayed (number of items specified in Criteria1)
+    Bottom10Percent = 6  # Lowest-valued items displayed (percentage specified in Criteria1)
+    FilterCellColor = 8  # Color of the cell
+    FilterDynamic = 11  # Dynamic filter
+    FilterFontColor = 9  # Color of the font
+    FilterIcon = 10  # Filter icon
+    FilterValues = 7  # Filter values
+    Or = 2  # Logical OR of Criteria1 or Criteria2
+    Top10Items = 3  # Highest-valued items displayed (number of items specified in Criteria1)
+    Top10Percent = 5  # Highest-valued items displayed (percentage specified in Criteria1)
+
+
+class FilterCriteriaEnum:
+    BLANK_FIELDS = '='
+    NON_BALNK_FIELDS = '<>'
+    NO_DATA = '><'

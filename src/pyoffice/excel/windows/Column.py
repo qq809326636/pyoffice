@@ -2,35 +2,18 @@
 Column
 """
 
-from ._WinObject import _WinObject
+from .Range import Range
 
 __all__ = ['Column']
 
 
-class Column(_WinObject):
+class Column(Range):
     """
     列
     """
 
     def __init__(self):
-        _WinObject.__init__(self)
-
-    def active(self):
-        """
-        激活当前列
-
-        :return:
-        """
-        self.impl.Activate()
-
-    def getAddress(self):
-        """
-        获取当前列的地址
-
-        :return:
-        :rtype: str
-        """
-        return self.impl.Address.replace('$', '')
+        Range.__init__(self)
 
     def isHidden(self):
         """
@@ -60,22 +43,6 @@ class Column(_WinObject):
         """
         for row in self.impl.Value:
             yield row[0]
-
-    def autoFit(self):
-        """
-        根据该列的数据自适应宽度
-
-        :return:
-        """
-        self.impl.AutoFit()
-
-    def show(self):
-        """
-        显示当前列
-
-        :return:
-        """
-        self.impl.Show()
 
     def count(self):
         return self.impl.Count

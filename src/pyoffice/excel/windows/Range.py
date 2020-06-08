@@ -322,3 +322,11 @@ class Range(_WinObject):
 
         ret = self.impl.AutoFilter(**param)
         return ret
+
+    def active(self):
+        """
+        激活
+
+        :return:
+        """
+        self.impl.Activate()

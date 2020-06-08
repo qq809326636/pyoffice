@@ -2,34 +2,19 @@
 Cell
 """
 
-from .Range import DirectionEnum
-from ._WinObject import _WinObject
+from .Range import Range
+from .constant import DirectionEnum
 
 __all__ = ['Cell']
 
 
-class Cell(_WinObject):
+class Cell(Range):
     """
     单元格
     """
 
     def __init__(self):
-        _WinObject.__init__(self)
-
-    def active(self):
-        """
-        激活单元格
-        """
-        self.impl.Activate()
-
-    def getAddress(self):
-        """
-        获取单元格的地址
-
-        :return: 返回单元格地址，例如: "A1"
-        :rtype: str
-        """
-        return str(self.impl.Address).replace('$', '')
+        Range.__init__(self)
 
     def getRowIndex(self):
         """
@@ -62,14 +47,6 @@ class Cell(_WinObject):
         :rtype: str,int,float,datetime
         """
         return self.impl.Value
-
-    def getValue2(self):
-        """
-        获取单元格的值
-
-        :return: 参考 getValue
-        """
-        return self.impl.Value2
 
     def setValue(self,
                  value):
@@ -140,14 +117,6 @@ class Cell(_WinObject):
         cell.impl = self.impl.Parent.Range(self.impl, self.impl.End(direction)).Item(1)
         return cell
 
-    def show(self):
-        """
-        显示单元格
-
-        :return:
-        """
-        self.impl.Show()
-
     def unmerge(self):
         """
         取消单元格合并
@@ -183,14 +152,6 @@ class Cell(_WinObject):
                                iconIndex,
                                iconLabel,
                                noHtmlFormatting)
-
-    def select(self):
-        """
-        选中当前单元格
-
-        :return:
-        """
-        self.impl.Select()
 
     def getBelongWorksheet(self):
         from .Worksheet import Worksheet

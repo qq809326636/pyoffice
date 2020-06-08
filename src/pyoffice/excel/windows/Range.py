@@ -6,13 +6,11 @@ from typing import Optional
 
 from ._WinObject import _WinObject
 from .constant import *
-from ..metaclass import *
 
 __all__ = ['Range']
 
 
-class Range(_WinObject,
-            metaclass=MultipleMeta):
+class Range(_WinObject):
     """
     区域
     """
@@ -277,43 +275,50 @@ class Range(_WinObject,
         return self.impl.Select()
 
     def autoFilter(self,
+                   *,
+                   field: int = None,
+                   criteria1: str = None,
+                   operator: int = None,
+                   criteria2: str = None,
+                   subField: str = None,
                    visibleDropDown: bool = True):
-        ret = self.impl.AutoFilter(VisibleDropDown=visibleDropDown)
-        return ret
+        """
+        筛选
 
-    def autoFilter(self,
-                   field: int,
-                   criteria1: str,
-                   visibleDropDown: bool = True):
-        ret = self.impl.AutoFilter(field,
-                                   criteria1,
-                                   VisibleDropDown=visibleDropDown)
-        return ret
+        :param field:
+        :param criteria1:
+        :param operator:
+        :param criteria2:
+        :param subField:
+        :param visibleDropDown:
+        :return:
+        """
+        param = dict()
 
-    def autoFilter(self,
-                   field: int,
-                   criteria1: str,
-                   operator: int,
-                   criterial2: str,
-                   visibleDropDown: bool = True):
-        ret = self.impl.AutoFilter(field,
-                                   criteria1,
-                                   operator,
-                                   criterial2,
-                                   VisibleDropDown=visibleDropDown)
-        return ret
+        if field is not None:
+            param.update({
+                'Field': field
+            })
+        if criteria1 is not None:
+            param.update({
+                'Criteria1': criteria1
+            })
+        if operator is not None:
+            param.update({
+                'Operator': operator
+            })
+        if criteria2 is not None:
+            param.update({
+                'Criteria2': criteria2
+            })
+        if subField is not None:
+            param.update({
+                'SubField': subField
+            })
+        if visibleDropDown is not None:
+            param.update({
+                'VisibleDropDown': visibleDropDown
+            })
 
-    def autoFilter(self,
-                   field: int,
-                   criteria1: str,
-                   operator: int,
-                   criterial2: str,
-                   subField: str,
-                   visibleDropDown: bool = True):
-        ret = self.impl.AutoFilter(field,
-                                   criteria1,
-                                   operator,
-                                   criterial2,
-                                   subField,
-                                   VisibleDropDown=visibleDropDown)
+        ret = self.impl.AutoFilter(**param)
         return ret

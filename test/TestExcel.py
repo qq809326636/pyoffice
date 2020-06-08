@@ -36,6 +36,7 @@ class TestExcel:
     def test_app(self):
         from pyoffice.excel import Application
         app = Application()
+        print(app)
         # app.setVisible(False)
         print(app.getPid())
 
@@ -45,13 +46,16 @@ class TestExcel:
         limits = app.getExcelLimits()
         print(limits)
 
+        app2 = Application()
+        print(app2)
+
     def test_open(self,
-                  filepath):
+                  testFilepath):
         print()
         from pyoffice.excel import Workbook
         wb = Workbook()
         print(wb.getApplication().getPid())
-        wb.open(filepath)
+        wb.open(testFilepath)
         wb.display()
         ws = wb.getActiveWorkSheet()
         name = ws.getName()
@@ -287,11 +291,13 @@ class TestExcel:
         # tmp.Select()
         # print(tmp.Address)
 
-    def test_open(self):
+    def test_open(self,
+                  testFilepath):
         from pyoffice.excel import Workbook
 
         wb = Workbook()
-        wb.open('test.xlsx')
+        wb.display()
+        wb.open(testFilepath)
         ws = wb.getActiveWorkSheet()
         print(ws.getName())
 
@@ -362,8 +368,8 @@ class TestExcel:
         print(cell.up().getAddress())
         cell.impl.Previous.Select()
 
-    def test_cell_formula(self,
-                          wb):
+    def test_cell_filter(self,
+                         wb):
         from pyoffice.excel import FilterCriteriaEnum
 
         ws = wb.getWorkSheetByName('Sheet7')
@@ -376,5 +382,5 @@ class TestExcel:
         # print(ret)
 
         rg = ws.getUsedRange()
-        rg.autoFilter(1,
-                      FilterCriteriaEnum.NO_DATA)
+        ret = rg.autoFilter()
+        print(ret)

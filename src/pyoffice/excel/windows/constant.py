@@ -10,7 +10,12 @@ __all__ = ['DirectionEnum',
            'WorksheetType',
            'SheetMax',
            'AutoFilterOperator',
-           'FilterCriteriaEnum']
+           'FilterCriteriaEnum',
+           'SortOderEnum',
+           'YesNoGuessEnum',
+           'SortOrientationEnum',
+           'SortMethodEnum',
+           'SortDataOptionEnum']
 
 
 class OldSheetMax:
@@ -192,3 +197,30 @@ class FilterCriteriaEnum:
     BLANK_FIELDS = '='
     NON_BALNK_FIELDS = '<>'
     NO_DATA = '><'
+
+
+class SortOderEnum:
+    Ascending = 1  # Sorts the specified field in ascending order. This is the default value.
+    Descending = 2  # Sorts the specified field in descending order.
+    Manual = -4135  # Manual sort (you can drag items to rearrange them).
+
+
+class YesNoGuessEnum:
+    Guess = 0  # Excel determines whether there is a header, and where it is, if there is one.
+    No = 2  # Default. The entire range should be sorted.
+    Yes = 1  # The entire range should not be sorted.
+
+
+class SortOrientationEnum:
+    SortColumns = 1  # Sorts by column.
+    SortRows = 2  # Sorts by row. This is the default value.
+
+
+class SortMethodEnum:
+    PinYin = 1  # Phonetic Chinese sort order for characters. This is the default value.
+    Stroke = 2  # Sort by the quantity of strokes in each character.
+
+
+class SortDataOptionEnum:
+    SortNormal = 0  # default. Sorts numeric and text data separately.
+    SortTextAsNumbers = 1  # Treat text as numeric data for the sort.

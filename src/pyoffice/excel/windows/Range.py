@@ -2,9 +2,10 @@
 Range
 """
 
+from typing import Optional
+
 from ._WinObject import _WinObject
 from .constant import *
-from typing import Optional
 
 __all__ = ['Range']
 
@@ -272,3 +273,350 @@ class Range(_WinObject):
         :return:
         """
         return self.impl.Select()
+
+    def autoFilter(self,
+                   *,
+                   field: int = None,
+                   criteria1: str = None,
+                   operator: int = None,
+                   criteria2: str = None,
+                   subField: str = None,
+                   visibleDropDown: bool = True):
+        """
+        筛选
+
+        :param field:
+        :param criteria1:
+        :param operator:
+        :param criteria2:
+        :param subField:
+        :param visibleDropDown:
+        :return:
+        """
+        param = dict()
+
+        if field:
+            param.update({
+                'Field': field
+            })
+        if criteria1:
+            param.update({
+                'Criteria1': criteria1
+            })
+        if operator:
+            param.update({
+                'Operator': operator
+            })
+        if criteria2:
+            param.update({
+                'Criteria2': criteria2
+            })
+        if subField:
+            param.update({
+                'SubField': subField
+            })
+        if visibleDropDown:
+            param.update({
+                'VisibleDropDown': visibleDropDown
+            })
+
+        ret = self.impl.AutoFilter(**param)
+        return ret
+
+    def active(self):
+        """
+        激活
+
+        :return:
+        """
+        self.impl.Activate()
+
+    def sort(self,
+             key1: (str, Optional['Range']),
+             order1: int,
+             key2: (str, Optional['Range']),
+             sortedType,
+             order2: int,
+             key3: (str, Optional['Range']),
+             order3: int,
+             header: int,
+             orderCustom: list,
+             matchCase: bool,
+             orientation: int,
+             sortMethod: int,
+             dataOption1: int,
+             dataOption2: int,
+             dataOption3: int):
+        from .Util import Util
+
+        params = dict()
+
+        if header is not None:
+            params.update({
+                'Header': header
+            })
+
+        if sortMethod is not None:
+            params.update({
+                'SortMethod': sortMethod
+            })
+
+        if key1 is not None:
+            if header == 1:
+                row = self.impl.Rows(1)
+                for item in row.Cells:
+                    if item.Text == key1:
+                        key1 = item
+                        break
+                else:
+                    raise RuntimeError(f'Could not found the this header "{key1}".')
+            else:
+                key1 = self.impl.Range(f'{key1}1')
+            params.update({
+                'Key1': key1
+            })
+
+        if order1 is not None:
+            params.update({
+                'Order1': order1
+            })
+
+        if sortedType is not None:
+            params.update({
+                'Type': sortedType
+            })
+
+        if key2 is not None:
+            if header == 1:
+                row = self.impl.Rows(1)
+                for item in row.Cells:
+                    if item.Text == key2:
+                        key2 = item
+                        break
+                else:
+                    raise RuntimeError(f'Could not found the this header "{key2}".')
+            else:
+                key2 = self.impl.Range(f'{key2}1')
+            params.update({
+                'Key2': key2
+            })
+
+        if order2 is not None:
+            params.update({
+                'Order1': order2
+            })
+
+        if key3 is not None:
+            if header == 1:
+                row = self.impl.Rows(1)
+                for item in row.Cells:
+                    if item.Text == key1:
+                        key3 = item
+                        break
+                else:
+                    raise RuntimeError(f'Could not found the this header "{key3}".')
+            else:
+                key3 = self.impl.Range(f'{key3}1')
+            params.update({
+                'Key3': key3
+            })
+
+        if order3 is not None:
+            params.update({
+                'Order3': order3
+            })
+
+        if matchCase is not None:
+            params.update({
+                'MatchCase': matchCase
+            })
+
+        if orientation is not None:
+            params.update({
+                'Orientation': orientation
+            })
+
+        if dataOption1 is not None:
+            params.update({
+                'DataOption1': dataOption1
+            })
+
+        if dataOption2 is not None:
+            params.update({
+                'DataOption2': dataOption2
+            })
+
+        if dataOption3 is not None:
+            params.update({
+                'DataOption3': dataOption3
+            })
+
+        if orderCustom is not None:
+            params.update({
+                'OrderCustom': orderCustom
+            })
+
+        if header == 1:
+            rowOffset = self.getLastRowIndex() - self.getFirstRowIndex() + 1
+            colOffset = self.getLastColumnIndex() - self.getFirstColumnIndex() + 1
+
+            rgAddr = f'A2:{Util.columnLableFromIndex(colOffset)}{rowOffset}'
+            self.impl.Range(rgAddr).Sort(**params)
+        else:
+            self.impl.Sort(**params)
+
+    def sortSpecial(self,
+                    sortMethod: int,
+                    key1: (str, Optional['Range']),
+                    order1: int,
+                    key2: (str, Optional['Range']),
+                    sortedType,
+                    order2: int,
+                    key3: (str, Optional['Range']),
+                    order3: int,
+                    header: int,
+                    orderCustom: list,
+                    matchCase: bool,
+                    orientation: int,
+                    dataOption1: int,
+                    dataOption2: int,
+                    dataOption3: int):
+        from .Util import Util
+
+        params = dict()
+
+        if header is not None:
+            params.update({
+                'Header': header
+            })
+
+        if sortMethod is not None:
+            params.update({
+                'SortMethod': sortMethod
+            })
+
+        if key1 is not None:
+            if header == 1:
+                row = self.impl.Rows(1)
+                for item in row.Cells:
+                    if item.Text == key1:
+                        key1 = item
+                        break
+                else:
+                    raise RuntimeError(f'Could not found the this header "{key1}".')
+            else:
+                key1 = self.impl.Range(f'{key1}1')
+            params.update({
+                'Key1': key1
+            })
+
+        if order1 is not None:
+            params.update({
+                'Order1': order1
+            })
+
+        if sortedType is not None:
+            params.update({
+                'Type': sortedType
+            })
+
+        if key2 is not None:
+            if header == 1:
+                row = self.impl.Rows(1)
+                for item in row.Cells:
+                    if item.Text == key2:
+                        key2 = item
+                        break
+                else:
+                    raise RuntimeError(f'Could not found the this header "{key2}".')
+            else:
+                key2 = self.impl.Range(f'{key2}1')
+            params.update({
+                'Key2': key2
+            })
+
+        if order2 is not None:
+            params.update({
+                'Order1': order2
+            })
+
+        if key3 is not None:
+            if header == 1:
+                row = self.impl.Rows(1)
+                for item in row.Cells:
+                    if item.Text == key1:
+                        key3 = item
+                        break
+                else:
+                    raise RuntimeError(f'Could not found the this header "{key3}".')
+            else:
+                key3 = self.impl.Range(f'{key3}1')
+            params.update({
+                'Key3': key3
+            })
+
+        if order3 is not None:
+            params.update({
+                'Order3': order3
+            })
+
+        if matchCase is not None:
+            params.update({
+                'MatchCase': matchCase
+            })
+
+        if orientation is not None:
+            params.update({
+                'Orientation': orientation
+            })
+
+        if dataOption1 is not None:
+            params.update({
+                'DataOption1': dataOption1
+            })
+
+        if dataOption2 is not None:
+            params.update({
+                'DataOption2': dataOption2
+            })
+
+        if dataOption3 is not None:
+            params.update({
+                'DataOption3': dataOption3
+            })
+
+        if orderCustom is not None:
+            params.update({
+                'OrderCustom': orderCustom
+            })
+
+        if header == 1:
+            rowOffset = self.getLastRowIndex() - self.getFirstRowIndex() + 1
+            colOffset = self.getLastColumnIndex() - self.getFirstColumnIndex() + 1
+
+            rgAddr = f'A2:{Util.columnLableFromIndex(colOffset)}{rowOffset}'
+            self.impl.Range(rgAddr).SortSpecial(**params)
+        else:
+            self.impl.SortSpecial(**params)
+
+    def getFirstRowIndex(self) -> int:
+        return list(self.impl.Cells)[0].Row
+
+    def getLastRowIndex(self) -> int:
+        return list(self.impl.Cells)[-1].Row
+
+    def getFirstColumnIndex(self) -> int:
+        return list(self.impl.Cells)[0].Column
+
+    def getFirstColumnLabel(self) -> str:
+        from .Util import Util
+
+        return Util.columnLableFromIndex(self.getFirstColumnIndex())
+
+    def getLastColumnIndex(self) -> int:
+        return list(self.impl.Cells)[-1].Column
+
+    def getLastColumnLabel(self) -> str:
+        from .Util import Util
+
+        return Util.columnLableFromIndex(self.getLastColumnIndex())

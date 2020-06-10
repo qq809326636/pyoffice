@@ -8,7 +8,14 @@ __all__ = ['DirectionEnum',
            'WorksheetCopyMode',
            'WorksheetPasteFormatEnum',
            'WorksheetType',
-           'SheetMax']
+           'SheetMax',
+           'AutoFilterOperator',
+           'FilterCriteriaEnum',
+           'SortOderEnum',
+           'YesNoGuessEnum',
+           'SortOrientationEnum',
+           'SortMethodEnum',
+           'SortDataOptionEnum']
 
 
 class OldSheetMax:
@@ -170,3 +177,50 @@ class WorksheetType:
     DIALOGSHEET = -4116  # Dialog sheet
     EXCEL4INTLMACROSHEET = 4  # Excel version 4 international macro sheet
     EXCEL4MACROSHEET = 3  # Excel version 4 macro sheet
+
+
+class AutoFilterOperator:
+    And = 1  # Logical AND of Criteria1 and Criteria2
+    Bottom10Items = 4  # Lowest-valued items displayed (number of items specified in Criteria1)
+    Bottom10Percent = 6  # Lowest-valued items displayed (percentage specified in Criteria1)
+    FilterCellColor = 8  # Color of the cell
+    FilterDynamic = 11  # Dynamic filter
+    FilterFontColor = 9  # Color of the font
+    FilterIcon = 10  # Filter icon
+    FilterValues = 7  # Filter values
+    Or = 2  # Logical OR of Criteria1 or Criteria2
+    Top10Items = 3  # Highest-valued items displayed (number of items specified in Criteria1)
+    Top10Percent = 5  # Highest-valued items displayed (percentage specified in Criteria1)
+
+
+class FilterCriteriaEnum:
+    BLANK_FIELDS = '='
+    NON_BALNK_FIELDS = '<>'
+    NO_DATA = '><'
+
+
+class SortOderEnum:
+    Ascending = 1  # Sorts the specified field in ascending order. This is the default value.
+    Descending = 2  # Sorts the specified field in descending order.
+    Manual = -4135  # Manual sort (you can drag items to rearrange them).
+
+
+class YesNoGuessEnum:
+    Guess = 0  # Excel determines whether there is a header, and where it is, if there is one.
+    No = 2  # Default. The entire range should be sorted.
+    Yes = 1  # The entire range should not be sorted.
+
+
+class SortOrientationEnum:
+    SortColumns = 1  # Sorts by column.
+    SortRows = 2  # Sorts by row. This is the default value.
+
+
+class SortMethodEnum:
+    PinYin = 1  # Phonetic Chinese sort order for characters. This is the default value.
+    Stroke = 2  # Sort by the quantity of strokes in each character.
+
+
+class SortDataOptionEnum:
+    SortNormal = 0  # default. Sorts numeric and text data separately.
+    SortTextAsNumbers = 1  # Treat text as numeric data for the sort.

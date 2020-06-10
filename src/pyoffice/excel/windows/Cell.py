@@ -2,34 +2,19 @@
 Cell
 """
 
-from .Range import DirectionEnum
-from ._WinObject import _WinObject
+from .Range import Range
+from .constant import DirectionEnum
 
 __all__ = ['Cell']
 
 
-class Cell(_WinObject):
+class Cell(Range):
     """
     单元格
     """
 
     def __init__(self):
-        _WinObject.__init__(self)
-
-    def active(self):
-        """
-        激活单元格
-        """
-        self.impl.Activate()
-
-    def getAddress(self):
-        """
-        获取单元格的地址
-
-        :return: 返回单元格地址，例如: "A1"
-        :rtype: str
-        """
-        return str(self.impl.Address).replace('$', '')
+        Range.__init__(self)
 
     def getRowIndex(self):
         """
@@ -49,6 +34,11 @@ class Cell(_WinObject):
         """
         return self.impl.Column
 
+    def getColumnLabel(self):
+        from .Util import Util
+
+        return Util.columnLableFromIndex(self.getColumnIndex())
+
     def getValue(self):
         """
         获取单元格的值
@@ -57,14 +47,6 @@ class Cell(_WinObject):
         :rtype: str,int,float,datetime
         """
         return self.impl.Value
-
-    def getValue2(self):
-        """
-        获取单元格的值
-
-        :return: 参考 getValue
-        """
-        return self.impl.Value2
 
     def setValue(self,
                  value):
@@ -128,20 +110,12 @@ class Cell(_WinObject):
 
         :param int direction: 方向。只能是上、下、左、右
         :return: 区域
-        :rtype: Range
+        :rtype: Cell
         """
-        from .Range import Range
-        rg = Range()
-        rg.impl = self.impl.Parent.Range(self.impl, self.impl.End(direction))
-        return rg
 
-    def show(self):
-        """
-        显示单元格
-
-        :return:
-        """
-        self.impl.Show()
+        cell = Cell()
+        cell.impl = self.impl.Parent.Range(self.impl, self.impl.End(direction)).Item(1)
+        return cell
 
     def unmerge(self):
         """
@@ -179,10 +153,48 @@ class Cell(_WinObject):
                                iconLabel,
                                noHtmlFormatting)
 
-    def select(self):
-        """
-        选中当前单元格
+    def getBelongWorksheet(self):
+        from .Worksheet import Worksheet
 
-        :return:
-        """
-        self.impl.Select()
+        ws = Worksheet()
+        ws.impl = self.impl.Parent
+        return ws
+
+    def up(self):
+        ws = self.getBelongWorksheet()
+        row = max(1, self.getRowIndex() - 1)
+        col = self.getColumnLabel()
+
+        return ws.getCellByAddress(f'{col}{row}')
+
+    def left(self):
+        from .Util import Util
+
+        ws = self.getBelongWorksheet()
+        row = self.getRowIndex()
+        col = Util.columnLableFromIndex(max(1, self.getColumnIndex() - 1))
+
+        return ws.getCellByAddress(f'{col}{row}')
+
+    def right(self):
+        from .Util import Util
+        from .Application import Application
+
+        limits = Application.getApplication().getExcelLimits()
+
+        ws = self.getBelongWorksheet()
+        row = self.getRowIndex()
+        col = Util.columnLableFromIndex(min(limits.maxColumnCount, self.getColumnIndex() + 1))
+
+        return ws.getCellByAddress(f'{col}{row}')
+
+    def down(self):
+        from .Application import Application
+
+        limits = Application.getApplication().getExcelLimits()
+
+        ws = self.getBelongWorksheet()
+        row = min(limits.maxRowCount, self.getRowIndex() + 1)
+        col = self.getColumnLabel()
+
+        return ws.getCellByAddress(f'{col}{row}')

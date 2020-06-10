@@ -5,17 +5,25 @@ import chardet
 
 class TestExcel:
 
+    @pytest.fixture(scope='module', autouse=True)
+    def newline(self):
+        print()
+
     @pytest.fixture(scope='module')
     def filepath(self):
         return r'F:\rpaws\test.xlsx'
 
     @pytest.fixture(scope='module')
+    def testFilepath(self):
+        return r'F:\work\pyoffice\test\test.xlsx'
+
+    @pytest.fixture(scope='module')
     def wb(self,
-           filepath):
+           testFilepath):
         from pyoffice.excel import Workbook
         wb = Workbook()
         wb.display()
-        wb.open(filepath)
+        wb.open(testFilepath)
 
         return wb
 
@@ -28,6 +36,7 @@ class TestExcel:
     def test_app(self):
         from pyoffice.excel import Application
         app = Application()
+        print(app)
         # app.setVisible(False)
         print(app.getPid())
 
@@ -37,14 +46,16 @@ class TestExcel:
         limits = app.getExcelLimits()
         print(limits)
 
+        app2 = Application()
+        print(app2)
 
     def test_open(self,
-                  filepath):
+                  testFilepath):
         print()
         from pyoffice.excel import Workbook
         wb = Workbook()
         print(wb.getApplication().getPid())
-        wb.open(filepath)
+        wb.open(testFilepath)
         wb.display()
         ws = wb.getActiveWorkSheet()
         name = ws.getName()
@@ -280,11 +291,13 @@ class TestExcel:
         # tmp.Select()
         # print(tmp.Address)
 
-    def test_open(self):
+    def test_open(self,
+                  testFilepath):
         from pyoffice.excel import Workbook
 
         wb = Workbook()
-        wb.open('test.xlsx')
+        wb.display()
+        wb.open(testFilepath)
         ws = wb.getActiveWorkSheet()
         print(ws.getName())
 
@@ -320,3 +333,90 @@ class TestExcel:
 
         ret = Util.columnLableToIndex('aa')
         print(f'ret {ret}')
+
+    def test_column_lastcell(self,
+                             wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+        ws.active()
+        col = ws.getColumnByAddress('F')
+        print(col.getAddress())
+        print(col.impl.Column)
+        print(col.getColumnLable())
+        cell = col.getLastCell()
+        print(cell.getAddress())
+        cell.select()
+
+    def test_row_lastcell(self,
+                          wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+        ws.active()
+        row = ws.getRowByAddress('2')
+        print(row.getAddress())
+        cell = row.getLastCell()
+        print(cell.getAddress())
+        cell.select()
+
+    def test_cell_around(self,
+                         wb):
+        ws = wb.getWorkSheetByName('Sheet4')
+        ws.active()
+
+        cell = ws.getCellByAddress('C5')
+        print(cell.left().getAddress())
+        print(cell.right().getAddress())
+        print(cell.down().getAddress())
+        print(cell.up().getAddress())
+        cell.impl.Previous.Select()
+
+    def test_cell_filter(self,
+                         wb):
+        from pyoffice.excel import FilterCriteriaEnum, AutoFilterOperator
+
+        ws = wb.getWorkSheetByName('Sheet8')
+        ws.active()
+
+        # rg = ws.getRangeByAddress('A1:A11')
+        # rg.select()
+        #
+        # ret = rg.impl.AutoFilter(1)
+        # print(ret)
+
+        rg = ws.getUsedRange()
+        # ret = rg.autoFilter(field=1,
+        #                     criteria1=['>5'],
+        #                     operator=AutoFilterOperator.And,
+        #                     criteria2=['<20'])
+
+        ret = rg.autoFilter(field=2,
+                            criteria1=['>25'])
+        print(ret)
+
+    def test_range_sort(self,
+                        wb):
+        print()
+        from pyoffice.excel import SortOderEnum, \
+            YesNoGuessEnum
+
+        ws = wb.getWorkSheetByName('Sheet8')
+        ws.active()
+
+        rg = ws.getUsedRange()
+        # rg = ws.getRangeByAddress('A8:I8')
+        rg = ws.getRangeByAddress('A2:I31')
+        rg.select()
+        print(f'address: {rg.getAddress()}')
+
+        # rg.impl.Sort(Key1=rg.impl.Range('1:1'),
+        #              Header=YesNoGuessEnum.Guess)
+
+        key1 = rg.impl.Range('A1')
+        print(f'key1: {key1.Address}')
+        key2 = rg.impl.Range('A2')
+        print(f'key2: {key2.Address}')
+
+        ret = rg.impl.SortSpecial(Key1=key1,
+                                  Order1=SortOderEnum.Ascending,
+                                  Key2=key2,
+                                  Order2=SortOderEnum.Ascending,
+                                  Header=YesNoGuessEnum.Yes)
+        print(f'ret: {ret}')

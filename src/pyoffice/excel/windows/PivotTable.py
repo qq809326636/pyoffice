@@ -2,15 +2,15 @@
 Table
 """
 
-from ._WinObject import _WinObject
+from .Range import Range
 
 __all__ = ['PivotTable']
 
 
-class PivotTable(_WinObject):
+class PivotTable(Range):
     """
     透视表
     """
 
     def __init__(self):
-        _WinObject.__init__(self)
+        Range.__init__(self)

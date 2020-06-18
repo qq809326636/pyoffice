@@ -5,7 +5,85 @@ __all__ = ['OpenFormat',
            'OriginalFormat',
            'SaveFormat',
            'LineEndingType',
-           'CompatibilityMode']
+           'CompatibilityMode',
+           'EditorType',
+           'StoryType',
+           'TableFormat',
+           'TableDirection',
+           'TableFieldSeparator',
+           'RowHeightRule',
+           'RulerStyle']
+
+
+class RulerStyle:
+    AdjustFirstColumn = 2  # Adjusts the left edge of the first column only, preserving the positions of the other columns and the right edge of the table.
+    AdjustNone = 0  # Adjusts the left edge of row or rows, preserving the width of all columns by shifting them to the left or right. This is the default value.
+    AdjustProportional = 1  # Adjusts the left edge of the first column, preserving the position of the right edge of the table by proportionally adjusting the widths of all the cells in the specified row or rows.
+    AdjustSameWidth = 3  # Adjusts the left edge of the first column, preserving the position of the right edge of the table by setting the widths of all the cells in the specified row or rows to the same value.
+
+
+class RowHeightRule:
+    RowHeightAtLeast = 1  # The row height is at least a minimum specified value.
+    RowHeightAuto = 0  # The row height is adjusted to accommodate the tallest value in the row.
+    RowHeightExactly = 2  # The row height is an exact value.
+
+
+class TableFieldSeparator:
+    SeparateByCommas = 2  # A comma.
+    SeparateByDefaultListSeparator = 3  # The default list separator.
+    SeparateByParagraphs = 0  # Paragraph markers.
+    SeparateByTabs = 1  # A tab.
+
+
+class TableDirection:
+    TableDirectionLtr = 1  # The selected rows are arranged with the first column in the leftmost position.
+    TableDirectionRtl = 0  # The selected rows are arranged with the first column in the rightmost position.
+
+
+class TableFormat:
+    TableFormat3DEffects1 = 32  # 3D effects format number 1.
+    TableFormat3DEffects2 = 33  # 3D effects format number 2.
+    TableFormat3DEffects3 = 34  # 3D effects format number 3.
+    TableFormatClassic1 = 4  # Classic format number 1.
+    TableFormatClassic2 = 5  # Classic format number 2.
+    TableFormatClassic3 = 6  # Classic format number 3.
+    TableFormatClassic4 = 7  # Classic format number 4.
+    TableFormatColorful1 = 8  # Colorful format number 1.
+    TableFormatColorful2 = 9  # Colorful format number 2.
+    TableFormatColorful3 = 10  # Colorful format number 3.
+    TableFormatColumns1 = 11  # Columns format number 1.
+    TableFormatColumns2 = 12  # Columns format number 2.
+    TableFormatColumns3 = 13  # Columns format number 3.
+    TableFormatColumns4 = 14  # Columns format number 4.
+    TableFormatColumns5 = 15  # Columns format number 5.
+    TableFormatContemporary = 35  # Contemporary format.
+    TableFormatElegant = 36  # Elegant format.
+    TableFormatGrid1 = 16  # Grid format number 1.
+    TableFormatGrid2 = 17  # Grid format number 2.
+    TableFormatGrid3 = 18  # Grid format number 3.
+    TableFormatGrid4 = 19  # Grid format number 4.
+    TableFormatGrid5 = 20  # Grid format number 5.
+    TableFormatGrid6 = 21  # Grid format number 6.
+    TableFormatGrid7 = 22  # Grid format number 7.
+    TableFormatGrid8 = 23  # Grid format number 8.
+    TableFormatList1 = 24  # List format number 1.
+    TableFormatList2 = 25  # List format number 2.
+    TableFormatList3 = 26  # List format number 3.
+    TableFormatList4 = 27  # List format number 4.
+    TableFormatList5 = 28  # List format number 5.
+    TableFormatList6 = 29  # List format number 6.
+    TableFormatList7 = 30  # List format number 7.
+    TableFormatList8 = 31  # List format number 8.
+    TableFormatNone = 0  # No formatting.
+    TableFormatProfessional = 37  # Professional format.
+    TableFormatSimple1 = 1  # Simple format number 1.
+    TableFormatSimple2 = 2  # Simple format number 2.
+    TableFormatSimple3 = 3  # Simple format number 3.
+    TableFormatSubtle1 = 38  # Subtle format number 1.
+    TableFormatSubtle2 = 39  # Subtle format number 2.
+    TableFormatWeb1 = 40  # Web format number 1.
+    TableFormatWeb2 = 41  # Web format number 2.
+    TableFormatWeb3 = 42  # Web format number 3.
 
 
 class OpenFormat:
@@ -228,9 +306,37 @@ class LineEndingType:
     LFOnly = 2  # Line feed only.
     LSPS = 4  # Not supported.
 
+
 class CompatibilityMode:
     Current = 65535  # Compatibility mode equivalent to the latest version of Word.
     Word2003 = 11  # Word is put into a mode that is most compatible with Word 2003. Features new to Word are disabled in this mode.
     Word2007 = 12  # Word is put into a mode that is most compatible with Word 2007. Features new to Word are disabled in this mode.
     Word2010 = 14  # Word is put into a mode that is most compatible with Word 2010. Features new to Word are disabled in this mode.
     Word2013 = 15  # Default. All Word features are enabled.
+
+
+class EditorType:
+    EditorCurrent = -6  # Represents the current user of the document.
+    EditorEditors = -5  # Represents the Editors group for documents that use Information Rights Management.
+    EditorEveryone = -1  # Represents all users who open a document.
+    EditorOwners = -4  # Represents the Owners group for documents that use Information Rights Management.
+
+
+class StoryType:
+    CommentsStory = 4  # Comments story.
+    EndnoteContinuationNoticeStory = 17  # Endnote continuation notice story.
+    EndnoteContinuationSeparatorStory = 16  # Endnote continuation separator story.
+    EndnoteSeparatorStory = 15  # Endnote separator story.
+    EndnotesStory = 3  # Endnotes story.
+    EvenPagesFooterStory = 8  # Even pages footer story.
+    EvenPagesHeaderStory = 6  # Even pages header story.
+    FirstPageFooterStory = 11  # First page footer story.
+    FirstPageHeaderStory = 10  # First page header story.
+    FootnoteContinuationNoticeStory = 14  # Footnote continuation notice story.
+    FootnoteContinuationSeparatorStory = 13  # Footnote continuation separator story.
+    FootnoteSeparatorStory = 12  # Footnote separator story.
+    FootnotesStory = 2  # Footnotes story.
+    MainTextStory = 1  # Main text story.
+    PrimaryFooterStory = 9  # Primary footer story.
+    PrimaryHeaderStory = 7  # Primary header story.
+    TextFrameStory = 5  # Text frame story.

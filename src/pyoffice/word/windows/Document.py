@@ -1,5 +1,7 @@
-from ._WinObject import *
 from .Application import Application
+from .Bookmark import *
+from .Range import *
+from ._WinObject import *
 from .constant import *
 
 __all__ = ['Document']
@@ -91,11 +93,14 @@ class Document(_WinObject):
 
     def close(self,
               saveChanges: int = SaveOptions.DoNotSaveChanges,
-              originalFormat: int = OriginalFormat.WordDocument,
+              originalFormat: int = OriginalFormat.OriginalDocumentFormat,
               routeDocument: bool = True):
         self.impl.Close(saveChanges,
                         originalFormat,
                         routeDocument)
+
+    def closePrintPreview(self):
+        self.impl.ClosePrintPreview()
 
     def save(self):
         self.impl.Save()
@@ -147,6 +152,9 @@ class Document(_WinObject):
     def getCreator(self) -> int:
         return self.impl.Creator
 
+    def getName(self):
+        return self.impl.Name
+
     def getFullName(self) -> str:
 
         return self.impl.FullName
@@ -165,3 +173,155 @@ class Document(_WinObject):
 
     def getWords(self) -> list:
         return list(self.impl.Words)
+
+    def getRange(self,
+                 *,
+                 start: int = None,
+                 end: int = None) -> Range:
+        param = dict()
+
+        if start is not None:
+            param.update({
+                'Start': start
+            })
+
+        if end is not None:
+            param.update({
+                'End': end
+            })
+
+        rg = Range()
+        rg.impl = self.impl.Range(**param)
+
+        return rg
+
+    def autoFormat(self):
+        self.impl.AutoFormat()
+
+    def goto(self,
+             *,
+             what: int = None,
+             which: int = None,
+             count: int = None,
+             name: str = None) -> Range:
+        param = dict()
+
+        if what is not None:
+            param.update({
+                'What': what
+            })
+
+        if which is not None:
+            param.update({
+                'Which': which
+            })
+
+        if count is not None:
+            param.update({
+                'Count': count
+            })
+
+        if name is not None:
+            param.update({
+                'Name': name
+            })
+
+        rg = Range()
+        rg.impl = self.impl.GoTo(**param)
+
+        return rg
+
+    def printPreview(self):
+        self.impl.PrintPreview()
+
+    def printOut(self,
+                 *,
+                 background: bool = False,
+                 append: bool = False,
+                 rg: Range = None,
+                 outputFileName: bool = False,
+                 frompages: int = None,
+                 topages: int = None,
+                 item=None,
+                 copies: int = None,
+                 pages: str = '',
+                 pageType: int = None,
+                 printToFile: bool = False,
+                 collate: bool = False,
+                 filename: str = '',
+                 activePrinterMacGX=None,
+                 manualDuplexPrint: bool = False,
+                 printZoomColumn: int = None,
+                 printZoomRow: int = None,
+                 printZoomPaperWidth: int = None,
+                 printZoomPaperHeight: int = None):
+        param = {
+            'Background': background,
+            'Append': append,
+            'Range': rg,
+            'OutputFileName': outputFileName,
+            'From': frompages,
+            'To': topages,
+            'Item': item,
+            'Copies': copies,
+            'Pages': pages,
+            'PageType': pageType,
+            'PrintToFile': printToFile,
+            'Collate': collate,
+            'FileName': filename,
+            'ActivePrinterMacGX': activePrinterMacGX,
+            'ManualDuplexPrint': manualDuplexPrint,
+            'PrintZoomColumn': printZoomColumn,
+            'PrintZoomRow': printZoomRow,
+            'PrintZoomPaperWidth': printZoomPaperWidth,
+            'PrintZoomPaperHeight': printZoomPaperHeight
+        }
+
+        self.impl.PrintOut(**param)
+
+    def protect(self,
+                *,
+                t: int = None,
+                noReset: bool = False,
+                password: str = '',
+                useIRM=None,
+                enforceStyleLock=None,
+                ):
+        param = {
+            'Type': t,
+            'NoReset': noReset,
+            'Password': password,
+            'UseIRM': useIRM,
+            'EnforceStyleLock': enforceStyleLock
+        }
+
+        self.impl.Protect(**param)
+
+    def unprotect(self,
+                  password: str):
+        self.impl.Unprotect(password)
+
+    def redo(self,
+             times: int = 1):
+        self.impl.Redo(times)
+
+    def undo(self,
+             times: int = 1):
+        self.impl.Undo(times)
+
+    def undoClear(self):
+        self.impl.UndoClear()
+
+    def select(self):
+        self.impl.Select()
+
+    def getBookmarkList(self) -> list:
+        for item in self.impl.Bookmarks:
+            bookmark = Bookmark()
+            bookmark.impl = item
+            yield bookmark
+
+    def getContent(self) -> Range:
+        rg = Range()
+        rg.impl = self.impl.Content
+        return rg

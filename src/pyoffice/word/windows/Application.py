@@ -3,6 +3,8 @@ import logging
 from pyoffice.decorator import singleton
 from ._WinObject import _WinObject
 
+__all__ = ['Application']
+
 
 class Application(_WinObject):
     __instance = None
@@ -14,6 +16,9 @@ class Application(_WinObject):
     def __new__(cls, *args, **kwargs):
         if cls.__instance is None:
             cls.__instance = _WinObject.__new__(cls)
+
+            import pythoncom
+            pythoncom.CoInitialize()
 
             if cls.impl is None:
                 import win32com.client

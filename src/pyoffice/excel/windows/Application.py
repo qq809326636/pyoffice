@@ -25,6 +25,9 @@ class Application(_WinObject):
         if cls.__instance is None:
             cls.__instance = _WinObject.__new__(cls)
 
+            import pythoncom
+            pythoncom.CoInitialize()
+
             if cls.impl is None:
                 import win32com.client
                 try:

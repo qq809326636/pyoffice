@@ -325,3 +325,19 @@ class Document(_WinObject):
         rg = Range()
         rg.impl = self.impl.Content
         return rg
+
+    def getSectionList(self) -> list:
+        from .Section import Section
+
+        for item in self.impl.Sections:
+            sec = Section()
+            sec.impl = item
+            yield sec
+
+    def getParagraphList(self) -> list:
+        from .Paragraph import Paragraph
+
+        for item in self.impl.Paragraphs:
+            par = Paragraph()
+            par.impl = item
+            yield item

@@ -1,5 +1,6 @@
 from ._WinObject import _WinObject
 from typing import Optional
+from .constant import *
 
 __all__ = ['Cell']
 
@@ -92,4 +93,15 @@ class Cell(_WinObject):
     def select(self):
         self.impl.Select()
 
+    def setHeight(self,
+                  height: int,
+                  heightRule: int = RowHeightRule.RowHeightAuto):
+        self.impl.SetHeight(height,
+                            heightRule)
+
+    def setWidth(self,
+                 columnWidth: int,
+                 rulerStyle: int = RulerStyle.AdjustNone):
+        self.impl.SetWidth(columnWidth,
+                           rulerStyle)
 
